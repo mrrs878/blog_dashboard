@@ -1,6 +1,6 @@
 # 后台脚手架
 
-[![Build Status](https://www.travis-ci.org/mrrs878/dashboard.svg?branch=master)](https://www.travis-ci.org/mrrs878/dashboard)
+[![Build Status](https://www.travis-ci.org/mrrs878/monitor.svg?branch=master)](https://www.travis-ci.org/mrrs878/monitor)
 
 ## 集成功能
 
