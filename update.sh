@@ -1,9 +1,12 @@
 #!/bin/bash
 
-echo "updating script..."
-git pull
+echo "pulling image..."
+docker-compose pull
+
+echo "stoping app..."
+docker-compose down
 
 echo "restarting app..."
-docker-compose up -d
+docker-compose up -d --build
 
-echo "awesome, you succeeded!"
+echo "hooray, succeeded!"

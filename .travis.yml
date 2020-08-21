@@ -22,7 +22,6 @@ after_success:
 - ssh travis@118.190.140.52 -o StrictHostKeyChecking=no 'cd ~/monitor && sh ./update.sh'
 script:
 - yarn build:prod
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" registry.cn-shanghai.aliyuncs.com
-  --password-stdin
-- docker build -t registry.cn-shanghai.aliyuncs.com/mrrs878/monitor:latest .
-- docker push registry.cn-shanghai.aliyuncs.com/mrrs878/monitor:latest
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker build -t mrrs878/monitor:latest .
+- docker push mrrs878/monitor:latest
