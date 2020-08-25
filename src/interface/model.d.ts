@@ -58,6 +58,6 @@ interface ArticleI {
   category_view: string;
   title: string;
   content: string;
-  visitors: number;
-  comments: number;
+  tag: string;
+  description: string;
 }

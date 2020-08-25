@@ -32,18 +32,11 @@ function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<Articl
       ...getColumnSearchProps('category_view'),
     },
     {
-      title: '阅读量',
-      dataIndex: 'visitors',
+      title: '标签',
+      dataIndex: 'tag',
       ellipsis: true,
-      sorter: (a, b) => a.visitors - b.visitors,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: '留言量',
-      dataIndex: 'comments',
-      ellipsis: true,
-      sorter: (a, b) => a.comments - b.comments,
-      sortDirections: ['descend', 'ascend'],
+      onFilter: (value, record) => value === String(record.category_view),
+      ...getColumnSearchProps('tag'),
     },
     {
       title: '状态',
