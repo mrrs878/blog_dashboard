@@ -31,3 +31,7 @@ interface GetDashboardDataReqI {
 
 interface GetArticlesReqT {
 }
+
+interface GetFileBlogReqI {
+  sha: string;
+}

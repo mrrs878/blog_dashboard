@@ -25,3 +25,8 @@ interface GetDashboardDataResI extends BaseResI<Array<DashboardDataI>>{
 
 interface GetArticlesResI extends BaseResI<Array<ArticleI>>{
 }
+
+interface GetRepoPathContentResI extends Array<PathContentItemI> {
+}
+
+interface GetFileBlogResI extends FileBlobI {}

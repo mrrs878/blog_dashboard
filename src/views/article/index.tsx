@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Space } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ColumnProps } from 'antd/es/table';
 import { connect } from 'react-redux';
 import getColumnSearchProps from '../../components/MTableSearch';
 import { AppState } from '../../store';
 import { ROUTES_MAP } from '../../router';
-import ARTICLE_MODULE from '../../modules/article';
 
 const mapState2Props = (state: AppState) => ({
   articles: state.common.articles,
@@ -63,18 +62,16 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   const [loadMoreF, setLoadMoreF] = useState(false);
 
   useEffect(() => {
-    ARTICLE_MODULE.getArticle();
-  }, []);
-
-  useEffect(() => {
     setArticle(props.articles);
     setArticleCount(props.articles.length);
     setDictListColumns(getDictListColumns(props.articles));
   }, [props.articles]);
 
-  function onCreateGoodsClick() {
+  function onCreateArticleClick() {
     props.history.push(`${ROUTES_MAP.article}/-1`);
   }
+
+  function onUpdateArticleClick() {}
 
   async function onLoadMore() {
     try {
@@ -89,7 +86,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   function onArticleListRow(record: ArticleI) {
     return {
       onClick: () => {
-        props.history.push(`${ROUTES_MAP.article}/${record.id}`);
+        props.history.push(`${ROUTES_MAP.article}/${record.sha}`);
       },
     };
   }
@@ -104,11 +101,15 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
         pagination={{ defaultPageSize: 20 }}
         scroll={{ y: '75vh' }}
       />
-      <Button type="primary" style={{ width: 100 }} onClick={onCreateGoodsClick}>创建文章</Button>
-      {
+      <br />
+      <Space>
+        <Button type="primary" style={{ width: 100 }} onClick={onCreateArticleClick}>创建文章</Button>
+        <Button type="primary" style={{ width: 100 }} onClick={onUpdateArticleClick}>同步仓库</Button>
+        {
         articleCount > article.length
         && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
       }
+      </Space>
     </div>
   );
 };

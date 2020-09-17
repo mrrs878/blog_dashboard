@@ -1,5 +1,4 @@
 import React from 'react';
-import store from '../store';
 
 const ABOUT = React.lazy(() => import('../views/about'));
 
@@ -13,8 +12,6 @@ const ABOUT_ROUTES: Array<RouteConfigI> = [
     component: ABOUT,
   },
 ];
-
-console.log(store.getState().common);
 
 export {
   ABOUT_ROUTES_MAP,

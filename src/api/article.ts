@@ -1,7 +1,6 @@
 import ajax from '../tools/ajax';
 
-console.log(process.env.REACT_APP_BASE_URL);
+const BASE_URL = 'https://gitee.com/api/v5/repos/mrrs878/blog';
 
-const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}${process.env.REACT_APP_BASE_URL || ''}/article`;
-
-export const GET_ARTICLES = (): Promise<GetArticlesResI> => ajax.get(`${BASE_URL}/all`);
+export const GET_PATH_CONTENT = (): Promise<GetRepoPathContentResI> => ajax.get(`${BASE_URL}/contents/src/assets/markdown/articles`);
+export const GET_FILE_BLOB = (param: GetFileBlogReqI): Promise<GetFileBlogResI> => ajax.get(`${BASE_URL}/git/blobs/${param.sha}`);

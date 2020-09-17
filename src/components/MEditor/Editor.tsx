@@ -4,7 +4,7 @@ import 'codemirror/addon/display/autorefresh';
 import 'codemirror/addon/comment/comment';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/keymap/sublime';
-import 'codemirror/theme/monokai.css';
+import 'codemirror/theme/base16-dark.css';
 
 interface PropsI {
   value: string;
@@ -16,13 +16,13 @@ interface PropsI {
 
 const Editor = (props: PropsI) => (
   <CodeMirror
-    width="50%"
     value={props.value}
     onChange={props.onChange}
     options={{
       keyMap: props.keyMap,
       mode: props.mode,
       theme: props.theme,
+      lineWrapping: true,
     }}
   />
 );

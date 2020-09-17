@@ -52,6 +52,7 @@ interface DashboardDataI {
 
 interface ArticleI {
   id?: number;
+  sha: string;
   status: number;
   create_time: number;
   category: string;
@@ -60,4 +61,33 @@ interface ArticleI {
   content: string;
   tag: string;
   description: string;
+}
+
+interface PathContentItemI {
+  type: string;
+  size: number;
+  name: string;
+  path: string;
+  sha: string;
+  url: string;
+  html_url: string;
+  download_url: string;
+}
+
+interface FileBlobI {
+  sha: string;
+  size: number;
+  url: string;
+  content: string;
+  encoding: string;
+}
+
+interface ArticleSubI {
+  title: string;
+  description?: string;
+  category: string;
+  tag: string;
+  createTime: string;
+  modifyTime?: string;
+  watch?: number;
 }

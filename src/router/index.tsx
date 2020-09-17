@@ -79,7 +79,6 @@ redirectLogin.setNextSuccessor(returnComponent);
 
 const Router = (props: PropsI) => {
   function beforeEach(route: RouteConfigI) {
-    props.setFullScreen(MAIN_CONFIG.FULL_SCREEN_PAGE.includes(route.path));
     document.title = props.menuTitles[route.path] || MAIN_CONFIG.APP_NAME;
     return redirectMain.passRequest(route);
   }
