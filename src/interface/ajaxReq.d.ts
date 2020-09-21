@@ -32,6 +32,18 @@ interface GetDashboardDataReqI {
 interface GetArticlesReqT {
 }
 
+interface GetArticleReqT {
+  id: string
+}
+
 interface GetFileBlogReqI {
   sha: string;
+}
+
+interface UpdateArticleReqI {
+  title: string;
+  tag: string;
+  category: string;
+  content: string;
+  _id: string;
 }

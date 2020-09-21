@@ -51,10 +51,10 @@ interface DashboardDataI {
 }
 
 interface ArticleI {
-  id?: number;
+  _id?: string;
   sha: string;
   status: number;
-  create_time: number;
+  createTime: number;
   category: string;
   category_view: string;
   title: string;

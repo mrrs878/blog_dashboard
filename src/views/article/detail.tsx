@@ -24,8 +24,8 @@ const ArticleDetail = (props: PropsI) => {
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
 
   const getArticleDetail = useCallback(async () => {
-    const res = await ARTICLE_MODULE.getArticle({ sha: props.match.params.id });
-    setMarkdownSrc(Base64.decode(res?.content || ''));
+    const res = await ARTICLE_MODULE.getArticle({ id: props.match.params.id });
+    setMarkdownSrc(Base64.decode(res?.data?.content || ''));
   }, [props.match.params.id]);
 
   useEffect(() => {
@@ -52,6 +52,12 @@ const ArticleDetail = (props: PropsI) => {
     console.log(info);
   }
 
+  async function onSyncClick() {
+    const res = await ARTICLE_MODULE.getArticle({ id: props.match.params.id });
+    setMarkdownSrc(Base64.decode(res?.data?.content || ''));
+    message.info('同步成功');
+  }
+
   function upload(options: RcCustomRequestOptions) {
     const fileReader = new FileReader();
     fileReader.readAsText(options.file);
@@ -59,7 +65,17 @@ const ArticleDetail = (props: PropsI) => {
     fileReader.onerror = () => message.error('上传失败！');
   }
 
-  function onSaveClick() {}
+  async function onSaveClick() {
+    const [, summary] = markdownSrc?.split('---');
+    const info = summary
+            ?.replace(/\r\n/g, '')
+            ?.replace(/\n/g, '')
+            ?.match(/title:(.+)date:(.+)tags:(.+)categories:(.+)/) || [];
+    const [title, tag, category] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
+    await ARTICLE_MODULE.updateArticle({ title, tag, category, content: Base64.encode(markdownSrc), _id: props.match.params.id });
+    await ARTICLE_MODULE.getArticles();
+    message.info('更新成功');
+  }
 
   return (
     <div className="container">
@@ -67,7 +83,7 @@ const ArticleDetail = (props: PropsI) => {
         <Col flex={1}>
           <Space className="controller">
             <Button icon={isEdit ? <EyeOutlined /> : <EditOutlined />} onClick={onToggleEditable} type={isEdit ? 'primary' : 'default'}>{ isEdit ? '预览' : '编辑' }</Button>
-            <Button icon={<RedoOutlined />} onClick={onToggleEditable}>同步仓库</Button>
+            <Button icon={<RedoOutlined />} onClick={onSyncClick}>同步仓库</Button>
             <Upload accept=".md" onChange={onUploadChange} customRequest={upload} showUploadList={false}>
               <Button>
                 <UploadOutlined />

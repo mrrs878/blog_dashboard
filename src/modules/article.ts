@@ -1,36 +1,28 @@
 import apis from '../api';
 import store, { actions } from '../store';
 
-const { GET_FILE_BLOB, GET_PATH_CONTENT } = apis;
-
-function generateArticleList(source: Array<PathContentItemI>): Array<ArticleI> {
-  const articles: Array<ArticleI> = source.map((item) => ({
-    sha: item.sha,
-    status: 0,
-    create_time: 0,
-    category: '-',
-    category_view: '-',
-    title: item.name,
-    content: '-',
-    tag: '-',
-    description: '-',
-  }));
-  return articles;
-}
+const { GET_ALL_ARTICLES, GET_ARTICLE, UPDATE_ARTICLE } = apis;
 
 const ARTICLE_MODULE = {
   async getArticles() {
     try {
-      const res = await GET_PATH_CONTENT();
-      const data = generateArticleList(res);
-      store.dispatch({ type: actions.UPDATE_ARTICLES, data });
+      const res = await GET_ALL_ARTICLES();
+      store.dispatch({ type: actions.UPDATE_ARTICLES, data: res.data });
     } catch (e) {
       console.log(e);
     }
   },
-  async getArticle(param: GetFileBlogReqI) {
+  async getArticle(param: GetArticleReqT) {
     try {
-      const res = await GET_FILE_BLOB(param);
+      const res = await GET_ARTICLE(param);
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  async updateArticle(param: UpdateArticleReqI) {
+    try {
+      const res = await UPDATE_ARTICLE(param);
       return res;
     } catch (e) {
       console.log(e);

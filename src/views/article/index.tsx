@@ -25,10 +25,10 @@ function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<Articl
     },
     {
       title: '类别',
-      dataIndex: 'category_view',
+      dataIndex: 'category',
       ellipsis: true,
       onFilter: (value, record) => value === String(record.category_view),
-      ...getColumnSearchProps('category_view'),
+      ...getColumnSearchProps('category'),
     },
     {
       title: '标签',
@@ -44,12 +44,9 @@ function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<Articl
     },
     {
       title: '创建时间',
-      dataIndex: 'create_time',
+      dataIndex: 'createTime',
       ellipsis: true,
-      render(text: string, record) {
-        return <span>{ new Date(record.create_time).toLocaleString() }</span>;
-      },
-      sorter: (a, b) => a.create_time - b.create_time,
+      sorter: (a, b) => a.createTime - b.createTime,
       sortDirections: ['descend', 'ascend'],
     },
   ];
@@ -86,7 +83,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   function onArticleListRow(record: ArticleI) {
     return {
       onClick: () => {
-        props.history.push(`${ROUTES_MAP.article}/${record.sha}`);
+        props.history.push(`${ROUTES_MAP.article}/${record._id}`);
       },
     };
   }
@@ -95,7 +92,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
     <div className="container">
       <Table
         columns={dictListColumns}
-        rowKey={(record) => String(record.id)}
+        rowKey={(record) => String(record._id)}
         onRow={onArticleListRow}
         dataSource={article}
         pagination={{ defaultPageSize: 20 }}
