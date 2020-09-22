@@ -1,10 +1,16 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-22 10:02:58
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\api\article.ts
+ */
 import ajax from '../tools/ajax';
 
-const BASE_URL = 'http://api.blog.mrrs.top/api';
-// const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
 
-export const GET_PATH_CONTENT = (): Promise<GetRepoPathContentResI> => ajax.get(`${BASE_URL}/contents/src/assets/markdown/articles`);
 export const GET_ALL_ARTICLES = (): Promise<GetArticlesResI> => ajax.get(`${BASE_URL}/article/all`);
 export const GET_ARTICLE = (param: GetArticleReqT): Promise<GetArticleResI> => ajax.get(`${BASE_URL}/article/${param.id}`);
-export const GET_FILE_BLOB = (param: GetFileBlogReqI): Promise<GetFileBlogResI> => ajax.get(`${BASE_URL}/git/blobs/${param.sha}`);
 export const UPDATE_ARTICLE = (data: UpdateArticleReqI): Promise<GetFileBlogResI> => ajax.put(`${BASE_URL}/article/${data._id}`, data);
+export const CREATE_ARTICLE = (data: CreateArticleReqI): Promise<GetFileBlogResI> => ajax.post(`${BASE_URL}/article`, data);

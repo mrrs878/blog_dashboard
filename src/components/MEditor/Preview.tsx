@@ -2,27 +2,23 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Space } from 'antd';
 import { CalendarOutlined, FolderOutlined } from '@ant-design/icons';
+import { Base64 } from 'js-base64';
 import CodeBlock from './CodeBlock';
 import '../../assets/less/md.theme.orange.less';
 import style from './preview.module.less';
 
 interface PropsI {
-  value: string;
+  value: ArticleI;
   fullscreen?: boolean;
 }
 
 const Preview = (props: PropsI) => {
   const [formattedMd, setFormattedMd] = useState<{ head: ArticleSubI; content: string }>();
   useEffect(() => {
-    const src = props.value.split('---');
-    const info = src[1]
-      ?.replace(/\r\n/g, '')
-      ?.replace(/\n/g, '')
-      ?.match(/title:(.+)date:(.+)tags:(.+)categories:(.+)/) || [];
-    const [title, createTime, tag, category] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
-    const head = { title, category, createTime, tag };
-    setFormattedMd({ head, content: src[2] });
-  }, [props.value]);
+    const { title, createTime, tag, categories, content } = props.value;
+    console.log(Base64.decode(content).split('---')[2]);
+    setFormattedMd({ head: { title, createTime, tag, categories }, content: Base64.decode(content).split('---')[2] });
+  }, [props]);
   useEffect(() => {
     document.title = formattedMd?.head?.title || 'my blog';
   }, [formattedMd]);
@@ -49,12 +45,12 @@ const Preview = (props: PropsI) => {
                 { formattedMd?.head?.modifyTime }
               </span>
             )}
-            { formattedMd?.head?.category && (
+            { formattedMd?.head?.categories && (
               <span>
                 <FolderOutlined />
                 {' '}
                 分类于
-                <a href={`/all/category/${formattedMd?.head?.category}`}>{ formattedMd?.head?.category }</a>
+                <a href={`/all/category/${formattedMd?.head?.categories}`}>{ formattedMd?.head?.categories }</a>
               </span>
           ) }
           </Space>

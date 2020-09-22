@@ -18,22 +18,39 @@ interface PropsI extends RouteComponentProps<{ id: string }>{
   fullScreen: boolean
 }
 
+const emptyArticle = { title: '', categories: '', tag: '', content: '', createTime: '', description: '' };
+
+function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
+  const [, summary, content] = markdownSrc?.split('---');
+  const info = summary
+          ?.replace(/\r\n/g, '')
+          ?.replace(/\n/g, '')
+          ?.match(/title:(.+)tags:(.+)categories:(.+)/) || [];
+  const [title, tag, categories] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
+  const article = { title, tag, categories, description: content.slice(0, 200), content: Base64.encode(markdownSrc) };
+  return article;
+}
+
 const ArticleDetail = (props: PropsI) => {
   const [markdownSrc, setMarkdownSrc] = useState('');
+  const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
 
   const getArticleDetail = useCallback(async () => {
+    if (props.match.params.id === '-1') return;
     const res = await ARTICLE_MODULE.getArticle({ id: props.match.params.id });
     setMarkdownSrc(Base64.decode(res?.data?.content || ''));
+    setArticle(res?.data || emptyArticle);
   }, [props.match.params.id]);
 
   useEffect(() => {
     getArticleDetail();
-  }, [getArticleDetail]);
+  }, [getArticleDetail, props.match.params.id]);
 
   useEffect(() => {
     setCreateOrEdit(props.match.params.id === '-1');
+    setIsEdit(props.match.params.id === '-1');
   }, [props.match.params.id]);
 
   function onMarkdownChange(instance: CodeMirror.Editor) {
@@ -61,20 +78,26 @@ const ArticleDetail = (props: PropsI) => {
   function upload(options: RcCustomRequestOptions) {
     const fileReader = new FileReader();
     fileReader.readAsText(options.file);
-    fileReader.onload = () => setMarkdownSrc(fileReader.result?.toString() || '');
+    fileReader.onload = async () => {
+      setMarkdownSrc(fileReader.result?.toString() || '');
+      const _article = formatMarkdownSrc(fileReader.result?.toString() || '');
+      setArticle({ ..._article, createTime: new Date().toLocaleString() });
+    };
     fileReader.onerror = () => message.error('上传失败！');
   }
 
   async function onSaveClick() {
-    const [, summary] = markdownSrc?.split('---');
-    const info = summary
-            ?.replace(/\r\n/g, '')
-            ?.replace(/\n/g, '')
-            ?.match(/title:(.+)date:(.+)tags:(.+)categories:(.+)/) || [];
-    const [title, tag, category] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
-    await ARTICLE_MODULE.updateArticle({ title, tag, category, content: Base64.encode(markdownSrc), _id: props.match.params.id });
-    await ARTICLE_MODULE.getArticles();
-    message.info('更新成功');
+    const _article = formatMarkdownSrc(markdownSrc);
+    if (createOrEdit) {
+      await ARTICLE_MODULE.creatreArticle(_article);
+      await ARTICLE_MODULE.getArticles();
+      message.info('发表成功');
+    } else {
+      await ARTICLE_MODULE.updateArticle({ ..._article, _id: props.match.params.id });
+      await ARTICLE_MODULE.getArticles();
+      await getArticleDetail();
+      message.info('更新成功');
+    }
   }
 
   return (
@@ -104,7 +127,7 @@ const ArticleDetail = (props: PropsI) => {
       >
         {
           !isEdit
-          && <MPreview value={markdownSrc} fullscreen={!isEdit} />
+          && <MPreview value={article} fullscreen={!isEdit} />
         }
         {
           isEdit

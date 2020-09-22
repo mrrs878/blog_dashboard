@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-22 13:14:30
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\interface\ajaxReq.d.ts
+ */
 interface LoginReqI {
   name: string,
   password: string
@@ -43,7 +51,16 @@ interface GetFileBlogReqI {
 interface UpdateArticleReqI {
   title: string;
   tag: string;
-  category: string;
+  categories: string;
   content: string;
   _id: string;
+  description: string;
+}
+
+interface CreateArticleReqI {
+  title: string;
+  tag: string;
+  categories: string;
+  content: string;
+  description: string;
 }

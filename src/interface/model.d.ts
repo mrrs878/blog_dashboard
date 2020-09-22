@@ -52,11 +52,9 @@ interface DashboardDataI {
 
 interface ArticleI {
   _id?: string;
-  sha: string;
-  status: number;
-  createTime: number;
-  category: string;
-  category_view: string;
+  createTime: string;
+  updateTime?: string;
+  categories: string;
   title: string;
   content: string;
   tag: string;
@@ -85,7 +83,7 @@ interface FileBlobI {
 interface ArticleSubI {
   title: string;
   description?: string;
-  category: string;
+  categories: string;
   tag: string;
   createTime: string;
   modifyTime?: string;

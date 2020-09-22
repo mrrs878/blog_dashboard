@@ -1,7 +1,7 @@
 import apis from '../api';
 import store, { actions } from '../store';
 
-const { GET_ALL_ARTICLES, GET_ARTICLE, UPDATE_ARTICLE } = apis;
+const { GET_ALL_ARTICLES, GET_ARTICLE, UPDATE_ARTICLE, CREATE_ARTICLE } = apis;
 
 const ARTICLE_MODULE = {
   async getArticles() {
@@ -23,6 +23,14 @@ const ARTICLE_MODULE = {
   async updateArticle(param: UpdateArticleReqI) {
     try {
       const res = await UPDATE_ARTICLE(param);
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  async creatreArticle(param: CreateArticleReqI) {
+    try {
+      const res = await CREATE_ARTICLE(param);
       return res;
     } catch (e) {
       console.log(e);
