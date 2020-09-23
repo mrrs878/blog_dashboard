@@ -1,17 +1,16 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Form, Input, Button, Space, message } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
-import style from './index.module.less';
 import userModule from '../../../modules/user';
 import authModule from '../../../modules/auth';
 
 const layout = {
-  labelCol: { span: 7, offset: 3 },
-  wrapperCol: { span: 3 },
+  labelCol: { span: 3, offset: 7 },
+  wrapperCol: { span: 4 },
 };
 const tailLayout = {
-  wrapperCol: { offset: 11, span: 1 },
+  wrapperCol: { offset: 11, span: 2 },
 };
 
 interface PropsI extends RouteComponentProps<any, any> {
@@ -57,12 +56,9 @@ const Index = (props: PropsI) => {
         </Form.Item>
 
         <Form.Item wrapperCol={tailLayout.wrapperCol}>
-          <Space direction="vertical">
-            <Button type="primary" htmlType="submit" className={style.login}>
-              登录
-            </Button>
-            {/* <button type="button" className={`${style.reg} simpleButton`} onClick={onRegClick}>注册</button> */}
-          </Space>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            登录
+          </Button>
         </Form.Item>
       </Form>
     </div>

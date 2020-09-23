@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space } from 'antd';
+import { Table, Button, Space, message } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ColumnProps } from 'antd/es/table';
 import { connect } from 'react-redux';
 import getColumnSearchProps from '../../components/MTableSearch';
 import { AppState } from '../../store';
 import { ROUTES_MAP } from '../../router';
+import ARTICLE_MODULE from '../../modules/article';
 
 const mapState2Props = (state: AppState) => ({
   articles: state.common.articles,
@@ -13,6 +14,19 @@ const mapState2Props = (state: AppState) => ({
 
 interface PropsI extends RouteComponentProps {
   articles: Array<ArticleI>
+}
+
+function getCategories(articles: Array<ArticleI>) {
+  const categories: Map<string, number> = new Map();
+  articles.forEach((item) => {
+    const count = categories.get(item.categories) || 0;
+    categories.set(item.categories, count + 1);
+  });
+  const tmp: Array<{ text: string; value: string }> = [];
+  categories.forEach((key, value) => {
+    tmp.push({ text: `${value}(${key})`, value });
+  });
+  return tmp;
 }
 
 function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<ArticleI>> {
@@ -27,8 +41,8 @@ function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<Articl
       title: '类别',
       dataIndex: 'categories',
       ellipsis: true,
+      filters: getCategories(articles),
       onFilter: (value, record) => value === String(record.categories),
-      ...getColumnSearchProps('category'),
     },
     {
       title: '标签',
@@ -70,7 +84,10 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
     props.history.push(`${ROUTES_MAP.article}/-1`);
   }
 
-  function onUpdateArticleClick() {}
+  async function onUpdateArticleClick() {
+    await ARTICLE_MODULE.getArticles();
+    message.info('刷新成功');
+  }
 
   async function onLoadMore() {
     try {
@@ -98,12 +115,11 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
         onRow={onArticleListRow}
         dataSource={article}
         pagination={{ defaultPageSize: 20 }}
-        scroll={{ y: '75vh' }}
+        scroll={{ y: 100 }}
       />
-      <br />
       <Space>
         <Button type="primary" style={{ width: 100 }} onClick={onCreateArticleClick}>创建文章</Button>
-        <Button type="primary" style={{ width: 100 }} onClick={onUpdateArticleClick}>同步仓库</Button>
+        <Button type="primary" style={{ width: 100 }} onClick={onUpdateArticleClick}>刷新</Button>
         {
         articleCount > article.length
         && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>

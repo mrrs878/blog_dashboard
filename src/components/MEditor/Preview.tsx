@@ -13,44 +13,44 @@ interface PropsI {
 }
 
 const Preview = (props: PropsI) => {
-  const [formattedMd, setFormattedMd] = useState<{ head: ArticleSubI; content: string }>();
+  const [formattedMd, setFormattedMd] = useState<ArticleI>();
   useEffect(() => {
-    const { title, createTime, tag, categories, content } = props.value;
-    console.log(Base64.decode(content).split('---')[2]);
-    setFormattedMd({ head: { title, createTime, tag, categories }, content: Base64.decode(content).split('---')[2] });
+    const { title, createTime, updateTime, tag, categories, content } = props.value;
+    console.log(title, Base64.decode(content).split('---')[2]);
+    setFormattedMd({ title, createTime, updateTime, tag, categories, description: '', content: Base64.decode(content).split('---')[2] });
   }, [props]);
   useEffect(() => {
-    document.title = formattedMd?.head?.title || 'my blog';
+    document.title = formattedMd?.title || 'my blog';
   }, [formattedMd]);
 
   return (
     <div className={`container ${props.fullscreen ? '' : style.editScreen}`} id="write" style={{ display: 'block' }}>
       {
-        formattedMd?.head.title && (
+        formattedMd?.title && (
         <div style={{ textAlign: 'center' }}>
-          <h1>{ formattedMd?.head?.title }</h1>
+          <h1>{ formattedMd?.title }</h1>
           <Space style={{ color: '#999' }}>
-            { formattedMd?.head?.createTime
+            { formattedMd?.createTime
               && (
               <span>
                 <CalendarOutlined />
                 {' '}
                 创建于
-                  { formattedMd?.head?.createTime }
+                  { formattedMd?.createTime }
               </span>
             )}
-            { formattedMd?.head?.modifyTime && (
+            { formattedMd?.updateTime && (
               <span>
                 更新于
-                { formattedMd?.head?.modifyTime }
+                { formattedMd?.updateTime }
               </span>
             )}
-            { formattedMd?.head?.categories && (
+            { formattedMd?.categories && (
               <span>
                 <FolderOutlined />
                 {' '}
                 分类于
-                <a href={`/all/category/${formattedMd?.head?.categories}`}>{ formattedMd?.head?.categories }</a>
+                <a href={`/all/category/${formattedMd?.categories}`}>{ formattedMd?.categories }</a>
               </span>
           ) }
           </Space>

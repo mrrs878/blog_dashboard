@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Space, Upload, message, Row, Col } from 'antd';
-import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
+import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, FullscreenOutlined, FullscreenExitOutlined, ReloadOutlined } from '@ant-design/icons';
 import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/interface';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Base64 } from 'js-base64';
@@ -32,7 +32,7 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
 }
 
 const ArticleDetail = (props: PropsI) => {
-  const [markdownSrc, setMarkdownSrc] = useState('');
+  const [markdownSrc, setMarkdownSrc] = useState('---\n title: \n tags: \n categories: \n ---');
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
@@ -59,6 +59,7 @@ const ArticleDetail = (props: PropsI) => {
 
   function onToggleEditable() {
     setIsEdit(!isEdit);
+    setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: '' });
   }
 
   function onToggleScreenClick() {
@@ -72,7 +73,7 @@ const ArticleDetail = (props: PropsI) => {
   async function onSyncClick() {
     const res = await ARTICLE_MODULE.getArticle({ id: props.match.params.id });
     setMarkdownSrc(Base64.decode(res?.data?.content || ''));
-    message.info('同步成功');
+    message.info('刷新成功');
   }
 
   function upload(options: RcCustomRequestOptions) {
@@ -100,13 +101,19 @@ const ArticleDetail = (props: PropsI) => {
     }
   }
 
+  async function onResetClick() {
+    window.location.href = props.location.pathname;
+  }
+
   return (
     <div className="container">
       <Row>
         <Col flex={1}>
           <Space className="controller">
             <Button icon={isEdit ? <EyeOutlined /> : <EditOutlined />} onClick={onToggleEditable} type={isEdit ? 'primary' : 'default'}>{ isEdit ? '预览' : '编辑' }</Button>
-            <Button icon={<RedoOutlined />} onClick={onSyncClick}>同步仓库</Button>
+            {
+              !createOrEdit && <Button icon={<RedoOutlined />} onClick={onSyncClick}>刷新</Button>
+            }
             <Upload accept=".md" onChange={onUploadChange} customRequest={upload} showUploadList={false}>
               <Button>
                 <UploadOutlined />
@@ -114,6 +121,7 @@ const ArticleDetail = (props: PropsI) => {
               </Button>
             </Upload>
             <Button icon={<SaveOutlined />} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
+            <Button icon={<ReloadOutlined />} onClick={onResetClick}>重置</Button>
           </Space>
         </Col>
         <Col>
