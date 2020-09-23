@@ -1,6 +1,14 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-23 19:47:44
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\interface\model.d.ts
+ */
 interface UserI {
   name: string;
-  accessToken: string;
+  token: string;
   avatar: string;
   role: number;
 }

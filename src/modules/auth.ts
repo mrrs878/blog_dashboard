@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-23 19:45:16
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\modules\auth.ts
+ */
 import { clone } from 'ramda';
 import apis from '../api';
 import store, { actions } from '../store';
@@ -38,10 +46,9 @@ const AUTH_MODULE = {
   async login(data: LoginReqI) {
     try {
       const res = await LOGIN(data);
-      console.log(res);
       if (!res.success) return;
-      localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, res.data.accessToken);
-      store.dispatch({ type: actions.UPDATE_USER, data: res.data });
+      localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, res.data.token);
+      // store.dispatch({ type: actions.UPDATE_USER, data: res.data });
     } catch (e) {
       console.log(e);
     }

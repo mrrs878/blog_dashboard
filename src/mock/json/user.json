@@ -1,19 +1,19 @@
 {
   "admin": {
     "name": "admin",
-    "accessToken": "admin",
+    "token": "admin",
     "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     "role": 0
   },
   "people": {
     "name": "people",
-    "accessToken": "people",
+    "token": "people",
     "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     "role": 1
   },
   "guest": {
     "name": "",
-    "accessToken": "guest",
+    "token": "guest",
     "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     "role": 2
   }

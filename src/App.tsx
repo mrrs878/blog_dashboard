@@ -8,12 +8,10 @@ import authModule from './modules/auth';
 import './mock';
 import dictModule from './modules/dict';
 import MLayout from './layout';
-import MAIN_CONFIG from './config';
 import ARTICLE_MODULE from './modules/article';
 
 function App() {
   useEffect(() => {
-    localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, 'admin');
     Promise.race([userModule.getInfoByToken(), authModule.getMenu(), dictModule.getDict(), ARTICLE_MODULE.getArticles()]).catch((error) => {
       console.log(error);
     });

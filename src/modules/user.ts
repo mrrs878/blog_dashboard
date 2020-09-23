@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-23 19:53:04
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\modules\user.ts
+ */
 import apis from '../api';
 import store, { actions } from '../store';
 
@@ -22,8 +30,8 @@ export default {
           msg: res.msg,
         };
       }
-      console.log(res);
-      store.dispatch({ type: actions.UPDATE_USER, data: res.data });
+      // store.dispatch({ type: actions.UPDATE_USER, data: res.data });
+      localStorage.setItem('token', res.data.token);
       return {
         success: true,
         msg: '登陆成功',

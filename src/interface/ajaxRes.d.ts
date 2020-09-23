@@ -5,7 +5,7 @@ interface BaseResI<T> {
   msg: string;
 }
 
-interface LoginResI extends BaseResI<UserI>{
+interface LoginResI extends BaseResI<{ token: string }>{
 }
 interface GetInfoByTokenResI extends BaseResI<UserI>{
 }

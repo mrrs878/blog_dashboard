@@ -1,7 +1,15 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-23 19:48:01
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\model\User.ts
+ */
 import { USER_ROLE } from '../constant';
 
 class User implements UserI {
-  accessToken: string;
+  token: string;
 
   avatar: string;
 
@@ -9,9 +17,9 @@ class User implements UserI {
 
   name: string;
 
-  constructor(accessToken = '', avatar = 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+  constructor(token = '', avatar = 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     name = '请登录', role = USER_ROLE.guest) {
-    this.accessToken = accessToken;
+    this.token = token;
     this.avatar = avatar;
     this.name = name;
     this.role = role;
