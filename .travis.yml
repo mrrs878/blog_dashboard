@@ -21,3 +21,7 @@ after_success:
   ./update.sh'
 script:
 - yarn install
+- yarn build:prod
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker build -t mrrs878/blog_dashboard:latest .
+- docker push mrrs878/blog_dashboard:latest
