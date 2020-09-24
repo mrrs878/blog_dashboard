@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-23 20:05:21
+ * @LastEditTime: 2020-09-24 18:30:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\ajax.ts
@@ -22,9 +22,10 @@ ajax.interceptors.request.use((config) => {
 ajax.interceptors.response.use((response) => {
   if ([401, 403].includes(response.data.code)) {
     localStorage.removeItem(MAIN_CONFIG.TOKEN_NAME);
+    return Promise.resolve();
   }
   return Promise.resolve(response.data);
-}, (error: Error) => {
+}, (error: any) => {
   console.log(error);
   return Promise.resolve(error);
 });
