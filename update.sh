@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "updatimg code..."
+git pull
+
 echo "pulling image..."
 docker-compose pull
 
