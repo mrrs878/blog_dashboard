@@ -10,6 +10,7 @@ import style from './index.module.less';
 import authModule from '../../modules/auth';
 import { ROUTES_MAP } from '../../router';
 import { AppState } from '../../store';
+import AUTH_MODULE from '../../modules/auth';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -48,7 +49,10 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
     const res = await authModule.logout();
     setLogoutModalF(false);
     await message.info(res.msg);
-    if (res.success) props.history.replace(ROUTES_MAP.login);
+    if (res.success) {
+      AUTH_MODULE.logout();
+      props.history.replace(ROUTES_MAP.login);
+    }
   }
 
   function onToggleCollapsedClick() {

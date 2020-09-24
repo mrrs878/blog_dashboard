@@ -1,3 +1,4 @@
+import { LogoutOutlined } from '@ant-design/icons';
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
@@ -7,6 +8,7 @@
  * @FilePath: \blog_dashboard\src\modules\user.ts
  */
 import apis from '../api';
+import MAIN_CONFIG from '../config';
 import store, { actions } from '../store';
 
 const { GET_INFO_BY_TOKEN, LOGIN } = apis;
@@ -34,7 +36,7 @@ export default {
       localStorage.setItem('token', res.data.token);
       return {
         success: true,
-        msg: '登陆成功',
+        msg: res.msg,
       };
     } catch (e) {
       console.log(e);
@@ -43,5 +45,12 @@ export default {
         msg: e.message,
       };
     }
+  },
+  logout() {
+    localStorage.removeItem(MAIN_CONFIG.TOKEN_NAME);
+    return {
+      success: true,
+      msg: '退出成功',
+    };
   },
 };
