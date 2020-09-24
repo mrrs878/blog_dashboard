@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-23 19:45:16
+ * @LastEditTime: 2020-09-24 20:31:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\modules\auth.ts
@@ -67,7 +67,7 @@ const AUTH_MODULE = {
       store.dispatch({ type: actions.CLEAR_USER, data: '' });
       return {
         success: true,
-        msg: '退出登陆成功',
+        msg: res.msg,
       };
     } catch (e) {
       console.log(e);
