@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-24 20:31:51
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-09-27 18:44:49
+ * @LastEditors: mrrs878
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\modules\auth.ts
  */
@@ -11,7 +11,7 @@ import apis from '../api';
 import store, { actions } from '../store';
 import MAIN_CONFIG from '../config';
 
-const { LOGIN, LOGOUT, GET_MENUS } = apis;
+const { LOGIN, LOGOUT, GET_MENUS, UPDATE_MENU } = apis;
 
 function menuArray2Tree(src: Array<MenuItemI>) {
   const res: Array<MenuItemI> = [];
@@ -86,6 +86,15 @@ const AUTH_MODULE = {
       store.dispatch({ type: actions.UPDATE_MENU_ROUTES, data: getMenuRoutes(res.data) });
       store.dispatch({ type: actions.UPDATE_MENU, data: menuArray2Tree(res.data) });
       store.dispatch({ type: actions.UPDATE_MENU_ARRAY, data: res.data });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  async updateMenu(data: UpdateMenuReqI) {
+    try {
+      const res = await UPDATE_MENU(data);
+      if (!res.success) return;
+      await this.getMenu();
     } catch (e) {
       console.log(e);
     }

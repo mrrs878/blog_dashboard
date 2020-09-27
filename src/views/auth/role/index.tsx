@@ -90,7 +90,7 @@ const Role: React.FC<PropsI> = (props: PropsI) => {
     setLoadMoreF(true);
   }
 
-  const onDictListRow = (record: DictI) => ({ onClick: () => props.history.push(`${ROUTES_MAP.role}/${record.id}`) });
+  const onDictListRow = (record: DictI) => ({ onClick: () => props.history.push(`${ROUTES_MAP.role}/${record.value}`) });
 
   return (
     <div className="container">

@@ -1,11 +1,13 @@
 import React, { ReactText, useEffect, useState } from 'react';
-import { Button, Tree } from 'antd';
+import { Button, Space, Tree } from 'antd';
 // @ts-ignore
 import { OnDragEnterData, OnDropData } from 'rc-tree';
 import { clone } from 'ramda';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { EventDataNode } from 'rc-tree/lib/interface';
 import { AppState } from '../../../store';
+import AUTH_MODULE from '../../../modules/auth';
 
 interface PropsI extends RouteComponentProps<{ id: string }> {
   state: CommonStateI
@@ -33,12 +35,14 @@ function getExpandKeys(src: Array<MenuItemI>, role: number) {
 const RoleDetail = (props: PropsI) => {
   const [treeData, setTreeData] = useState<Array<any>>(props.state.menu);
   const [checkedKeys, setCheckedKeys] = useState<Array<ReactText>>([]);
+  const [originCheckedKeys, setOriginCheckedKeys] = useState<Array<ReactText>>([]);
+  const [modifyKeys, setModifyKeys] = useState<Array<string>>([]);
 
   useEffect(() => {
     (async () => {
-      const id = +props.match.params.id;
-      const menu = props.state.dicts.find((item) => item.id === id);
-      setCheckedKeys(getExpandKeys(props.state.menu, menu?.value ?? -1));
+      const tmp = getExpandKeys(props.state.menu, parseInt(props.match.params.id, 10));
+      setCheckedKeys(tmp);
+      setOriginCheckedKeys(tmp);
     })();
   }, [props.match.params.id, props.state.dicts, props.state.menu]);
 
@@ -101,9 +105,40 @@ const RoleDetail = (props: PropsI) => {
     // setExpandedKeys(info.expandedKeys);
   }
 
-  function onCheck(keys: Array<ReactText> | { checked: ReactText[]; halfChecked: ReactText[]; }) {
+  function onCheck(keys: Array<ReactText> | { checked: ReactText[]; halfChecked: ReactText[]; }, info: { checked: boolean, node: EventDataNode }) {
     if (!Array.isArray(keys)) return;
     setCheckedKeys(keys);
+    setModifyKeys([...modifyKeys, String(info.node.key)]);
+  }
+
+  function onSaveClick() {
+    if (originCheckedKeys === checkedKeys) return;
+    const _modifyKeys = Array.from(new Set(modifyKeys));
+    const _menuItems = clone(props.state.menuArray);
+    const _modifyItems: Array<MenuItemI> = [];
+    const _role = parseInt(props.match.params.id, 10);
+    _modifyKeys.forEach((key) => {
+      const tmp = _menuItems.find((menu) => menu.key === key);
+      if (tmp && (checkedKeys.includes(key) && !tmp?.role?.includes(_role))) {
+        tmp.role?.push(_role);
+        _modifyItems.push(tmp);
+      }
+      if (tmp && (!checkedKeys.includes(key) && tmp?.role?.includes(_role))) {
+        tmp.role = tmp.role.filter((item) => item !== _role);
+        _modifyItems.push(tmp);
+      }
+    });
+    console.log(_modifyItems);
+
+    _modifyItems.forEach((modify) => {
+      const { key, icon_name, title, path, parent, role, sub_menu, status, children, _id } = modify;
+      AUTH_MODULE.updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id });
+    });
+  }
+
+  function onResetClick() {
+    setCheckedKeys(originCheckedKeys);
+    setModifyKeys([]);
   }
 
   return (
@@ -122,7 +157,10 @@ const RoleDetail = (props: PropsI) => {
           treeData={treeData}
         />
         <br />
-        <Button type="primary" style={{ width: 120 }}>分配</Button>
+        <Space direction="horizontal">
+          <Button type="primary" style={{ width: 120 }} onClick={onSaveClick}>保存</Button>
+          <Button type="primary" style={{ width: 120 }} onClick={onResetClick}>重置</Button>
+        </Space>
       </div>
     </div>
   );

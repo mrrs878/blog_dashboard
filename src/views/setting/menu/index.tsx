@@ -46,7 +46,7 @@ const tailFormItemLayout = {
   },
 };
 
-const AddRootMenu: MenuItemI = { icon: <PlusCircleOutlined />, title: '添加', key: 'root', sub_menu: [], parent: 'root', path: '', status: 1 };
+const AddRootMenu: MenuItemI = { icon: <PlusCircleOutlined />, title: '添加', key: 'root', sub_menu: [], parent: 'root', path: '', status: 1, children: [] };
 
 function formatMenu(src: Array<MenuItemI>) {
   const tmp: Array<MenuItemI> = clone(src);

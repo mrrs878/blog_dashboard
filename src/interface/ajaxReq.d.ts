@@ -13,6 +13,8 @@ interface LoginReqI {
 interface GetMenuReqI {
 }
 
+interface UpdateMenuReqI extends MenuItemI {}
+
 interface GetDictsReqT {
 }
 

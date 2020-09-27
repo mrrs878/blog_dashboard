@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-23 19:47:44
- * @LastEditors: your name
+ * @LastEditTime: 2020-09-27 18:41:26
+ * @LastEditors: mrrs878
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
  */
@@ -14,12 +14,13 @@ interface UserI {
 }
 
 interface MenuItemI {
+  _id?: string;
   key: string;
   icon?: Object;
   icon_name?: string;
   title: string;
   path: string;
-  children?: Array<MenuItemI>;
+  children: Array<MenuItemI>;
   sub_menu: Array<string>;
   parent: string;
   role?: Array<number>;

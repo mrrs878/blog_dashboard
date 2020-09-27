@@ -72,11 +72,11 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
 
   function walkMenu(item: MenuItemI) {
     item.icon = dynamicIcon(item.icon_name);
-    if (Reflect.has(item, 'children')) {
+    if (item.children.length > 0) {
       return (
         <SubMenu key={item.key} icon={item.icon} title={item.title}>
           {
-            item.children?.map((child) => walkMenu(child))
+            item.children.map((child) => walkMenu(child))
           }
         </SubMenu>
       );
