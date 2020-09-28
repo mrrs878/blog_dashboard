@@ -17,19 +17,23 @@ const mapState2Props = (state: AppState) => ({
   state: state.common,
 });
 
-function getExpandKeys(src: Array<MenuItemI>, role: number) {
+function getCheckedKeys(src: Array<MenuItemI>, role: number) {
   if (role === -1) return [];
+
   const tmp = clone(src);
-  const keys: Array<string> = [];
+  const keyArray: Array<string> = [];
+  const keyMap: Map<string, boolean> = new Map();
 
-  function walkMenu(menuItem: MenuItemI) {
-    if (menuItem.role?.includes(role)) keys.push(menuItem.key);
-    if (!menuItem.children) return;
-    menuItem.children.forEach((item) => walkMenu(item));
-  }
+  tmp.forEach((menuItem) => {
+    if (menuItem.role?.includes(role)) {
+      keyMap.set(menuItem.key, true);
+      keyMap.set(menuItem.parent, false);
+    }
+  });
 
-  tmp.forEach((item) => walkMenu(item));
-  return keys;
+  keyMap.forEach((value, key) => value && keyArray.push(key));
+
+  return keyArray;
 }
 
 const RoleDetail = (props: PropsI) => {
@@ -40,11 +44,11 @@ const RoleDetail = (props: PropsI) => {
 
   useEffect(() => {
     (async () => {
-      const tmp = getExpandKeys(props.state.menu, parseInt(props.match.params.id, 10));
+      const tmp = getCheckedKeys(props.state.menuArray, parseInt(props.match.params.id, 10));
       setCheckedKeys(tmp);
       setOriginCheckedKeys(tmp);
     })();
-  }, [props.match.params.id, props.state.dicts, props.state.menu]);
+  }, [props.match.params.id, props.state.menuArray]);
 
   function onDrop(info: OnDropData) {
     const dropKey = info.node.props.eventKey;
@@ -128,8 +132,6 @@ const RoleDetail = (props: PropsI) => {
         _modifyItems.push(tmp);
       }
     });
-    console.log(_modifyItems);
-
     _modifyItems.forEach((modify) => {
       const { key, icon_name, title, path, parent, role, sub_menu, status, children, _id } = modify;
       AUTH_MODULE.updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id });
@@ -146,7 +148,6 @@ const RoleDetail = (props: PropsI) => {
       <div style={{ paddingLeft: 120, width: 360 }}>
         <Tree
           className="draggable-tree"
-          defaultExpandAll
           draggable
           blockNode
           checkable
