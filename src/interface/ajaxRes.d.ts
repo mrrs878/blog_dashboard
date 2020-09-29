@@ -30,6 +30,10 @@ interface GetArticlesResI extends BaseResI<Array<ArticleI>>{
 interface GetArticleResI extends BaseResI<ArticleI>{
 }
 
+interface UpdateArticleResI extends BaseResI<undefined> {}
+
+interface CreateArticleResI extends BaseResI<undefined> {}
+
 interface GetRepoPathContentResI extends Array<PathContentItemI> {
 }
 

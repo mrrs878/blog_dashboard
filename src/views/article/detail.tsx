@@ -1,4 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-09-29 15:39:53
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\views\article\detail.tsx
+ */
+import React, { useEffect, useState } from 'react';
 import { Button, Space, Upload, message, Row, Col } from 'antd';
 import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, FullscreenOutlined, FullscreenExitOutlined, ReloadOutlined } from '@ant-design/icons';
 import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/interface';
@@ -7,8 +15,9 @@ import { Base64 } from 'js-base64';
 import { connect } from 'react-redux';
 import MEditor from '../../components/MEditor/Editor';
 import MPreview from '../../components/MEditor/Preview';
-import ARTICLE_MODULE from '../../modules/article';
 import store, { AppState } from '../../store';
+import useRequest from '../../hooks/useRequest';
+import { CREATE_ARTICLE, GET_ALL_ARTICLES, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
@@ -36,17 +45,19 @@ const ArticleDetail = (props: PropsI) => {
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
-
-  const getArticleDetail = useCallback(async () => {
-    if (props.match.params.id === '-1') return;
-    const res = await ARTICLE_MODULE.getArticle({ id: props.match.params.id });
-    setMarkdownSrc(Base64.decode(res?.data?.content || ''));
-    setArticle(res?.data || emptyArticle);
-  }, [props.match.params.id]);
+  const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqT, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id });
+  const [, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
+  const [, , getArticles] = useRequest<GetArticlesReqT, GetArticlesResI>(GET_ALL_ARTICLES, undefined, false);
+  const [, , createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
 
   useEffect(() => {
-    getArticleDetail();
-  }, [getArticleDetail, props.match.params.id]);
+    if (getArticleRes && !getArticleRes.success) {
+      message.error(getArticleRes?.msg);
+      return;
+    }
+    setArticle(getArticleRes?.data || emptyArticle);
+    setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || ''));
+  }, [getArticleRes]);
 
   useEffect(() => {
     setCreateOrEdit(props.match.params.id === '-1');
@@ -71,8 +82,7 @@ const ArticleDetail = (props: PropsI) => {
   }
 
   async function onSyncClick() {
-    const res = await ARTICLE_MODULE.getArticle({ id: props.match.params.id });
-    setMarkdownSrc(Base64.decode(res?.data?.content || ''));
+    await reGetArticle();
     message.info('刷新成功');
   }
 
@@ -90,13 +100,13 @@ const ArticleDetail = (props: PropsI) => {
   async function onSaveClick() {
     const _article = formatMarkdownSrc(markdownSrc);
     if (createOrEdit) {
-      await ARTICLE_MODULE.creatreArticle(_article);
-      await ARTICLE_MODULE.getArticles();
+      await createArticle(_article);
+      await getArticles();
       message.info('发表成功');
     } else {
-      await ARTICLE_MODULE.updateArticle({ ..._article, _id: props.match.params.id });
-      await ARTICLE_MODULE.getArticles();
-      await getArticleDetail();
+      await updateArticle({ ..._article, _id: props.match.params.id });
+      await getArticles();
+      await reGetArticle();
       message.info('更新成功');
     }
   }

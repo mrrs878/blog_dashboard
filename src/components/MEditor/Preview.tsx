@@ -16,7 +16,6 @@ const Preview = (props: PropsI) => {
   const [formattedMd, setFormattedMd] = useState<ArticleI>();
   useEffect(() => {
     const { title, createTime, updateTime, tag, categories, content } = props.value;
-    console.log(title, Base64.decode(content).split('---')[2]);
     setFormattedMd({ title, createTime, updateTime, tag, categories, description: '', content: Base64.decode(content).split('---')[2] });
   }, [props]);
   useEffect(() => {
