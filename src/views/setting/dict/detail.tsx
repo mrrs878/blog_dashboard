@@ -8,7 +8,6 @@ import { RuleObject, StoreValue } from 'rc-field-form/lib/interface';
 
 import { CascaderOptionType } from 'antd/es/cascader';
 import { CREATE_DICT, GET_DICT, UPDATE_DICT } from '../../../api/setting';
-import Dict from '../../../model/Dict';
 import { AppState } from '../../../store';
 
 interface PropsI extends RouteComponentProps<{ id: string }> {
@@ -42,8 +41,10 @@ const tailFormItemLayout = {
   },
 };
 
+const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', value: 0, createTime: '', updateTime: '' };
+
 const DictDetail = (props: PropsI) => {
-  const [dataDict, setDataDict] = useState<DictI>(new Dict());
+  const [dataDict, setDataDict] = useState<DictI>(emptyDict);
   const [createOrUpdate, setCreateOrUpdate] = useState(false);
   const [dictStatus, setDictStatus] = useState<Array<{ value: number; title: string }>>([]);
   const [dictValues, setDictValues] = useState<Array<number>>([]);
@@ -194,7 +195,7 @@ const DictDetail = (props: PropsI) => {
           <Button htmlType="reset">重置</Button>
           <Divider type="vertical" />
           <Button type="primary" htmlType="submit">
-            { createOrUpdate ? '确定' : '添加' }
+            { createOrUpdate ? '添加' : '确定' }
           </Button>
         </Form.Item>
       </Form>

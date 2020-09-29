@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-29 15:39:53
+ * @LastEditTime: 2020-09-29 18:36:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -28,6 +28,7 @@ interface PropsI extends RouteComponentProps<{ id: string }>{
 }
 
 const emptyArticle = { title: '', categories: '', tag: '', content: '', createTime: '', description: '' };
+const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n ---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
   const [, summary, content] = markdownSrc?.split('---');
@@ -41,23 +42,24 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
 }
 
 const ArticleDetail = (props: PropsI) => {
-  const [markdownSrc, setMarkdownSrc] = useState('---\n title: \n tags: \n categories: \n ---');
+  const [markdownSrc, setMarkdownSrc] = useState(emptyMarkdownSrc);
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
-  const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqT, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id });
+  const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqT, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
   const [, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
   const [, , getArticles] = useRequest<GetArticlesReqT, GetArticlesResI>(GET_ALL_ARTICLES, undefined, false);
   const [, , createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
 
   useEffect(() => {
+    if (createOrEdit) return;
     if (getArticleRes && !getArticleRes.success) {
       message.error(getArticleRes?.msg);
       return;
     }
     setArticle(getArticleRes?.data || emptyArticle);
-    setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || ''));
-  }, [getArticleRes]);
+    setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || '') || emptyMarkdownSrc);
+  }, [getArticleRes, createOrEdit]);
 
   useEffect(() => {
     setCreateOrEdit(props.match.params.id === '-1');

@@ -50,12 +50,16 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
     },
     {
       title: '创建时间',
-      dataIndex: 'create_time',
+      dataIndex: 'createTime',
       ellipsis: true,
-      render(text: string, record) {
-        return <span>{ new Date(record.create_time).toLocaleString() }</span>;
-      },
-      sorter: (a, b) => a.create_time - b.create_time,
+      sorter: (a, b) => new Date(a.createTime).getTime() - new Date(b.createTime).getTime(),
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      ellipsis: true,
+      sorter: (a, b) => new Date(a.updateTime || '').getTime() - new Date(b.updateTime || '').getTime(),
       sortDirections: ['descend', 'ascend'],
     },
   ];
@@ -90,7 +94,7 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
   function onDictListRow(record: DictI) {
     return {
       onClick: () => {
-        props.history.push(`${SETTING_ROUTES_MAP.dict}/${record.id}`);
+        props.history.push(`${SETTING_ROUTES_MAP.dict}/${record._id}`);
       },
     };
   }
@@ -99,7 +103,7 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
     <div className="container">
       <Table
         columns={dictListColumns}
-        rowKey={(record) => String(record.id)}
+        rowKey={(record) => String(record._id)}
         onRow={onDictListRow}
         dataSource={dict}
         pagination={{ defaultPageSize: 20 }}
