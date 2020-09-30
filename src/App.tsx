@@ -8,11 +8,10 @@ import authModule from './modules/auth';
 import './mock';
 import dictModule from './modules/dict';
 import MLayout from './layout';
-import ARTICLE_MODULE from './modules/article';
 
 function App() {
   useEffect(() => {
-    Promise.race([userModule.getInfoByToken(), authModule.getMenu(), dictModule.getDict(), ARTICLE_MODULE.getArticles()]).catch((error) => {
+    Promise.race([userModule.getInfoByToken(), authModule.getMenu(), dictModule.getDict()]).catch((error) => {
       console.log(error);
     });
   });

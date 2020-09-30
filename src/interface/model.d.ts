@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-29 19:19:01
+ * @LastEditTime: 2020-09-30 12:23:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -28,7 +28,7 @@ interface MenuItemI {
 }
 
 interface DictI {
-  _id: string;
+  _id?: string;
   status: number;
   label: string;
   label_view: string;
@@ -36,8 +36,8 @@ interface DictI {
   type_view: string;
   name: string;
   value: number;
-  createTime: string;
-  updateTime: string;
+  createTime?: string;
+  updateTime?: string;
 }
 
 interface AjaxErrorI extends Error{

@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Divider, Form, Input, Radio, Cascader } from 'antd';
+import { Button, Divider, Form, Input, Radio, Cascader, message } from 'antd';
 import { connect } from 'react-redux';
 import { uniq } from 'ramda';
 import { Store } from 'antd/lib/form/interface';
 import { RuleObject, StoreValue } from 'rc-field-form/lib/interface';
-
 import { CascaderOptionType } from 'antd/es/cascader';
-import { CREATE_DICT, GET_DICT, UPDATE_DICT } from '../../../api/setting';
+
+import { CREATE_DICT, UPDATE_DICT } from '../../../api/setting';
 import { AppState } from '../../../store';
+import useRequest from '../../../hooks/useRequest';
+import useGetDicts from '../../../hooks/useGetDicts';
 
 interface PropsI extends RouteComponentProps<{ id: string }> {
   state: CommonStateI;
@@ -50,6 +52,9 @@ const DictDetail = (props: PropsI) => {
   const [dictValues, setDictValues] = useState<Array<number>>([]);
   const [dictNames, setDictNames] = useState<Array<string>>([]);
   const [typeAndLabels, setTypeAndLabels] = useState<Array<CascaderOptionType>>([]);
+  const [, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, emptyDict, false);
+  const [, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, emptyDict, false);
+  const [getDicts] = useGetDicts(false);
   const [form] = Form.useForm();
 
   const updateDictNamesAndValues = useCallback(() => {
@@ -96,21 +101,33 @@ const DictDetail = (props: PropsI) => {
       setTimeout(form.resetFields);
       return;
     }
-    (async () => {
-      try {
-        const res = await GET_DICT({ id: props.match.params.id });
-        if (!res.success) return;
-        setDataDict(res.data);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, [form, props.match.params.id]);
+    const data = props.state.dicts.find((item) => item._id === props.match.params.id) || emptyDict;
+    setDataDict(data);
+  }, [form, props.match.params.id, props.state.dicts]);
+
+  useEffect(() => {
+    if (!createDictRes) return;
+    message.info(createDictRes?.msg);
+    if (createDictRes?.success) {
+      getDicts();
+    }
+  }, [createDictRes, getDicts]);
+
+  useEffect(() => {
+    if (!updateDictRes) return;
+    message.info(updateDictRes?.msg);
+    if (updateDictRes?.success) {
+      getDicts();
+    }
+  }, [getDicts, updateDictRes]);
 
   async function onFinish(values: Store) {
-    const data = Object.assign(dataDict, values);
-    if (createOrUpdate) await CREATE_DICT(data);
-    else await UPDATE_DICT(data);
+    const { typeAndLabel, name, status, value } = values;
+    const [type, label] = typeAndLabel;
+    const { type_view, label_view } = props.state.dicts.find((item) => item.type === type) || { type_view: '', label_view: '' };
+    const data: DictI = { type, label, name, status, value, type_view, label_view };
+    if (createOrUpdate) createDict(data);
+    else updateDict({ ...data, _id: props.match.params.id });
   }
 
   function onReset() {
@@ -138,7 +155,6 @@ const DictDetail = (props: PropsI) => {
   }
 
   function validateDictName(rule: RuleObject, value: StoreValue) {
-    console.log(dictNames);
     if (value === '') return Promise.resolve();
     return dictNames.includes(value) ? Promise.reject(new Error('该名称已被占用，请输入其他值')) : Promise.resolve();
   }

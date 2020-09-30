@@ -52,7 +52,7 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
       title: '创建时间',
       dataIndex: 'createTime',
       ellipsis: true,
-      sorter: (a, b) => new Date(a.createTime).getTime() - new Date(b.createTime).getTime(),
+      sorter: (a, b) => new Date(a.createTime || '').getTime() - new Date(b.createTime || '').getTime(),
       sortDirections: ['descend', 'ascend'],
     },
     {

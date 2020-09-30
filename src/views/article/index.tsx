@@ -7,6 +7,7 @@ import getColumnSearchProps from '../../components/MTableSearch';
 import { AppState } from '../../store';
 import { ROUTES_MAP } from '../../router';
 import ARTICLE_MODULE from '../../modules/article';
+import useGetArticles from '../../hooks/useGetArticles';
 
 const mapState2Props = (state: AppState) => ({
   articles: state.common.articles,
@@ -73,6 +74,11 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<ArticleI>>>([]);
   const [articleCount, setArticleCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
+  const [getArticles] = useGetArticles();
+
+  useEffect(() => {
+    getArticles();
+  }, [getArticles]);
 
   useEffect(() => {
     setArticle(props.articles);
