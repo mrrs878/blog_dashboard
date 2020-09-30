@@ -1,10 +1,16 @@
 #!/bin/bash
 
-echo "updatimg code..."
+echo "updating code..."
 git pull
 
-echo "pulling image..."
-docker-compose pull
+echo "installing packages..."
+yarn install
+
+echo "building..."
+yarn build:prod
+
+echo "building image..."
+docker build -t mrrs878/blog_dashboard:latest .
 
 echo "stoping app..."
 docker-compose down
@@ -12,4 +18,4 @@ docker-compose down
 echo "restarting app..."
 docker-compose up -d --build
 
-echo "hooray, succeeded!"
+echo "awesome, you succeeded!"

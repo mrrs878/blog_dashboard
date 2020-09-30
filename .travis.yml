@@ -22,7 +22,4 @@ after_success:
 - ssh travis@118.190.140.52 -o StrictHostKeyChecking=no 'cd ~/blog_dashboard && sh
   ./update.sh'
 script:
-- yarn build:prod
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- docker build -t mrrs878/blog_dashboard:latest .
-- docker push mrrs878/blog_dashboard:latest
+- yarn test
