@@ -48,7 +48,7 @@ const AUTH_MODULE = {
       const res = await LOGIN(data);
       if (!res.success) return;
       localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, res.data.token);
-      // store.dispatch({ type: actions.UPDATE_USER, data: res.data });
+      store.dispatch({ type: actions.UPDATE_USER, data: res.data });
     } catch (e) {
       console.log(e);
     }

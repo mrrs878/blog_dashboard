@@ -2,19 +2,19 @@
   "admin": {
     "name": "admin",
     "token": "admin",
-    "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    "_id": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     "role": 0
   },
   "people": {
     "name": "people",
     "token": "people",
-    "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    "_id": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     "role": 1
   },
   "guest": {
     "name": "",
     "token": "guest",
-    "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    "_id": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     "role": 2
   }
 }

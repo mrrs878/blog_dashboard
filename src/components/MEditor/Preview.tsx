@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Space } from 'antd';
-import { CalendarOutlined, FolderOutlined } from '@ant-design/icons';
+import { CalendarOutlined, FolderOutlined, UserOutlined } from '@ant-design/icons';
 import { Base64 } from 'js-base64';
 import CodeBlock from './CodeBlock';
 import '../../assets/less/md.theme.orange.less';
@@ -15,8 +15,8 @@ interface PropsI {
 const Preview = (props: PropsI) => {
   const [formattedMd, setFormattedMd] = useState<ArticleI>();
   useEffect(() => {
-    const { title, createTime, updateTime, tag, categories, content } = props.value;
-    setFormattedMd({ title, createTime, updateTime, tag, categories, description: '', content: Base64.decode(content).split('---')[2] });
+    const { title, createTime, updateTime, tag, categories, content, author } = props.value;
+    setFormattedMd({ title, createTime, updateTime, tag, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
   }, [props]);
   useEffect(() => {
     document.title = formattedMd?.title || 'my blog';
@@ -29,6 +29,13 @@ const Preview = (props: PropsI) => {
         <div style={{ textAlign: 'center' }}>
           <h1>{ formattedMd?.title }</h1>
           <Space style={{ color: '#999' }}>
+            { formattedMd?.updateTime && (
+            <span>
+              <UserOutlined />
+              作者
+                { formattedMd?.author }
+            </span>
+            )}
             { formattedMd?.createTime
               && (
               <span>

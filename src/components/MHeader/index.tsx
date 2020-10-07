@@ -64,7 +64,7 @@ const MHeader: React.FC<PropsI> = (props: PropsI) => (props.location.pathname ==
     <Col span={1} className="hoverEffect">
       <Dropdown overlay={AvatarMenu}>
         <div>
-          <Avatar size="small" className={style.avatar} src={props.common.user.avatar} alt="avatar" />
+          <Avatar size="small" className={style.avatar} src={props.common.user.name} alt="avatar" />
           <span>{props.common.user.name}</span>
         </div>
       </Dropdown>

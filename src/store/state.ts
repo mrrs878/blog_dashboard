@@ -1,8 +1,6 @@
-import User from '../model/User';
-
 export const DEFAULT_COMMON_STATE: CommonStateI = {
   count: 0,
-  user: new User(),
+  user: { _id: '', name: '', role: -1, token: '' },
   menu: [],
   menuArray: [],
   menuRoutes: {},

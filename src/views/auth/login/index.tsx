@@ -23,7 +23,7 @@ const Index = (props: PropsI) => {
     await message.info(res.msg);
     if (!res.success) return;
     await authModule.getMenu();
-    props.history.replace('/');
+    props.history.replace('/home');
   }
   function onFinishFailed(errorInfo: any) {
     console.log('Failed:', errorInfo);

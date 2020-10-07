@@ -27,7 +27,7 @@ interface PropsI extends RouteComponentProps<{ id: string }>{
   fullScreen: boolean
 }
 
-const emptyArticle = { title: '', categories: '', tag: '', content: '', createTime: '', description: '' };
+const emptyArticle = { title: '', categories: '', tag: '', content: '', createTime: '', description: '', author: '' };
 const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n ---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
@@ -72,7 +72,7 @@ const ArticleDetail = (props: PropsI) => {
 
   function onToggleEditable() {
     setIsEdit(!isEdit);
-    setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: '' });
+    setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: '', author: '' });
   }
 
   function onToggleScreenClick() {
@@ -94,7 +94,7 @@ const ArticleDetail = (props: PropsI) => {
     fileReader.onload = async () => {
       setMarkdownSrc(fileReader.result?.toString() || '');
       const _article = formatMarkdownSrc(fileReader.result?.toString() || '');
-      setArticle({ ..._article, createTime: new Date().toLocaleString() });
+      setArticle({ ..._article, createTime: new Date().toLocaleString(), author: '' });
     };
     fileReader.onerror = () => message.error('上传失败！');
   }

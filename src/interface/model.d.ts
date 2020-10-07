@@ -9,8 +9,8 @@
 interface UserI {
   name: string;
   token: string;
-  avatar: string;
   role: number;
+  _id: string;
 }
 
 interface MenuItemI {
@@ -69,6 +69,7 @@ interface ArticleI {
   content: string;
   tag: string;
   description: string;
+  author: string;
 }
 
 interface PathContentItemI {
