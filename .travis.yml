@@ -15,8 +15,6 @@ before_install:
 - eval "$(ssh-agent -s)"
 - chmod 600 ~/.ssh/id_rsa
 - ssh-add ~/.ssh/id_rsa
-install:
-- yarn install
 after_success:
 - chmod 600 ~/.ssh/id_rsa
 - ssh travis@118.190.140.52 -o StrictHostKeyChecking=no 'cd ~/blog_dashboard && sh

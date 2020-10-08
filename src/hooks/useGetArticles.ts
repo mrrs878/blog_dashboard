@@ -8,17 +8,17 @@
  */
 import { message } from 'antd';
 import { useEffect } from 'react';
-import { GET_ALL_ARTICLES } from '../api/article';
+import { GET_USER_ARTICLES } from '../api/article';
 import store, { actions } from '../store';
 import useRequest from './useRequest';
 
 export default function useGetArticles(autoMsg = true) {
-  const [, getArticlesRes, getArticles] = useRequest<GetArticlesReqT, GetArticlesResI>(GET_ALL_ARTICLES, undefined, false);
+  const [, getArticlesRes, getArticles, reGetArticles] = useRequest<GetArticlesReqT, GetArticlesResI>(GET_USER_ARTICLES, undefined, false);
   useEffect(() => {
     if (!getArticlesRes) return;
     if (autoMsg) message.info(getArticlesRes.msg);
     if (getArticlesRes.success) store.dispatch({ type: actions.UPDATE_ARTICLES, data: getArticlesRes.data });
   }, [getArticlesRes, autoMsg]);
 
-  return [getArticles];
+  return [getArticles, reGetArticles];
 }

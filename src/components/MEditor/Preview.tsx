@@ -29,7 +29,7 @@ const Preview = (props: PropsI) => {
         <div style={{ textAlign: 'center' }}>
           <h1>{ formattedMd?.title }</h1>
           <Space style={{ color: '#999' }}>
-            { formattedMd?.updateTime && (
+            { formattedMd?.author && (
             <span>
               <UserOutlined />
               作者

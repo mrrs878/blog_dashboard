@@ -100,3 +100,13 @@ interface ArticleSubI {
   modifyTime?: string;
   watch?: number;
 }
+
+interface CommentI {
+  name: string;
+  content: string;
+  user_id: string;
+  article_id: string;
+  _id: string;
+  createTime: string;
+  avatar?: string;
+}

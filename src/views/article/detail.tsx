@@ -17,7 +17,8 @@ import MEditor from '../../components/MEditor/Editor';
 import MPreview from '../../components/MEditor/Preview';
 import store, { AppState } from '../../store';
 import useRequest from '../../hooks/useRequest';
-import { CREATE_ARTICLE, GET_ALL_ARTICLES, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
+import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
+import useGetArticles from '../../hooks/useGetArticles';
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
@@ -48,8 +49,8 @@ const ArticleDetail = (props: PropsI) => {
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
   const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqT, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
   const [, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
-  const [, , getArticles] = useRequest<GetArticlesReqT, GetArticlesResI>(GET_ALL_ARTICLES, undefined, false);
-  const [, , createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
+  const [getArticles] = useGetArticles(false);
+  const [, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
 
   useEffect(() => {
     if (createOrEdit) return;
@@ -60,6 +61,14 @@ const ArticleDetail = (props: PropsI) => {
     setArticle(getArticleRes?.data || emptyArticle);
     setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || '') || emptyMarkdownSrc);
   }, [getArticleRes, createOrEdit]);
+
+  useEffect(() => {
+    if (!createArticleRes) return;
+    message.info(createArticleRes.msg);
+    if (createArticleRes.success) {
+      getArticles();
+    }
+  }, [createArticleRes, getArticles]);
 
   useEffect(() => {
     setCreateOrEdit(props.match.params.id === '-1');
@@ -103,8 +112,6 @@ const ArticleDetail = (props: PropsI) => {
     const _article = formatMarkdownSrc(markdownSrc);
     if (createOrEdit) {
       await createArticle(_article);
-      await getArticles();
-      message.info('发表成功');
     } else {
       await updateArticle({ ..._article, _id: props.match.params.id });
       await getArticles();

@@ -35,7 +35,8 @@ function useRequest<P, T>(api: (params: P) => Promise<T>, params?: P|undefined, 
   }, []);
 
   const reFetch = () => {
-    if (newParams) setNewParams({ ...newParams });
+    const _newParams = newParams as any;
+    setNewParams({ ..._newParams });
   };
 
   return [loading, res, doFetch, reFetch];

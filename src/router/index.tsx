@@ -21,6 +21,7 @@ import { ARTICLE_ROUTES, ARTICLE_ROUTES_MAP } from './articleRoutes';
 import { actions, AppState } from '../store';
 import ActionsT from '../store/types';
 import Chain, { NEXT_SUCCESSOR } from '../tools/Chain';
+import { COMMENT_ROUTES_MAP, COMMENT_ROUTES } from './commentsRoutes';
 
 interface PropsI {
   menuTitles: MenuTitlesI,
@@ -45,6 +46,7 @@ const ROUTES_MAP = {
   ...ABOUT_ROUTES_MAP,
   ...DASHBOARD_ROUTES_MAP,
   ...ARTICLE_ROUTES_MAP,
+  ...COMMENT_ROUTES_MAP,
 };
 
 const ROUTES: Array<RouteConfigI> = [
@@ -55,6 +57,7 @@ const ROUTES: Array<RouteConfigI> = [
   ...ABOUT_ROUTES,
   ...DASHBOARD_ROUTES,
   ...ARTICLE_ROUTES,
+  ...COMMENT_ROUTES,
 ];
 
 const redirectMain = new Chain((route: RouteConfigI) => {

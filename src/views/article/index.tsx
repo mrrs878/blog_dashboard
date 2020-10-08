@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import getColumnSearchProps from '../../components/MTableSearch';
 import { AppState } from '../../store';
 import { ROUTES_MAP } from '../../router';
-import ARTICLE_MODULE from '../../modules/article';
 import useGetArticles from '../../hooks/useGetArticles';
 
 const mapState2Props = (state: AppState) => ({
@@ -30,7 +29,7 @@ function getCategories(articles: Array<ArticleI>) {
   return tmp;
 }
 
-function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<ArticleI>> {
+function getArticleListColumns(articles: Array<ArticleI>): Array<ColumnProps<ArticleI>> {
   return [
     {
       title: '名称',
@@ -71,10 +70,10 @@ function getDictListColumns(articles: Array<ArticleI>): Array<ColumnProps<Articl
 
 const Articles: React.FC<PropsI> = (props: PropsI) => {
   const [article, setArticle] = useState<Array<ArticleI>>([]);
-  const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<ArticleI>>>([]);
+  const [articleListColumns, setDictListColumns] = useState<Array<ColumnProps<ArticleI>>>([]);
   const [articleCount, setArticleCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [getArticles] = useGetArticles();
+  const [getArticles, reGetArticles] = useGetArticles(false);
 
   useEffect(() => {
     getArticles();
@@ -83,7 +82,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   useEffect(() => {
     setArticle(props.articles);
     setArticleCount(props.articles.length);
-    setDictListColumns(getDictListColumns(props.articles));
+    setDictListColumns(getArticleListColumns(props.articles));
   }, [props.articles]);
 
   function onCreateArticleClick() {
@@ -91,7 +90,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   }
 
   async function onUpdateArticleClick() {
-    await ARTICLE_MODULE.getArticles();
+    await reGetArticles();
     message.info('刷新成功');
   }
 
@@ -116,7 +115,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   return (
     <div className="container">
       <Table
-        columns={dictListColumns}
+        columns={articleListColumns}
         rowKey={(record) => String(record._id)}
         onRow={onArticleListRow}
         dataSource={article}
