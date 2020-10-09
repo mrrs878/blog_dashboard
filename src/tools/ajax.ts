@@ -22,6 +22,7 @@ ajax.interceptors.request.use((config) => {
 ajax.interceptors.response.use(async (response) => {
   if ([401].includes(response.data.code)) {
     localStorage.removeItem(MAIN_CONFIG.TOKEN_NAME);
+    // window.location.href = '/auth/login';
     return;
   }
   return Promise.resolve(response.data);

@@ -110,3 +110,16 @@ interface CommentI {
   createTime: string;
   avatar?: string;
 }
+
+interface AuthCommentsI {
+  _id: string;
+  content: string,
+  name: string,
+  createTime: string,
+  article: {
+    title: string,
+    categories: string,
+    author: string,
+    createTime: string,
+  },
+}

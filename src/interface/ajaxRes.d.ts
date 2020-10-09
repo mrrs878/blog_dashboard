@@ -43,6 +43,8 @@ interface UpdateArticleResI extends ArticleI {}
 
 interface GetCommentsResI extends BaseResI<Array<CommentI>> {}
 
+interface GetAuthCommentsResI extends BaseResI<Array<AuthCommentsI>> {}
+
 interface GetCommentResI extends BaseResI<Array<CommentI>> {}
 
 interface GetCommentResI extends BaseResI<CommentI> {}

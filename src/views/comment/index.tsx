@@ -9,13 +9,12 @@ import { ROUTES_MAP } from '../../router';
 
 interface PropsI extends RouteComponentProps {}
 
-function getCommentListColumns(comments: Array<CommentI>): Array<ColumnProps<CommentI>> {
+function getCommentListColumns(comments: Array<AuthCommentsI>): Array<ColumnProps<AuthCommentsI>> {
   return [
     {
       title: '文章',
-      dataIndex: 'comment_id',
+      dataIndex: ['article', 'title'],
       ellipsis: true,
-      ...getColumnSearchProps('comment_id'),
     },
     {
       title: '内容',
@@ -24,7 +23,7 @@ function getCommentListColumns(comments: Array<CommentI>): Array<ColumnProps<Com
       ...getColumnSearchProps('content'),
     },
     {
-      title: 'name',
+      title: '评论者',
       dataIndex: 'name',
       ellipsis: true,
       ...getColumnSearchProps('name'),
@@ -40,10 +39,10 @@ function getCommentListColumns(comments: Array<CommentI>): Array<ColumnProps<Com
 }
 
 const Comments = (props: PropsI) => {
-  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetCommentsResI>(GET_AUTHOR_COMMENTS, { id: '' });
-  const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<CommentI>>>([]);
+  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetAuthCommentsResI>(GET_AUTHOR_COMMENTS, { id: '' });
+  const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<AuthCommentsI>>>([]);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [comment, setComment] = useState<Array<CommentI>>([]);
+  const [comment, setComment] = useState<Array<AuthCommentsI>>([]);
   const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const Comments = (props: PropsI) => {
     setCommentListColumns(getCommentListColumns(getCommentsRes.data || []));
   }, [getCommentsRes]);
 
-  function onCommentListRow(record: CommentI) {
+  function onCommentListRow(record: AuthCommentsI) {
     return {
       onClick: () => {
         props.history.push(`${ROUTES_MAP.comment}/${record._id}`);
