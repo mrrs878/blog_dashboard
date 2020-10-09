@@ -24,10 +24,10 @@ function getCommentListColumns(comments: Array<CommentI>): Array<ColumnProps<Com
       ...getColumnSearchProps('content'),
     },
     {
-      title: 'user_id',
-      dataIndex: 'user_id',
+      title: 'name',
+      dataIndex: 'name',
       ellipsis: true,
-      ...getColumnSearchProps('user_id'),
+      ...getColumnSearchProps('name'),
     },
     {
       title: '创建时间',

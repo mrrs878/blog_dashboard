@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-30 14:12:42
+ * @LastEditTime: 2020-10-09 18:53:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\ajax.ts
@@ -20,10 +20,8 @@ ajax.interceptors.request.use((config) => {
   return tmp;
 });
 ajax.interceptors.response.use(async (response) => {
-  if ([401, 403].includes(response.data.code)) {
+  if ([401].includes(response.data.code)) {
     localStorage.removeItem(MAIN_CONFIG.TOKEN_NAME);
-    // await message.error('登录信息失效');
-    // window.location.href = '/auth/login';
     return;
   }
   return Promise.resolve(response.data);
