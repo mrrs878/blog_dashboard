@@ -5,15 +5,14 @@
  * @date 2020/7/1/0001
 */
 
+import React from 'react';
 import { Layout } from 'antd';
-import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
+
 import MMenu from '../components/MMenu';
 import MHeader from '../components/MHeader';
 import MPageHeader from '../components/MPageHeader/inedx';
-import MLoading from '../components/MLoading';
 import Router from '../router';
 import { AppState } from '../store';
 
@@ -27,27 +26,28 @@ interface PropsI{
   fullScreen: boolean
 }
 
-const MLayout = (props: PropsI) => (
-  <BrowserRouter>
-    <Layout>
-      {
-        !props.fullScreen && <MMenu />
-      }
-      <Content>
-        <div className="content">
-          {
-            !props.fullScreen && <MHeader />
-          }
-          {
-            !props.fullScreen && <MPageHeader />
-          }
-          <Suspense fallback={<MLoading />}>
+const MLayout = (props: PropsI) => {
+  console.log(222);
+  return (
+    <BrowserRouter>
+      <Layout>
+        {
+          !props.fullScreen && <MMenu />
+        }
+        <Content>
+          <div className="content">
+            {
+              !props.fullScreen && <MHeader />
+            }
+            {
+              !props.fullScreen && <MPageHeader />
+            }
             <Router />
-          </Suspense>
-        </div>
-      </Content>
-    </Layout>
-  </BrowserRouter>
-);
+          </div>
+        </Content>
+      </Layout>
+    </BrowserRouter>
+  );
+};
 
 export default connect(mapState2Props)(MLayout);
