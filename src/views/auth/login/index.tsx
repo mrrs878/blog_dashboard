@@ -30,7 +30,7 @@ const Index = (props: PropsI) => {
   }
 
   return (
-    <div className="container" style={{ justifyContent: 'center', marginTop: 0 }}>
+    <div className="container" style={{ justifyContent: 'center', marginTop: 0, background: 'url(https://mrrsblog.oss-cn-shanghai.aliyuncs.com/timg.jpg) no-repeat center center' }}>
       <Form
         labelCol={layout.labelCol}
         wrapperCol={layout.wrapperCol}
@@ -40,7 +40,7 @@ const Index = (props: PropsI) => {
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
-          label="用户名"
+          label={<span style={{ color: '#fff' }}>用户名</span>}
           name="username"
           rules={[{ required: true, message: '请输入用户名' }]}
         >
@@ -48,7 +48,7 @@ const Index = (props: PropsI) => {
         </Form.Item>
 
         <Form.Item
-          label="密码"
+          label={<span style={{ color: '#fff' }}>密码</span>}
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
         >

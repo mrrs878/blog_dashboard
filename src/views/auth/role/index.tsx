@@ -4,10 +4,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { ColumnProps } from 'antd/es/table';
 import { connect } from 'react-redux';
 import getColumnSearchProps from '../../../components/MTableSearch';
-import dictModule from '../../../modules/dict';
 import { AppState } from '../../../store';
 import { getTableFilters } from '../../../components/MTableFilters';
 import { ROUTES_MAP } from '../../../router';
+import useGetDicts from '../../../hooks/useGetDicts';
 
 const mapState2Props = (state: AppState) => ({
   common: state.common,
@@ -69,14 +69,13 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
 const Role: React.FC<PropsI> = (props: PropsI) => {
   const [dict, setDict] = useState<Array<DictI>>([]);
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<DictI>>>([]);
+  const [getDicts] = useGetDicts();
   const [dictCount, setDictCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
 
   useEffect(() => {
-    (async (): Promise<void> => {
-      await dictModule.getDict();
-    })();
-  }, []);
+    getDicts();
+  }, [getDicts]);
 
   useEffect(() => {
     setDict(props.common.dicts.filter((item) => item.label === 'user_role'));

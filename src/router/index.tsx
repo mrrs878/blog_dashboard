@@ -5,7 +5,7 @@
  * @date 2020/7/1/0001
 */
 
-import React, { Dispatch, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -18,24 +18,16 @@ import { SETTING_ROUTES, SETTING_ROUTES_MAP } from './settingRoutes';
 import { ABOUT_ROUTES, ABOUT_ROUTES_MAP } from './aboutRoutes';
 import { DASHBOARD_ROUTES, DASHBOARD_ROUTES_MAP } from './dashboard';
 import { ARTICLE_ROUTES, ARTICLE_ROUTES_MAP } from './articleRoutes';
-import { actions, AppState } from '../store';
-import ActionsT from '../store/types';
+import store, { actions, AppState } from '../store';
 import Chain, { NEXT_SUCCESSOR } from '../tools/Chain';
 import { COMMENT_ROUTES_MAP, COMMENT_ROUTES } from './commentsRoutes';
 
 interface PropsI {
   menuTitles: MenuTitlesI,
-  setFullScreen: (data: boolean) => void,
 }
 
 const mapState2Props = (state: AppState) => ({
   menuTitles: state.common.menuTitles,
-});
-
-const mapAction2Props = (dispatch: Dispatch<ActionsT>) => ({
-  setFullScreen(data: boolean) {
-    dispatch({ type: actions.UPDATE_FULL_SCREEN, data });
-  },
 });
 
 const ROUTES_MAP = {
@@ -81,6 +73,7 @@ redirectLogin.setNextSuccessor(returnComponent);
 
 const Router = (props: PropsI) => {
   function beforeEach(route: RouteConfigI) {
+    store.dispatch({ type: actions.UPDATE_FULL_SCREEN, data: route.fullScreen === true });
     document.title = props.menuTitles[route.path] || MAIN_CONFIG.APP_NAME;
     return redirectMain.passRequest(route);
   }
@@ -106,4 +99,4 @@ const Router = (props: PropsI) => {
 export {
   ROUTES_MAP,
 };
-export default connect(mapState2Props, mapAction2Props)(Router);
+export default connect(mapState2Props)(Router);

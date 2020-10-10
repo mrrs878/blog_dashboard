@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ColumnProps } from 'antd/lib/table';
-import { Space, Table, Button, message } from 'antd';
+import { Space, Table, Button } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router';
 import useRequest from '../../hooks/useRequest';
 import { GET_AUTHOR_COMMENTS } from '../../api/comment';
@@ -47,7 +47,6 @@ const Comments = (props: PropsI) => {
 
   useEffect(() => {
     if (!getCommentsRes) return;
-    message.info(getCommentsRes.msg);
     setComment(getCommentsRes.data || []);
     setCommentCount(getCommentsRes.data?.length || 0);
     setCommentListColumns(getCommentListColumns(getCommentsRes.data || []));

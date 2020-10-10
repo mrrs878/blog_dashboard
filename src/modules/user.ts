@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-24 20:14:21
+ * @LastEditTime: 2020-10-10 18:47:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\modules\user.ts
@@ -31,7 +31,7 @@ export default {
           msg: res.msg,
         };
       }
-      // store.dispatch({ type: actions.UPDATE_USER, data: res.data });
+      store.dispatch({ type: actions.UPDATE_USER, data: res.data });
       localStorage.setItem('token', res.data.token);
       return {
         success: true,

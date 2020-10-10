@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-10-10 17:15:23
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\plugins\error.ts
+ */
 import AjaxError from '../model/AjaxError';
 import CommonError from '../model/CommonError';
 import ajax from '../tools/ajax';
@@ -9,7 +17,7 @@ const ERROR_HANDLERS = new Map<Object, any>([
     const { stack, message, data, date, url, method, referer, status } = error;
     if (process.env.NODE_ENV === 'production') {
       ajax.post('/ajaxError', { stack, message, url, method, referer, status, date, data })
-        .catch((e) => console.log(e));
+        .catch((e: any) => console.log(e));
     } else console.log(error);
   }],
   [CommonError, (error: CommonError) => {
@@ -17,7 +25,7 @@ const ERROR_HANDLERS = new Map<Object, any>([
     const stack = error.stack || error;
     const { date } = error;
     if (process.env.NODE_ENV === 'production') {
-      ajax.post('/commonError', { message, stack, date }).catch((e) => console.log(e));
+      ajax.post('/commonError', { message, stack, date }).catch((e: any) => console.log(e));
     } else console.log(error);
   }],
 ]);

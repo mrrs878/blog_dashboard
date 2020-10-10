@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-10-10 19:00:47
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\router\authRoutes.ts
+ */
 import React from 'react';
 
 const LOGIN = React.lazy(() => import('../views/auth/login'));
@@ -19,11 +27,13 @@ const AUTH_ROUTES: Array<RouteConfigI> = [
     path: AUTH_ROUTES_MAP.login,
     component: LOGIN,
     auth: false,
+    fullScreen: true,
   },
   {
     path: AUTH_ROUTES_MAP.reg,
     component: REG,
     auth: false,
+    fullScreen: true,
   },
   {
     path: AUTH_ROUTES_MAP.role,
