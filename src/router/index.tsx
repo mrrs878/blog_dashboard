@@ -72,8 +72,6 @@ redirectMain.setNextSuccessor(redirectLogin);
 redirectLogin.setNextSuccessor(returnComponent);
 
 const Router = (props: PropsI) => {
-  console.log(111);
-
   function beforeEach(route: RouteConfigI) {
     setTimeout(store.dispatch, 0, { type: actions.UPDATE_FULL_SCREEN, data: route.fullScreen === true });
     document.title = props.menuTitles[route.path] || MAIN_CONFIG.APP_NAME;

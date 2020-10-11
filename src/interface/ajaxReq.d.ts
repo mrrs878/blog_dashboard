@@ -61,7 +61,7 @@ interface UpdateArticleReqI {
 
 interface CreateArticleReqI {
   title: string;
-  tag: string;
+  tags: string;
   categories: string;
   content: string;
   description: string;

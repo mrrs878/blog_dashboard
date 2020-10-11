@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Space } from 'antd';
-import { CalendarOutlined, FolderOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, FolderOutlined, UserOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { Base64 } from 'js-base64';
 import CodeBlock from './CodeBlock';
 import '../../assets/less/md.theme.orange.less';
@@ -15,8 +15,8 @@ interface PropsI {
 const Preview = (props: PropsI) => {
   const [formattedMd, setFormattedMd] = useState<ArticleI>();
   useEffect(() => {
-    const { title, createTime, updateTime, tag, categories, content, author } = props.value;
-    setFormattedMd({ title, createTime, updateTime, tag, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
+    const { title, createTime, updateTime, tags, categories, content, author } = props.value;
+    setFormattedMd({ title, createTime, updateTime, tags, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
   }, [props]);
   useEffect(() => {
     document.title = formattedMd?.title || 'my blog';
@@ -58,6 +58,14 @@ const Preview = (props: PropsI) => {
                 分类于
                 <a href={`/all/category/${formattedMd?.categories}`}>{ formattedMd?.categories }</a>
               </span>
+          ) }
+            { formattedMd?.tags && (
+            <span>
+              <PaperClipOutlined />
+              {' '}
+              标签
+              <a href={`/all/category/${formattedMd?.tags}`}>{ formattedMd?.tags }</a>
+            </span>
           ) }
           </Space>
         </div>

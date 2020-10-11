@@ -17,13 +17,9 @@ function useRequest<P, T>(api: (params: P) => Promise<T>, params?: P|undefined, 
 
   const fetch = useCallback(async () => {
     if (autoFetch) {
-      console.log(api.name, newParams);
       if (newParams === undefined) return;
-      
       setLoading(true);
       const tmp = await api(newParams);
-      console.log(tmp);
-      
       setRes(tmp);
       setLoading(false);
     }

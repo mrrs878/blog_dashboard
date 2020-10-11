@@ -22,13 +22,15 @@ import useGetArticles from '../../hooks/useGetArticles';
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
+  user: state.common.user,
 });
 
 interface PropsI extends RouteComponentProps<{ id: string }>{
-  fullScreen: boolean
+  fullScreen: boolean,
+  user: UserI,
 }
 
-const emptyArticle = { title: '', categories: '', tag: '', content: '', createTime: '', description: '', author: '' };
+const emptyArticle = { title: '', categories: '', tags: '', content: '', createTime: '', description: '', author: '' };
 const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
@@ -37,8 +39,8 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
           ?.replace(/\r\n/g, '')
           ?.replace(/\n/g, '')
           ?.match(/title:(.+)tags:(.+)categories:(.+)/) || [];
-  const [title, tag, categories] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
-  const article = { title, tag, categories, description: content.slice(0, 200), content: Base64.encode(markdownSrc) };
+  const [title, tags, categories] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
+  const article = { title, tags, categories, description: content.slice(0, 200), content: Base64.encode(markdownSrc) };
   return article;
 }
 
@@ -81,7 +83,7 @@ const ArticleDetail = (props: PropsI) => {
 
   function onToggleEditable() {
     setIsEdit(!isEdit);
-    setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: '', author: '' });
+    setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: article.createTime, author: props.user.name, updateTime: new Date().toLocaleString() });
   }
 
   function onToggleScreenClick() {
@@ -109,14 +111,21 @@ const ArticleDetail = (props: PropsI) => {
   }
 
   async function onSaveClick() {
-    const _article = formatMarkdownSrc(markdownSrc);
-    if (createOrEdit) {
-      await createArticle(_article);
-    } else {
-      await updateArticle({ ..._article, _id: props.match.params.id });
-      await getArticles();
-      await reGetArticle();
-      message.info('更新成功');
+    try {
+      const _article = formatMarkdownSrc(markdownSrc);
+      if (!_article.title) throw new Error('文章标题有误，请检查文章头部title');
+      if (!_article.categories) throw new Error('文章分类有误，请检查文章头部categories');
+      if (!_article.tags) throw new Error('文章标签有误，请检查文章头部tag');
+      if (createOrEdit) {
+        await createArticle(_article);
+      } else {
+        await updateArticle({ ..._article, _id: props.match.params.id });
+        await getArticles();
+        await reGetArticle();
+        message.info('更新成功');
+      }
+    } catch (e) {
+      message.error(e.message);
     }
   }
 

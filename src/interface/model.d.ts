@@ -67,7 +67,7 @@ interface ArticleI {
   categories: string;
   title: string;
   content: string;
-  tag: string;
+  tags: string;
   description: string;
   author: string;
 }
