@@ -38,6 +38,12 @@ function getArticleListColumns(articles: Array<ArticleI>): Array<ColumnProps<Art
       ...getColumnSearchProps('title'),
     },
     {
+      title: '作者',
+      dataIndex: 'author',
+      ellipsis: true,
+      ...getColumnSearchProps('author'),
+    },
+    {
       title: '类别',
       dataIndex: 'categories',
       ellipsis: true,
@@ -73,11 +79,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   const [articleListColumns, setDictListColumns] = useState<Array<ColumnProps<ArticleI>>>([]);
   const [articleCount, setArticleCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [getArticles, reGetArticles] = useGetArticles(false);
-
-  useEffect(() => {
-    getArticles();
-  }, [getArticles]);
+  const [, reGetArticles] = useGetArticles(false, true);
 
   useEffect(() => {
     setArticle(props.articles);
@@ -113,7 +115,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   }
 
   return (
-    <div className="container">
+    <div className="container" style={{ padding: 0 }}>
       <Table
         columns={articleListColumns}
         rowKey={(record) => String(record._id)}
@@ -121,15 +123,17 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
         dataSource={article}
         pagination={{ defaultPageSize: 20 }}
         scroll={{ y: 100 }}
+        title={() => (
+          <Space>
+            <Button type="primary" style={{ width: 100 }} onClick={onCreateArticleClick}>创建文章</Button>
+            <Button type="primary" style={{ width: 100 }} onClick={onUpdateArticleClick}>刷新</Button>
+            {
+              articleCount > article.length
+              && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
+            }
+          </Space>
+        )}
       />
-      <Space>
-        <Button type="primary" style={{ width: 100 }} onClick={onCreateArticleClick}>创建文章</Button>
-        <Button type="primary" style={{ width: 100 }} onClick={onUpdateArticleClick}>刷新</Button>
-        {
-        articleCount > article.length
-        && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
-      }
-      </Space>
     </div>
   );
 };

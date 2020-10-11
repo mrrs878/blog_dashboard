@@ -10,15 +10,14 @@ import useGetDicts from './hooks/useGetDicts';
 import useGetMenus from './hooks/useGetMenus';
 
 function App() {
-  const [getUserInfoByToken] = useGetUserInfoByToken(false);
+  useGetUserInfoByToken(false);
   const [getDicts] = useGetDicts(false);
   const [getMenus] = useGetMenus(false);
 
   useEffect(() => {
     getMenus();
     getDicts();
-    getUserInfoByToken();
-  }, [getDicts, getMenus, getUserInfoByToken]);
+  }, [getDicts, getMenus]);
 
   return (
     <Provider store={store}>

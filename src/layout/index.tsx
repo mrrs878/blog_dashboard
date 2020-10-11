@@ -5,7 +5,7 @@
  * @date 2020/7/1/0001
 */
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Layout } from 'antd';
 import { BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,8 +15,9 @@ import MHeader from '../components/MHeader';
 import MPageHeader from '../components/MPageHeader/inedx';
 import Router from '../router';
 import { AppState } from '../store';
+import MLoading from '../components/MLoading';
 
-const { Content } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
@@ -26,28 +27,34 @@ interface PropsI{
   fullScreen: boolean
 }
 
-const MLayout = (props: PropsI) => {
-  console.log(222);
-  return (
-    <BrowserRouter>
-      <Layout>
+const MLayout = (props: PropsI) => (
+  <BrowserRouter>
+    <Layout style={{ minHeight: '100vh' }}>
+      {
+        !props.fullScreen && (
+        <Sider collapsible>
+          <MMenu />
+        </Sider>
+        )
+      }
+      <Layout className="site-layout">
         {
-          !props.fullScreen && <MMenu />
+          !props.fullScreen && (
+            <MHeader />
+          )
         }
-        <Content>
-          <div className="content">
-            {
-              !props.fullScreen && <MHeader />
-            }
-            {
-              !props.fullScreen && <MPageHeader />
-            }
+        <Content style={{ margin: '0 16px' }}>
+          {
+            !props.fullScreen && <MPageHeader />
+          }
+          <Suspense fallback={<MLoading />}>
             <Router />
-          </div>
+          </Suspense>
         </Content>
+        <Footer style={{ textAlign: 'center' }}>Powered by Mr.RS</Footer>
       </Layout>
-    </BrowserRouter>
-  );
-};
+    </Layout>
+  </BrowserRouter>
+);
 
 export default connect(mapState2Props)(MLayout);

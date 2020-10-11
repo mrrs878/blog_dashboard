@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'antd';
+import { Table } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ColumnProps } from 'antd/es/table';
 import { connect } from 'react-redux';
@@ -69,9 +69,7 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
 const Role: React.FC<PropsI> = (props: PropsI) => {
   const [dict, setDict] = useState<Array<DictI>>([]);
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<DictI>>>([]);
-  const [getDicts] = useGetDicts();
-  const [dictCount, setDictCount] = useState(0);
-  const [loadMoreF, setLoadMoreF] = useState(false);
+  const [getDicts] = useGetDicts(false);
 
   useEffect(() => {
     getDicts();
@@ -79,19 +77,8 @@ const Role: React.FC<PropsI> = (props: PropsI) => {
 
   useEffect(() => {
     setDict(props.common.dicts.filter((item) => item.label === 'user_role'));
-    setDictCount(props.common.dicts.length);
     setDictListColumns(getDictListColumns(props.common.dicts));
   }, [props.common.dicts]);
-
-  async function onLoadMore() {
-    try {
-      setLoadMoreF(true);
-      setLoadMoreF(false);
-    } catch (e) {
-      console.log(e);
-    }
-    setLoadMoreF(true);
-  }
 
   const onDictListRow = (record: DictI) => ({ onClick: () => props.history.push(`${ROUTES_MAP.role}/${record.value}`) });
 
@@ -105,10 +92,6 @@ const Role: React.FC<PropsI> = (props: PropsI) => {
         pagination={{ defaultPageSize: 20 }}
         scroll={{ y: '75vh' }}
       />
-      {
-        dictCount > dict.length
-        && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
-      }
     </div>
   );
 };

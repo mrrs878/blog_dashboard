@@ -81,14 +81,16 @@ const Comments = (props: PropsI) => {
         dataSource={comment}
         pagination={{ defaultPageSize: 20 }}
         scroll={{ y: 100 }}
+        title={() => (
+          <Space>
+            <Button type="primary" style={{ width: 100 }} onClick={onUpdateCommentClick}>刷新</Button>
+            {
+            commentCount > comment.length
+            && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
+          }
+          </Space>
+        )}
       />
-      <Space>
-        <Button type="primary" style={{ width: 100 }} onClick={onUpdateCommentClick}>刷新</Button>
-        {
-          commentCount > comment.length
-          && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
-        }
-      </Space>
     </div>
   );
 };

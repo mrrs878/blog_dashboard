@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-29 18:36:53
+ * @LastEditTime: 2020-10-11 15:20:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -29,7 +29,7 @@ interface PropsI extends RouteComponentProps<{ id: string }>{
 }
 
 const emptyArticle = { title: '', categories: '', tag: '', content: '', createTime: '', description: '', author: '' };
-const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n ---';
+const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
   const [, summary, content] = markdownSrc?.split('---');
@@ -47,7 +47,7 @@ const ArticleDetail = (props: PropsI) => {
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
-  const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqT, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
+  const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
   const [, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
   const [getArticles] = useGetArticles(false);
   const [, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);

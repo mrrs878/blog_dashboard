@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
 
-import userModule from '../../../modules/user';
 import authModule from '../../../modules/auth';
 
 const layout = {
@@ -19,9 +18,9 @@ interface PropsI extends RouteComponentProps<any, any> {
 const Index = (props: PropsI) => {
   async function onFinish(values: any) {
     console.log('Success:', values.username);
-    const res = await userModule.login({ name: values.username, password: values.password });
-    await message.info(res.msg);
-    if (!res.success) return;
+    const res = await authModule.login({ name: values.username, password: values.password });
+    await message.info(res?.msg);
+    if (!res?.success) return;
     await authModule.getMenu();
     props.history.replace('/main');
   }
@@ -30,7 +29,7 @@ const Index = (props: PropsI) => {
   }
 
   return (
-    <div className="container" style={{ justifyContent: 'center', marginTop: 0, background: 'url(https://mrrsblog.oss-cn-shanghai.aliyuncs.com/timg.jpg) no-repeat center center' }}>
+    <div className="container" style={{ justifyContent: 'center', height: '100%', marginTop: 0, background: 'url(https://mrrsblog.oss-cn-shanghai.aliyuncs.com/timg.jpg) no-repeat center center' }}>
       <Form
         labelCol={layout.labelCol}
         wrapperCol={layout.wrapperCol}

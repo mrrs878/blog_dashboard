@@ -47,7 +47,7 @@ const MPageHeader = (props: PropsI) => {
   }
 
   return (
-    <div className={style.container}>
+    <div className={style.container} style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
       <Breadcrumb>
         {
           breadcrumb.map((item) => (

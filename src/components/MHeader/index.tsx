@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row, Badge, Avatar, Menu, Dropdown } from 'antd';
-import { MailOutlined, UserOutlined, LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { MailOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import style from './index.module.less';
@@ -18,13 +18,6 @@ interface PropsI extends RouteComponentProps {
 
 const AvatarMenu = (
   <Menu>
-    <Menu.Item icon={<UserOutlined />}>
-      <span>个人中心</span>
-    </Menu.Item>
-    <Menu.Item icon={<SettingOutlined />}>
-      <span>个人设置</span>
-    </Menu.Item>
-    <Menu.Divider />
     <Menu.Item icon={<LogoutOutlined />}>
       <span>退出登录</span>
     </Menu.Item>
@@ -32,7 +25,7 @@ const AvatarMenu = (
 );
 
 const MHeader: React.FC<PropsI> = (props: PropsI) => (props.location.pathname === ROUTES_MAP.login ? <></> : (
-  <Row align="middle" className={style.headerContainer}>
+  <Row align="middle" className={style.headerContainer} style={{ padding: '0 10px' }}>
     <Col flex={1} />
     <Col>
       <MHeaderSearch
@@ -63,9 +56,9 @@ const MHeader: React.FC<PropsI> = (props: PropsI) => (props.location.pathname ==
     </Col>
     <Col span={1} className="hoverEffect">
       <Dropdown overlay={AvatarMenu}>
-        <div>
-          <Avatar size="small" className={style.avatar} src={props.common.user.name} alt="avatar" />
-          <span>{props.common.user.name}</span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar size="small" className={style.avatar} src="https://mrrsblog.oss-cn-shanghai.aliyuncs.com/avatar.jpg" alt="avatar" />
+          <span style={{ color: '#1890ff' }}>{props.common.user.name}</span>
         </div>
       </Dropdown>
     </Col>
