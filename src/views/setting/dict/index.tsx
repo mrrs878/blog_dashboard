@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Space } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ColumnProps } from 'antd/es/table';
 import { connect } from 'react-redux';
@@ -108,12 +108,16 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
         dataSource={dict}
         pagination={{ defaultPageSize: 20 }}
         scroll={{ y: '75vh' }}
+        title={() => (
+          <Space>
+            <Button type="primary" style={{ width: 100 }} onClick={onCreateGoodsClick}>添加字段</Button>
+            {
+              dictCount > dict.length
+              && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
+            }
+          </Space>
+        )}
       />
-      <Button type="primary" style={{ width: 100 }} onClick={onCreateGoodsClick}>添加字段</Button>
-      {
-        dictCount > dict.length
-        && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>
-      }
     </div>
   );
 };

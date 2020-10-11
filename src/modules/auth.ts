@@ -1,17 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-10 16:49:52
+ * @LastEditTime: 2020-10-11 20:04:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\modules\auth.ts
  */
 import { clone } from 'ramda';
-import apis from '../api';
 import store, { actions } from '../store';
 import MAIN_CONFIG from '../config';
-
-const { LOGIN, LOGOUT, GET_MENUS, UPDATE_MENU } = apis;
+import { GET_MENUS, LOGIN, LOGOUT, UPDATE_MENU } from '../api/auth';
 
 function menuArray2Tree(src: Array<MenuItemI>) {
   const res: Array<MenuItemI> = [];
@@ -49,6 +47,7 @@ const AUTH_MODULE = {
       if (!res.success) return;
       localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, res.data.token);
       store.dispatch({ type: actions.UPDATE_USER, data: res.data });
+      return res;
     } catch (e) {
       console.log(e);
     }

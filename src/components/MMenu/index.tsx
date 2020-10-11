@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Layout, Menu, message, Modal, Button } from 'antd';
+import { Menu, message, Modal } from 'antd';
 import * as _Icon from '@ant-design/icons';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { ClickParam } from 'antd/es/menu';
 import { clone } from 'ramda';
 import style from './index.module.less';
-import authModule from '../../modules/auth';
 import { ROUTES_MAP } from '../../router';
 import { AppState } from '../../store';
 import AUTH_MODULE from '../../modules/auth';
 
 const { SubMenu } = Menu;
-const { Sider } = Layout;
 const Icon: DynamicObjectKey<any> = clone(_Icon);
 
 const mapState2Props = (state: AppState) => ({
@@ -33,7 +30,6 @@ interface PropsI extends RouteComponentProps {
 }
 
 const MMenu: React.FC<PropsI> = (props: PropsI) => {
-  const [collapsed, setCollapsed] = useState(false);
   const [logoutModalF, setLogoutModalF] = useState(false);
 
   const MENU_CLICK_HANDLER: DynamicObjectKey<Function> = {
@@ -46,17 +42,13 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
   };
 
   async function onLogoutCfmClick() {
-    const res = await authModule.logout();
+    const res = await AUTH_MODULE.logout();
     setLogoutModalF(false);
     await message.info(res.msg);
     if (res.success) {
       AUTH_MODULE.logout();
       props.history.replace(ROUTES_MAP.login);
     }
-  }
-
-  function onToggleCollapsedClick() {
-    setCollapsed(!collapsed);
   }
 
   function onMenuClick(param: ClickParam) {
@@ -96,26 +88,19 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
   }
 
   return props.location.pathname === ROUTES_MAP.login ? <></> : (
-    <Sider collapsed={collapsed} trigger={null}>
-      <div className={style.menuContainer}>
-        <Button
-          className={style.menuHeader}
-          onClick={onToggleCollapsedClick}
-          icon={collapsed ? <MenuUnfoldOutlined style={{ fontSize: 24 }} /> : <MenuFoldOutlined style={{ fontSize: 24 }} />}
-        />
-        {
-          generateMenu(props.menu)
-        }
-        <Modal
-          title="提示"
-          visible={logoutModalF}
-          onOk={onLogoutCfmClick}
-          onCancel={() => setLogoutModalF(false)}
-        >
-          确定要退出登录吗?
-        </Modal>
-      </div>
-    </Sider>
+    <div className={style.menuContainer}>
+      {
+        generateMenu(props.menu)
+      }
+      <Modal
+        title="提示"
+        visible={logoutModalF}
+        onOk={onLogoutCfmClick}
+        onCancel={() => setLogoutModalF(false)}
+      >
+        确定要退出登录吗?
+      </Modal>
+    </div>
   );
 };
 

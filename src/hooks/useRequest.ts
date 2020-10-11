@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-28 19:20:02
- * @LastEditTime: 2020-10-10 19:23:18
+ * @LastEditTime: 2020-10-11 19:52:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useRequest.ts
@@ -17,9 +17,13 @@ function useRequest<P, T>(api: (params: P) => Promise<T>, params?: P|undefined, 
 
   const fetch = useCallback(async () => {
     if (autoFetch) {
+      console.log(api.name, newParams);
       if (newParams === undefined) return;
+      
       setLoading(true);
       const tmp = await api(newParams);
+      console.log(tmp);
+      
       setRes(tmp);
       setLoading(false);
     }

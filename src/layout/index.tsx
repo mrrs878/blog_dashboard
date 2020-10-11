@@ -17,7 +17,7 @@ import MLoading from '../components/MLoading';
 import Router from '../router';
 import { AppState } from '../store';
 
-const { Content } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
@@ -29,23 +29,30 @@ interface PropsI{
 
 const MLayout = (props: PropsI) => (
   <BrowserRouter>
-    <Layout>
+    <Layout style={{ minHeight: '100vh' }}>
       {
-        !props.fullScreen && <MMenu />
+        !props.fullScreen && (
+        <Sider collapsible>
+          <MMenu />
+        </Sider>
+        )
       }
-      <Content>
-        <div className="content">
-          {
-            !props.fullScreen && <MHeader />
-          }
+      <Layout className="site-layout">
+        {
+          !props.fullScreen && (
+            <MHeader />
+          )
+        }
+        <Content style={{ margin: '0 16px' }}>
           {
             !props.fullScreen && <MPageHeader />
           }
           <Suspense fallback={<MLoading />}>
             <Router />
           </Suspense>
-        </div>
-      </Content>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Powered by Mr.RS</Footer>
+      </Layout>
     </Layout>
   </BrowserRouter>
 );
