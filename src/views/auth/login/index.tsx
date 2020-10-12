@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
 
 import authModule from '../../../modules/auth';
+import MVerify from '../../../components/MVerify';
 
 const layout = {
   labelCol: { span: 3, offset: 7 },
@@ -39,6 +40,7 @@ const Index = (props: PropsI) => {
         bottom: 70,
       }}
       />
+      <MVerify />
       <Form
         labelCol={layout.labelCol}
         wrapperCol={layout.wrapperCol}
