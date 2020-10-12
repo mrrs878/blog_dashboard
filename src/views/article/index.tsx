@@ -52,10 +52,10 @@ function getArticleListColumns(articles: Array<ArticleI>): Array<ColumnProps<Art
     },
     {
       title: '标签',
-      dataIndex: 'tag',
+      dataIndex: 'tags',
       ellipsis: true,
       onFilter: (value, record) => value === String(record.categories),
-      ...getColumnSearchProps('tag'),
+      ...getColumnSearchProps('tags'),
     },
     {
       title: '创建时间',

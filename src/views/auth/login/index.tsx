@@ -29,7 +29,16 @@ const Index = (props: PropsI) => {
   }
 
   return (
-    <div className="container" style={{ justifyContent: 'center', height: '100%', marginTop: 0, background: 'url(https://mrrsblog.oss-cn-shanghai.aliyuncs.com/timg.jpg) no-repeat center center' }}>
+    <div className="container" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', width: '100%', height: '100%', marginTop: 0 }}>
+      <div style={{
+        background: 'url(https://mrrsblog.oss-cn-shanghai.aliyuncs.com/timg.jpg) no-repeat center',
+        position: 'fixed',
+        width: '100vw',
+        left: 0,
+        top: 0,
+        bottom: 70,
+      }}
+      />
       <Form
         labelCol={layout.labelCol}
         wrapperCol={layout.wrapperCol}
@@ -37,6 +46,7 @@ const Index = (props: PropsI) => {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        style={{ width: '100%' }}
       >
         <Form.Item
           label={<span style={{ color: '#fff' }}>用户名</span>}

@@ -3,7 +3,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Menu, message, Modal } from 'antd';
 import * as _Icon from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { ClickParam } from 'antd/es/menu';
 import { clone } from 'ramda';
 import style from './index.module.less';
 import { ROUTES_MAP } from '../../router';
@@ -51,10 +50,10 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
     }
   }
 
-  function onMenuClick(param: ClickParam) {
-    const path = props.menuRoutes[param.key];
+  function onMenuClick({ key }: any) {
+    const path = props.menuRoutes[key];
     if (path) MENU_CLICK_HANDLER.navigate(path);
-    else MENU_CLICK_HANDLER[param.key]();
+    else MENU_CLICK_HANDLER[key]();
   }
 
   function dynamicIcon(iconType: string | Object | undefined) {

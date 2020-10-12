@@ -1,30 +1,68 @@
-import React from 'react';
-import { Col, Row, Badge, Avatar, Menu, Dropdown } from 'antd';
-import { MailOutlined, LogoutOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Badge, Avatar, Menu, Dropdown, Modal } from 'antd';
+import { MailOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import style from './index.module.less';
 import { AppState } from '../../store';
-import { ROUTES_MAP } from '../../router';
 import MHeaderSearch from '../MHeaderSearch';
+import { ROUTES_MAP } from '../../router';
+import useLogout from '../../hooks/useLogout';
 
 const mapState2Props = (state: AppState) => ({
   common: state.common,
 });
 
+const DROP_MENU_KEYS = {
+  profile: 'profile',
+  logout: 'logout',
+};
+
 interface PropsI extends RouteComponentProps {
   common: CommonStateI
 }
 
-const AvatarMenu = (
-  <Menu>
-    <Menu.Item icon={<LogoutOutlined />}>
-      <span>退出登录</span>
-    </Menu.Item>
-  </Menu>
-);
 
-const MHeader: React.FC<PropsI> = (props: PropsI) => (props.location.pathname === ROUTES_MAP.login ? <></> : (
+const AvatarMenu = (props: PropsI) => {
+  const [logoutModalF, setLogoutModalF] = useState(false);
+  const [logoutRes, logout] = useLogout();
+
+  useEffect(() => {
+    setLogoutModalF(false);
+  }, [logoutRes]);
+
+  function onDrapMenuClick({ key }: any) {
+    if (key === DROP_MENU_KEYS.profile) {
+      props.history.push(ROUTES_MAP.profile);
+    }
+    if (key === DROP_MENU_KEYS.logout) {
+      setLogoutModalF(true);
+    }
+  }
+
+  return (
+    <>
+      <Menu onClick={onDrapMenuClick}>
+        <Menu.Item key={DROP_MENU_KEYS.profile} icon={<ProfileOutlined />}>
+          <span>个人中心</span>
+        </Menu.Item>
+        <Menu.Item key={DROP_MENU_KEYS.logout} icon={<LogoutOutlined />}>
+          <span>退出登录</span>
+        </Menu.Item>
+      </Menu>
+      <Modal
+        title="提示"
+        visible={logoutModalF}
+        onOk={logout as any}
+        onCancel={() => setLogoutModalF(false)}
+      >
+        确定要退出登录吗?
+      </Modal>
+    </>
+  );
+};
+
+const MHeader: React.FC<PropsI> = (props: PropsI) => (
   <Row align="middle" className={style.headerContainer} style={{ padding: '0 10px' }}>
     <Col flex={1} />
     <Col>
@@ -55,7 +93,7 @@ const MHeader: React.FC<PropsI> = (props: PropsI) => (props.location.pathname ==
       </Badge>
     </Col>
     <Col span={1} className="hoverEffect">
-      <Dropdown overlay={AvatarMenu}>
+      <Dropdown overlay={AvatarMenu(props)}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Avatar size="small" className={style.avatar} src="https://mrrsblog.oss-cn-shanghai.aliyuncs.com/avatar.jpg" alt="avatar" />
           <span style={{ color: '#1890ff' }}>{props.common.user.name}</span>
@@ -63,6 +101,6 @@ const MHeader: React.FC<PropsI> = (props: PropsI) => (props.location.pathname ==
       </Dropdown>
     </Col>
   </Row>
-));
+);
 
 export default connect(mapState2Props)(withRouter(MHeader));
