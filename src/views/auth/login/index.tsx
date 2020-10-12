@@ -52,6 +52,7 @@ const Index = (props: PropsI) => {
           label={<span style={{ color: '#fff' }}>用户名</span>}
           name="username"
           rules={[{ required: true, message: '请输入用户名' }]}
+          initialValue="mrrs878"
         >
           <Input />
         </Form.Item>
@@ -60,6 +61,7 @@ const Index = (props: PropsI) => {
           label={<span style={{ color: '#fff' }}>密码</span>}
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
+          initialValue="mrrs878"
         >
           <Input.Password />
         </Form.Item>
