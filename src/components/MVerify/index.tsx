@@ -10,6 +10,7 @@ const { PI } = Math;
 const L = l + r * 2 + 3; // 滑块实际边长
 
 interface PropsI {
+  onSuccess: Function
 }
 
 function addClass(tag: any, className: string) {
@@ -79,34 +80,31 @@ function drawD(ctx: CanvasRenderingContext2D|null, x: number, y: number, operati
   ctx.globalCompositeOperation = 'overlay';
 }
 
+function createDOM() {
+  const canvas = createCanvas(w, h); // 画布
+  const block = canvas.cloneNode(true) as HTMLCanvasElement; // 滑块
+  const sliderContainer = createElement<HTMLDivElement>('div', 'sliderContainer');
+  const refreshIcon = createElement<HTMLDivElement>('div', 'refreshIcon');
+  const sliderMask = createElement<HTMLDivElement>('div', 'sliderMask');
+  const slider = createElement<HTMLDivElement>('div', 'slider');
+  const sliderIcon = createElement<HTMLSpanElement>('span', 'sliderIcon');
+  const text = createElement<HTMLSpanElement>('span', 'sliderText');
+  const canvasCtx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+  const blockCtx: CanvasRenderingContext2D | null = block.getContext('2d');
+  return {
+    canvas, block, sliderContainer, refreshIcon, sliderMask, slider, sliderIcon, text, canvasCtx, blockCtx,
+  };
+}
+
 const MVerify = (props: PropsI) => {
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const { canvas, block, sliderContainer, refreshIcon, sliderMask, slider, sliderIcon, text, canvasCtx, blockCtx } = createDOM();
 
-  let canvas = createCanvas(w, h); // 画布
-  let block = canvas.cloneNode(true) as HTMLCanvasElement; // 滑块
-  let sliderContainer = createElement<HTMLDivElement>('div', 'sliderContainer');
-  let refreshIcon = createElement<HTMLDivElement>('div', 'refreshIcon');
-  let sliderMask = createElement<HTMLDivElement>('div', 'sliderMask');
-  let slider = createElement<HTMLDivElement>('div', 'slider');
-  let sliderIcon = createElement<HTMLSpanElement>('span', 'sliderIcon');
-  let text = createElement<HTMLSpanElement>('span', 'sliderText');
-  let canvasCtx: CanvasRenderingContext2D | null = null;
-  let blockCtx: CanvasRenderingContext2D | null = null;
   let img: HTMLImageElement|null = null;
   let trail: Array<number> = [];
 
   function initDOM() {
-    block = canvas.cloneNode(true) as HTMLCanvasElement; // 滑块
-    sliderContainer = createElement<HTMLDivElement>('div', 'sliderContainer');
-    refreshIcon = createElement<HTMLDivElement>('div', 'refreshIcon');
-    sliderMask = createElement<HTMLDivElement>('div', 'sliderMask');
-    slider = createElement<HTMLDivElement>('div', 'slider');
-    sliderIcon = createElement<HTMLSpanElement>('span', 'sliderIcon');
-    text = createElement<HTMLSpanElement>('span', 'sliderText');
-    canvasCtx = canvas.getContext('2d');
-    blockCtx = block.getContext('2d');
-
     block.className = 'block';
     text.innerHTML = '向右滑动填充拼图';
 
@@ -126,17 +124,18 @@ const MVerify = (props: PropsI) => {
     setPosition({ x, y });
     drawD(canvasCtx, x, y, 'fill');
     drawD(blockCtx, x, y, 'clip');
+    return { x, y };
   }
 
   function initImg() {
     const _img = createImg(() => {
-      draw();
+      const { y, x } = draw();
       canvasCtx?.drawImage(_img, 0, 0, w, h);
-      blockCtx?.drawImage(_img, 0, 0, w, h);
-      const y = position.y - r * 2 - 1;
-      const ImageData = blockCtx?.getImageData(position.x - 3, y, L, L);
-      if (block) block.width = L;
-      if (blockCtx && ImageData) blockCtx?.putImageData(ImageData, 0, y);
+      blockCtx?.drawImage(_img, 0, 0, l, r);
+      const _y = y - r * 2 - 1;
+      const ImageData = blockCtx?.getImageData(x - 3, _y, L, L);
+      block.width = L;
+      if (ImageData) blockCtx?.putImageData(ImageData, 0, _y);
     });
     img = _img;
   }
@@ -170,8 +169,6 @@ const MVerify = (props: PropsI) => {
   }
 
   function onFail() {}
-
-  function onSuccess() {}
 
   function onRefresh() {}
 
@@ -219,7 +216,7 @@ const MVerify = (props: PropsI) => {
       if (spliced) {
         if (verified) {
           addClass(sliderContainer, 'sliderContainer_success');
-          onSuccess();
+          props.onSuccess();
         } else {
           addClass(sliderContainer, 'sliderContainer_fail');
           text.innerHTML = '再试一次';
@@ -245,14 +242,24 @@ const MVerify = (props: PropsI) => {
     initDOM();
     initImg();
     bindEvents();
-  }, [bindEvents, initDOM, initImg]);
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        borderRadius: 10, width: 350, height: 200, backgroundColor: '#fff', position: 'fixed', zIndex: 2, left: 10 }}
-    />
+    <div style={{
+      padding: '50px 20px 80px',
+      boxSizing: 'content-box',
+      backgroundColor: '#fff',
+      height: 200,
+      width: 350,
+      margin: '0 auto',
+    }}
+    >
+      <div
+        ref={containerRef}
+        style={{
+          borderRadius: 10, width: 350, height: 200, backgroundColor: '#fff', position: 'relative', zIndex: 2, left: 10 }}
+      />
+    </div>
   );
 };
 

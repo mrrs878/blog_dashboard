@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Modal } from 'antd';
 
 import authModule from '../../../modules/auth';
 import MVerify from '../../../components/MVerify';
@@ -17,13 +17,22 @@ interface PropsI extends RouteComponentProps<any, any> {
 }
 
 const Index = (props: PropsI) => {
-  async function onFinish(values: any) {
-    console.log('Success:', values.username);
-    const res = await authModule.login({ name: values.username, password: values.password });
+  const [verifyModalF, setVerifyModalF] = useState(false);
+  const [accountInfo, setAccountInfo] = useState<LoginReqI>({ name: '', password: '' });
+
+  async function onVerifySuccess() {
+    const { name, password } = accountInfo;
+    const res = await authModule.login({ name, password });
     await message.info(res?.msg);
     if (!res?.success) return;
     await authModule.getMenu();
     props.history.replace('/main');
+  }
+
+  function onFinish(values: any) {
+    setVerifyModalF(true);
+    const { name, password } = values;
+    setAccountInfo({ name, password });
   }
   function onFinishFailed(errorInfo: any) {
     console.log('Failed:', errorInfo);
@@ -40,7 +49,6 @@ const Index = (props: PropsI) => {
         bottom: 70,
       }}
       />
-      <MVerify />
       <Form
         labelCol={layout.labelCol}
         wrapperCol={layout.wrapperCol}
@@ -74,6 +82,9 @@ const Index = (props: PropsI) => {
           </Button>
         </Form.Item>
       </Form>
+      <Modal visible={verifyModalF} footer={null} onCancel={() => setVerifyModalF(false)}>
+        <MVerify onSuccess={onVerifySuccess} />
+      </Modal>
     </div>
   );
 };
