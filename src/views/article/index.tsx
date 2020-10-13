@@ -122,7 +122,6 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
         onRow={onArticleListRow}
         dataSource={article}
         pagination={{ defaultPageSize: 20 }}
-        scroll={{ y: 100 }}
         title={() => (
           <Space>
             <Button type="primary" style={{ width: 100 }} onClick={onCreateArticleClick}>创建文章</Button>

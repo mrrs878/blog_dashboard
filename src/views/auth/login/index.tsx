@@ -30,9 +30,9 @@ const Index = (props: PropsI) => {
   }
 
   function onFinish(values: any) {
-    setVerifyModalF(true);
     const { name, password } = values;
     setAccountInfo({ name, password });
+    setTimeout(setVerifyModalF, 0, true);
   }
   function onFinishFailed(errorInfo: any) {
     console.log('Failed:', errorInfo);
@@ -60,7 +60,7 @@ const Index = (props: PropsI) => {
       >
         <Form.Item
           label={<span style={{ color: '#fff' }}>用户名</span>}
-          name="username"
+          name="name"
           rules={[{ required: true, message: '请输入用户名' }]}
           initialValue="mrrs878"
         >
@@ -82,7 +82,7 @@ const Index = (props: PropsI) => {
           </Button>
         </Form.Item>
       </Form>
-      <Modal visible={verifyModalF} footer={null} onCancel={() => setVerifyModalF(false)}>
+      <Modal style={{ padding: 0 }} visible={verifyModalF} width="max-content" footer={null} onCancel={() => setVerifyModalF(false)}>
         <MVerify onSuccess={onVerifySuccess} />
       </Modal>
     </div>

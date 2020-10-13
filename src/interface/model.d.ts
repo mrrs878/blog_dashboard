@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-30 12:23:51
+ * @LastEditTime: 2020-10-13 17:52:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -11,6 +11,8 @@ interface UserI {
   token: string;
   role: number;
   _id: string;
+  createTime?: string;
+  create_by: number;
 }
 
 interface MenuItemI {

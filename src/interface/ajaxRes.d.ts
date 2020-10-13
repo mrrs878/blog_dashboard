@@ -48,3 +48,5 @@ interface GetCommentResI extends BaseResI<Array<CommentI>> {}
 interface GetCommentResI extends BaseResI<CommentI> {}
 
 interface AddCommentResI extends BaseResI<CommentI> {}
+
+interface GetUsersResI extends BaseResI<Array<UserI>> {}

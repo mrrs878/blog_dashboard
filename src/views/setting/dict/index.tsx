@@ -107,7 +107,6 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
         onRow={onDictListRow}
         dataSource={dict}
         pagination={{ defaultPageSize: 20 }}
-        scroll={{ y: '75vh' }}
         title={() => (
           <Space>
             <Button type="primary" style={{ width: 100 }} onClick={onCreateGoodsClick}>添加字段</Button>

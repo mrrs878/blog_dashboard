@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Divider, Form, Input, Radio, Cascader, message } from 'antd';
+import { Button, Divider, Form, Input, Radio, Cascader, message, Modal } from 'antd';
 import { connect } from 'react-redux';
 import { uniq } from 'ramda';
 import { Store } from 'antd/lib/form/interface';
@@ -46,6 +46,7 @@ const tailFormItemLayout = {
 const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', value: 0, createTime: '', updateTime: '' };
 
 const DictDetail = (props: PropsI) => {
+  const [dicts] = useState(props.state.dicts);
   const [dataDict, setDataDict] = useState<DictI>(emptyDict);
   const [createOrUpdate, setCreateOrUpdate] = useState(false);
   const [dictStatus, setDictStatus] = useState<Array<{ value: number; title: string }>>([]);
@@ -55,25 +56,26 @@ const DictDetail = (props: PropsI) => {
   const [, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, emptyDict, false);
   const [, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, emptyDict, false);
   const [getDicts] = useGetDicts(false);
+  const [addDictModalF, setAddDictModalF] = useState(false);
   const [form] = Form.useForm();
 
   const updateDictNamesAndValues = useCallback(() => {
     if (!form.getFieldValue('typeAndLabel')) return;
     const [type, label] = form.getFieldValue('typeAndLabel');
-    const _dictValues = props.state?.dicts
+    const _dictValues = dicts
       ?.filter((item) => item.type === type && item.label === label && (createOrUpdate ? true : item.value !== dataDict.value))
       ?.map((item) => item.value);
-    const _dictNames = props.state?.dicts
+    const _dictNames = dicts
       ?.filter((item) => item.type === type && item.label === label && (createOrUpdate ? true : item.name !== dataDict.name))
       ?.map((item) => item.name);
     setDictNames(_dictNames);
     setDictValues(_dictValues);
-  }, [createOrUpdate, dataDict, form, props.state]);
+  }, [createOrUpdate, dataDict.name, dataDict.value, dicts, form]);
 
   useEffect(() => {
-    const _dictTypes = uniq(props.state.dicts.map((item) => ({ value: item.type, label: item.type_view })));
-    const _dictLabels = uniq(props.state.dicts.map((item) => ({ value: item.label, label: item.label_view, type: item.type })));
-    const _dictStatus = props.state.dicts.filter((item) => item.label === 'status').map((item) => ({ value: item.value, title: item.name }));
+    const _dictTypes = uniq(dicts.map((item) => ({ value: item.type, label: item.type_view })));
+    const _dictLabels = uniq(dicts.map((item) => ({ value: item.label, label: item.label_view, type: item.type })));
+    const _dictStatus = dicts.filter((item) => item.label === 'status').map((item) => ({ value: item.value, title: item.name }));
     const _typeAndLabels = _dictTypes.map((item) => ({
       value: item.value,
       label: item.label,
@@ -81,7 +83,7 @@ const DictDetail = (props: PropsI) => {
     }));
     setTypeAndLabels(_typeAndLabels);
     setDictStatus(_dictStatus);
-  }, [props.state.dicts]);
+  }, [dicts]);
 
   useEffect(() => {
     form.setFieldsValue({
@@ -93,7 +95,7 @@ const DictDetail = (props: PropsI) => {
       value: dataDict.value,
     });
     updateDictNamesAndValues();
-  }, [dataDict, form, props.state.dicts, updateDictNamesAndValues]);
+  }, [dataDict, form, dicts, updateDictNamesAndValues]);
 
   useEffect(() => {
     if (props.match.params.id === String(-1)) {
@@ -101,9 +103,9 @@ const DictDetail = (props: PropsI) => {
       setTimeout(form.resetFields);
       return;
     }
-    const data = props.state.dicts.find((item) => item._id === props.match.params.id) || emptyDict;
+    const data = dicts.find((item) => item._id === props.match.params.id) || emptyDict;
     setDataDict(data);
-  }, [form, props.match.params.id, props.state.dicts]);
+  }, [form, props.match.params.id, dicts]);
 
   useEffect(() => {
     if (!createDictRes) return;
@@ -124,7 +126,7 @@ const DictDetail = (props: PropsI) => {
   async function onFinish(values: Store) {
     const { typeAndLabel, name, status, value } = values;
     const [type, label] = typeAndLabel;
-    const { type_view, label_view } = props.state.dicts.find((item) => item.type === type) || { type_view: '', label_view: '' };
+    const { type_view, label_view } = dicts.find((item) => item.type === type) || { type_view: '', label_view: '' };
     const data: DictI = { type, label, name, status, value, type_view, label_view };
     if (createOrUpdate) createDict(data);
     else updateDict({ ...data, _id: props.match.params.id });
@@ -144,7 +146,11 @@ const DictDetail = (props: PropsI) => {
     }
   }
 
-  function onCascaderChange() {
+  function onCascaderChange(e: any) {
+    if (e.include('-1')) {
+      setAddDictModalF(true);
+      return;
+    }
     updateDictNamesAndValues();
   }
 
@@ -157,6 +163,20 @@ const DictDetail = (props: PropsI) => {
   function validateDictName(rule: RuleObject, value: StoreValue) {
     if (value === '') return Promise.resolve();
     return dictNames.includes(value) ? Promise.reject(new Error('该名称已被占用，请输入其他值')) : Promise.resolve();
+  }
+
+  function dropdownRender(menus: ReactNode) {
+    return (
+      <div style={{ padding: 10 }}>
+        {menus}
+        <Divider style={{ margin: 0 }} />
+        <Button onClick={() => setAddDictModalF(true)}>新的选项？点击添加</Button>
+      </div>
+    );
+  }
+
+  function onAddDictModalOkClick() {
+    setAddDictModalF(false);
   }
 
   return (
@@ -176,6 +196,7 @@ const DictDetail = (props: PropsI) => {
           <Cascader
             onChange={onCascaderChange}
             options={typeAndLabels}
+            dropdownRender={dropdownRender}
             placeholder="请选择字段类/组"
           />
         </Form.Item>
@@ -215,6 +236,32 @@ const DictDetail = (props: PropsI) => {
           </Button>
         </Form.Item>
       </Form>
+      <Modal
+        visible={addDictModalF}
+        onOk={onAddDictModalOkClick}
+        onCancel={() => setAddDictModalF(false)}
+      >
+        <Form
+          form={form}
+          labelCol={formItemLayout.labelCol}
+          wrapperCol={formItemLayout.wrapperCol}
+        >
+          <Form.Item
+            name="type"
+            label="字段类"
+            rules={[{ required: true, message: '请输入字段类!' }, { validator: validateDictValue }]}
+          >
+            <Input placeholder="请输入字段类" />
+          </Form.Item>
+          <Form.Item
+            name="label"
+            label="字段组"
+            rules={[{ required: true, message: '请输入字段组!' }, { validator: validateDictValue }]}
+          >
+            <Input placeholder="请输入字段组" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

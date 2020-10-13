@@ -80,7 +80,6 @@ const Comments = (props: PropsI) => {
         onRow={onCommentListRow}
         dataSource={comment}
         pagination={{ defaultPageSize: 20 }}
-        scroll={{ y: 100 }}
         title={() => (
           <Space>
             <Button type="primary" style={{ width: 100 }} onClick={onUpdateCommentClick}>刷新</Button>
