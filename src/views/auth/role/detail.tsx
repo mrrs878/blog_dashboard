@@ -133,8 +133,8 @@ const RoleDetail = (props: PropsI) => {
       }
     });
     _modifyItems.forEach((modify) => {
-      const { key, icon_name, title, path, parent, role, sub_menu, status, children, _id } = modify;
-      AUTH_MODULE.updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id });
+      const { key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position } = modify;
+      AUTH_MODULE.updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position });
     });
   }
 

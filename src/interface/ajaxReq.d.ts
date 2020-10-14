@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-11 10:12:26
+ * @LastEditTime: 2020-10-14 16:23:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\ajaxReq.d.ts
@@ -12,6 +12,8 @@ interface LoginReqI {
 }
 interface GetMenuReqI {
 }
+
+interface CreateMenuReqI extends MenuItemI {}
 
 interface UpdateMenuReqI extends MenuItemI {}
 

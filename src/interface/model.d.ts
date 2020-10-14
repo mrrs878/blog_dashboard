@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-14 13:06:25
+ * @LastEditTime: 2020-10-14 17:01:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -27,6 +27,7 @@ interface MenuItemI {
   parent: string;
   role?: Array<number>;
   status: number;
+  position: number;
 }
 
 interface DictI {

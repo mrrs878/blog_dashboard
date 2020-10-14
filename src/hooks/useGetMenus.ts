@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2020-10-10 19:18:02
+ * @LastEditTime: 2020-10-14 18:32:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
@@ -23,7 +23,7 @@ function menuArray2Tree(src: Array<MenuItemI>) {
       parent.children?.push(item);
     } else res.push(item);
   });
-  return res;
+  return res.filter(({ parent }) => parent === 'root').sort((a, b) => a.position - b.position);
 }
 
 function getMenuTitles(src: Array<MenuItemI>) {

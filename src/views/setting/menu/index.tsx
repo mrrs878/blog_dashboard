@@ -1,5 +1,5 @@
 import React, { ReactText, useEffect, useState } from 'react';
-import { Button, Tree, Modal, Input, Form, Divider, Radio } from 'antd';
+import { Button, Tree, Modal, Input, Form, Divider, Radio, message } from 'antd';
 import * as _Icons from '@ant-design/icons';
 // @ts-ignore
 import { SelectData } from 'rc-tree';
@@ -12,6 +12,9 @@ import { RuleObject, StoreValue } from 'rc-field-form/lib/interface';
 import { AppState } from '../../../store';
 import AUTH_MODULE from '../../../modules/auth';
 import MAIN_CONFIG from '../../../config';
+import { CREATE_MENU, UPDATE_MENU } from '../../../api/auth';
+import useRequest from '../../../hooks/useRequest';
+import useGetMenus from '../../../hooks/useGetMenus';
 
 interface PropsI extends RouteComponentProps<{ id: string }> {
   state: CommonStateI
@@ -46,7 +49,7 @@ const tailFormItemLayout = {
   },
 };
 
-const AddRootMenu: MenuItemI = { icon: <PlusCircleOutlined />, title: '添加', key: 'root', sub_menu: [], parent: 'root', path: '', status: 1, children: [] };
+const AddRootMenu: MenuItemI = { icon: <PlusCircleOutlined />, title: '添加', key: 'root', sub_menu: [], parent: 'root', path: '', status: 1, children: [], position: -1 };
 
 function formatMenu(src: Array<MenuItemI>) {
   const tmp: Array<MenuItemI> = clone(src);
@@ -64,21 +67,21 @@ function findMenuItemPathsBy(cond: (item: MenuItemI) => boolean) {
 
 
 function addToPosition(src: Array<MenuItemI>, values: any, target: MenuItemI | undefined) {
-  if (!target) return [];
-  const newMenuItem = clone<MenuItemI>(values);
-  const newMenuArray = clone<Array<MenuItemI>>(src);
+  if (!target) return { newMenuItemArray: [], newMenuItemTree: [], newMenuItem: undefined };
+  const newMenuItem = clone<MenuItemI>(values) || {};
+  const newMenuArray = clone<Array<MenuItemI>>(src) || [];
   newMenuItem.key = `${target.key}${newMenuItem.path.slice(0, 1).toUpperCase()}${newMenuItem.path.slice(1)}`;
   newMenuItem.path = `${target.path ?? ''}/${newMenuItem.path}`;
   newMenuItem.parent = target.key ?? '';
   newMenuArray.push(newMenuItem);
   const newMenuTree = AUTH_MODULE.menuArray2Tree(newMenuArray);
-  return [newMenuArray, newMenuTree];
+  return { newMenuArray, newMenuTree, newMenuItem };
 }
 
 const MenuSetting = (props: PropsI) => {
   const [menuItemArray, setMenuItemArray] = useState<Array<MenuItemI>>([]);
   const [treeData, setTreeData] = useState<Array<MenuItemI>>([]);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editModalF, setEditModalF] = useState<boolean>(false);
   const [createOrUpdate, setCreateOrUpdate] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<MenuItemI>();
   const [selectedMenuParent, setSelectedMenuParent] = useState<MenuItemI>();
@@ -87,6 +90,9 @@ const MenuSetting = (props: PropsI) => {
   const [isMenuAdding, setIsMenuAdding] = useState<boolean>(false);
   const [couldAddMenu, setCouldAddMenu] = useState<boolean>(true);
   const [paths, setPaths] = useState<Array<string>>([]);
+  const [, createMenuRes, createMenu] = useRequest(CREATE_MENU, undefined, false);
+  const [, updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
+  const [getMenus] = useGetMenus(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -101,17 +107,29 @@ const MenuSetting = (props: PropsI) => {
     setDictStatus(_dictStatus);
   }, [props.state.dicts]);
 
+  useEffect(() => {
+    if (!createMenuRes) return;
+    message.info(createMenuRes.msg);
+    if (createMenuRes.success) getMenus();
+  }, [createMenuRes, getMenus]);
+
+  useEffect(() => {
+    if (!updateMenuRes) return;
+    message.info(updateMenuRes.msg);
+    if (updateMenuRes.success) getMenus();
+  }, [getMenus, updateMenuRes]);
+
   const menuItemClickHandlers = {
     common(_selectMenu: MenuItemI) {
-      const { title, path, icon_name, status } = _selectMenu;
-      form.setFieldsValue({ title, path: last(path?.split('/') || []), icon_name, status });
-      setIsEdit(true);
+      const { title, path, icon_name, status, position } = _selectMenu;
+      form.setFieldsValue({ title, path: last(path?.split('/') || []), icon_name, status, position });
+      setEditModalF(true);
       setCouldAddMenu(true);
     },
     add: (_selectMenu: MenuItemI | undefined) => () => {
       if (!_selectMenu) return;
       form.resetFields();
-      setIsEdit(true);
+      setEditModalF(true);
       setCouldAddMenu(false);
       setCreateOrUpdate(true);
       setPaths(findMenuItemPathsBy((item) => item.parent === _selectMenu.key)(menuItemArray));
@@ -120,18 +138,24 @@ const MenuSetting = (props: PropsI) => {
   };
 
   const formFinishHandlers = {
-    edit() {},
+    edit(values: any) {
+      const { role, sub_menu, key, parent, _id } = props.state.menuArray.find((item) => item._id === selectedMenu?._id) || {};
+      const { position, path } = values;
+      const _values = { role, sub_menu, parent, key, _id, ...values, position: position >> 0, path: path.startsWith('/') ? path : `/${path}` };
+      setEditModalF(false);
+      updateMenu(_values);
+    },
     add(values: any) {
-      const [newMenuItemArray, newMenuItemTree] = addToPosition(menuItemArray, values, selectedMenuParent);
-      setMenuItemArray(newMenuItemArray);
-      setTreeData(newMenuItemTree);
-      setIsEdit(false);
+      const _values = { ...values, role: [0, 1], sub_menu: [] };
+      const { newMenuItem } = addToPosition(menuItemArray, _values, selectedMenuParent);
+      setEditModalF(false);
+      createMenu(newMenuItem);
     },
   };
   const formResetHandlers = {
     common() {
-      const { title, path, icon_name, status } = selectedMenu ?? {};
-      form.setFieldsValue({ title, path: last(path?.split('/') || []), icon_name, status });
+      const { title, path, icon_name, status, position } = selectedMenu ?? {};
+      form.setFieldsValue({ title, path: last(path?.split('/') || []), icon_name, status, position });
     },
     add() {
       form.resetFields();
@@ -140,7 +164,7 @@ const MenuSetting = (props: PropsI) => {
 
   function onFormFinish(values: any) {
     setIsMenuAdding(true);
-    ifElse(and(isEdit), formFinishHandlers.add, formFinishHandlers.edit)(values);
+    ifElse(and(createOrUpdate), formFinishHandlers.add, formFinishHandlers.edit)(values);
     setIsMenuAdding(false);
   }
 
@@ -159,7 +183,7 @@ const MenuSetting = (props: PropsI) => {
   }
 
   function onModalCancel() {
-    setIsEdit(false);
+    setEditModalF(false);
   }
 
   function validateIcon(rule: RuleObject, value: StoreValue) {
@@ -185,7 +209,7 @@ const MenuSetting = (props: PropsI) => {
           treeData={treeData}
         />
         <Button style={{ width: 240 }} type="primary">保存</Button>
-        <Modal visible={isEdit} footer={null} getContainer={false} onCancel={onModalCancel}>
+        <Modal visible={editModalF} footer={null} getContainer={false} onCancel={onModalCancel}>
           <Form
             form={form}
             labelCol={formItemLayout.labelCol}
@@ -232,6 +256,16 @@ const MenuSetting = (props: PropsI) => {
                   ))
                 }
               </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              name="position"
+              label="位置"
+              rules={[{ required: true, message: '请设置菜单位置!' }]}
+            >
+              <Input
+                type="number"
+                placeholder="请设置菜单位置"
+              />
             </Form.Item>
             <Form.Item wrapperCol={tailFormItemLayout.wrapperCol}>
               <Button htmlType="reset">重置</Button>

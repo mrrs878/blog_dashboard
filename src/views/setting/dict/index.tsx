@@ -7,6 +7,7 @@ import getColumnSearchProps from '../../../components/MTableSearch';
 import { AppState } from '../../../store';
 import { getTableFilters } from '../../../components/MTableFilters';
 import { SETTING_ROUTES_MAP } from '../../../router/settingRoutes';
+import useGetDicts from '../../../hooks/useGetDicts';
 
 const mapState2Props = (state: AppState) => ({
   common: state.common,
@@ -70,6 +71,7 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<DictI>>>([]);
   const [dictCount, setDictCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
+  const [, reGetDicts] = useGetDicts(false, true);
 
   useEffect(() => {
     setDict(props.common.dicts);
@@ -77,8 +79,12 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
     setDictListColumns(getDictListColumns(props.common.dicts));
   }, [props.common.dicts]);
 
-  function onCreateGoodsClick() {
+  function onCreateDictsClick() {
     props.history.push(`${SETTING_ROUTES_MAP.dict}/-1`);
+  }
+
+  function onRefreshDictsClick() {
+    reGetDicts();
   }
 
   async function onLoadMore() {
@@ -109,7 +115,8 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
         pagination={{ defaultPageSize: 20 }}
         title={() => (
           <Space>
-            <Button type="primary" style={{ width: 100 }} onClick={onCreateGoodsClick}>添加字段</Button>
+            <Button type="primary" style={{ width: 100 }} onClick={onCreateDictsClick}>添加字段</Button>
+            <Button type="primary" style={{ width: 100 }} onClick={onRefreshDictsClick}>刷新</Button>
             {
               dictCount > dict.length
               && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>

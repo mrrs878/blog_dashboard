@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-09-29 19:40:21
- * @LastEditors: your name
+ * @LastEditTime: 2020-10-14 16:25:32
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\api\setting.ts
  */

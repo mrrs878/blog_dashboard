@@ -131,15 +131,12 @@ const DictDetail = (props: PropsI) => {
     return tmp.includes(value) ? Promise.reject(new Error('该名称已被占用，请输入其他值')) : Promise.resolve();
   }
 
-  function onDictTypeSelect(type: string, option: any) {
-    setInputDictLabels(dictLabels.filter((item) => item.type === type).map(({ type, label_view, label }) => ({ label, label_view, type })));
-    if (type === dataDict.type) return;
+  function onDictTypeSelect(_type: string, option: any) {
+    setInputDictLabels(dictLabels.filter((item) => item.type === _type).map(({ type, label_view, label }) => ({ label, label_view, type })));
+    if (_type === dataDict.type) return;
     addDictform.setFieldsValue({
-      type_view: dictTypes.find((item) => item.type === type)?.type_view || '',
+      type_view: dictTypes.find((item) => item.type === _type)?.type_view || '',
       label_view: '',
-      name: '',
-      status: -1,
-      value: null,
       label: '',
     });
   }
@@ -147,16 +144,13 @@ const DictDetail = (props: PropsI) => {
   function onDictTypeBlur(event: React.FocusEvent<HTMLElement>) {
     if (event.target.getAttribute('value') === dataDict.type) return;
     addDictform.setFieldsValue({
+      type_view: dictTypes.find((item) => item.type === addDictform.getFieldValue('type')) ?.type_view || '',
       label_view: '',
-      name: '',
-      status: -1,
-      value: null,
       label: '',
     });
   }
 
   function onDictLabelSelect(label: string) {
-    if (label === dataDict.label) return;
     addDictform.setFieldsValue({
       label_view: dictLabels.find((item) => item.label === label)?.label_view || '',
     });
@@ -190,9 +184,9 @@ const DictDetail = (props: PropsI) => {
         <Form.Item
           label="字段类名称"
           name="type_view"
-          rules={[{ required: true, message: '请选择字段类名称!' }]}
+          rules={[{ required: true, message: '请输入字段类名称!' }]}
         >
-          <Input />
+          <Input placeholder="请输入字段类名称" />
         </Form.Item>
         <Form.Item
           label="字段组"
@@ -209,9 +203,9 @@ const DictDetail = (props: PropsI) => {
         <Form.Item
           label="字段组名称"
           name="label_view"
-          rules={[{ required: true, message: '请选择字段组名称!' }]}
+          rules={[{ required: true, message: '请输入字段组名称!' }]}
         >
-          <Input />
+          <Input placeholder="请输入字段组名称" />
         </Form.Item>
         <Form.Item
           name="name"
