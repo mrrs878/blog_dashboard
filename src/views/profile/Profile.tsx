@@ -59,15 +59,15 @@ const Profile = (props: PropsI) => (
     <Row>
       <Col style={{ backgroundColor: '#fff', padding: 20, height: 'max-content' }} span={7}>
         <div style={{ textAlign: 'center' }}>
-          <img width={140} style={{ marginBottom: 20 }} src="https://mrrsblog.oss-cn-shanghai.aliyuncs.com/avatar.jpg" alt="" srcSet="" />
+          <img width={140} style={{ marginBottom: 20 }} src={props.user.avatar} alt="" srcSet="" />
           <p style={{ fontSize: 20, fontWeight: 700 }}>{props.user.name}</p>
-          <p>Read the fucking source code</p>
+          <p>{props.user.signature}</p>
         </div>
         <div style={{ marginLeft: 40 }}>
           <p>
             <ContactsOutlined />
             ：
-            前端开发
+            { props.user.profession }
           </p>
           <p>
             <ClusterOutlined />
@@ -83,12 +83,12 @@ const Profile = (props: PropsI) => (
         <Divider />
         <div>
           <p>标签</p>
-          <MEditableTagGroup defaultTags={['切图仔', '掏粪工']} addBtnText="添加标签" />
+          <MEditableTagGroup defaultTags={props.user.tags.map((item) => item)} addBtnText="添加标签" />
         </div>
         <Divider />
         <div>
           <p>团队</p>
-          <MEditableTagGroup addBtnText="添加团队" />
+          <MEditableTagGroup defaultTags={props.user.teams.map((item) => item)} addBtnText="添加团队" />
         </div>
       </Col>
       <Col style={{ backgroundColor: '#fff', padding: 20 }} span={16} offset={1}>

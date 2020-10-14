@@ -1,18 +1,25 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-14 17:01:49
+ * @LastEditTime: 2020-10-14 19:59:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
  */
 interface UserI {
-  name: string;
-  token: string;
-  role: number;
   _id: string;
-  createTime?: string;
-  create_by: number;
+  name: string;
+  password: string;
+  role: number;
+  token: string;
+  avatar: string;
+  createdBy: number;
+  profession: string;
+  signature: string;
+  tags: Array<string>;
+  teams: Array<string>;
+  updateTime?: string;
+  createTime: string;
 }
 
 interface MenuItemI {
