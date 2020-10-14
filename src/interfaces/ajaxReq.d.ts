@@ -88,3 +88,5 @@ interface GetCommentsReqI {
 interface GetCommentReqI {
   id: string;
 }
+
+interface UpdateUserInfoReqI extends UserI {}

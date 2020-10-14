@@ -1,21 +1,22 @@
 /*
  * @Author: your name
  * @Date: 2020-10-14 19:54:48
- * @LastEditTime: 2020-10-14 19:59:53
- * @LastEditors: your name
+ * @LastEditTime: 2020-10-14 23:11:30
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\model\index.ts
  */
-export const EMPTY_USER = {
+export const EMPTY_USER: UserI = {
   _id: '',
   name: '',
-  password: '',
   role: -1,
   token: '',
   avatar: '',
   createdBy: -1,
-  signature: '',
-  profession: '',
+  signature: '--',
+  department: '--',
+  address: '--',
+  profession: '--',
   tags: [],
   teams: [],
   updateTime: '',

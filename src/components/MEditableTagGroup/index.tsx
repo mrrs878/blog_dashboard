@@ -6,6 +6,8 @@ import { TweenOneGroup } from 'rc-tween-one';
 interface PropsI {
   defaultTags?: Array<string>;
   addBtnText?: string;
+  onConfirm: (tags: Array<string>) => void;
+  onRemove: (tags: Array<string>) => void;
 }
 
 const MEditableTagGroup = (props: PropsI) => {
@@ -16,6 +18,7 @@ const MEditableTagGroup = (props: PropsI) => {
   function handleClose(removedTag: string) {
     const _tags = tags.filter((tag) => tag !== removedTag);
     setTags(_tags);
+    props.onRemove(_tags);
   }
 
   function forMap(tag: string) {
@@ -53,6 +56,7 @@ const MEditableTagGroup = (props: PropsI) => {
     setTags(_tags);
     setInputValue('');
     setInputVisible(false);
+    props.onConfirm(_tags);
   }
 
   return (

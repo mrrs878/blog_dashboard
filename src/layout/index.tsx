@@ -37,7 +37,7 @@ const MLayout = (props: PropsI) => (
         </Sider>
         )
       }
-      <Layout className="site-layout" style={{ height: '100vh' }}>
+      <Layout className="site-layout">
         {
           !props.fullScreen && (
             <MHeader />

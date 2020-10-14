@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-10-14 21:55:55
+ * @LastEditTime: 2020-10-14 22:42:51
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\interfaces\ajaxRes.d.ts
+ */
 interface BaseResI<T> {
   success: boolean;
   code: number;
@@ -52,3 +60,5 @@ interface GetCommentResI extends BaseResI<CommentI> {}
 interface AddCommentResI extends BaseResI<CommentI> {}
 
 interface GetUsersResI extends BaseResI<Array<UserI>> {}
+
+interface UpdateUserInfoResI extends BaseResI<UserI> {}
