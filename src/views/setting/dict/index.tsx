@@ -20,9 +20,9 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
   return [
     {
       title: '名称',
-      dataIndex: 'name',
+      dataIndex: 'name_view',
       ellipsis: true,
-      ...getColumnSearchProps('name'),
+      ...getColumnSearchProps('name_view'),
     },
     {
       title: '值',

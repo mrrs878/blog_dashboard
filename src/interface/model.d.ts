@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-13 17:52:49
+ * @LastEditTime: 2020-10-14 13:06:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -37,6 +37,7 @@ interface DictI {
   type: string;
   type_view: string;
   name: string;
+  name_view: string;
   value: number;
   createTime?: string;
   updateTime?: string;
