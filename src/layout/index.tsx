@@ -29,7 +29,7 @@ interface PropsI{
 
 const MLayout = (props: PropsI) => (
   <BrowserRouter>
-    <Layout>
+    <Layout style={{ minHeight: '100vh' }}>
       {
         !props.fullScreen && (
         <Sider collapsible>

@@ -1,5 +1,5 @@
-import { message } from 'antd';
-import Table, { ColumnProps } from 'antd/lib/table';
+import { ColumnProps } from 'antd/lib/table';
+import { Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -13,7 +13,7 @@ interface PropsI extends RouteComponentProps {
   dicts: Array<DictI>;
 }
 
-function getDictListColumns(roles: DynamicObjectKey<string>): Array<ColumnProps<UserI>> {
+function getDictListColumns(roles: DynamicObjectKey<string>, createdBy: DynamicObjectKey<string>, status: DynamicObjectKey<string>): Array<ColumnProps<UserI>> {
   return [
     {
       title: '名称',
@@ -28,7 +28,13 @@ function getDictListColumns(roles: DynamicObjectKey<string>): Array<ColumnProps<
     },
     {
       title: '注册渠道',
-      dataIndex: 'create_by',
+      dataIndex: 'createdBy',
+      render: (item) => createdBy[item],
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      render: (item) => status[item],
     },
     {
       title: '创建时间',
@@ -51,13 +57,20 @@ const User = (props: PropsI) => {
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<UserI>>>([]);
   useEffect(() => {
     if (!getUsersRes) return;
-    message.info(getUsersRes.msg);
     setUsers(getUsersRes.data || []);
-    const tmp: DynamicObjectKey<string> = {};
+    const roles: DynamicObjectKey<string> = {};
     props.dicts
-      .filter((item) => item.type === 'user' && item.label === 'user_role')
-      .forEach((item) => { tmp[item.value] = item.name; });
-    setDictListColumns(getDictListColumns(tmp));
+      .filter((item) => item.type === 'user' && item.label === 'user_role' && item.status !== 2)
+      .forEach((item) => { roles[item.value] = item.name_view; });
+    const createdBy: DynamicObjectKey<string> = {};
+    props.dicts
+      .filter((item) => item.type === 'common' && item.label === 'created_by')
+      .forEach((item) => { createdBy[item.value] = item.name_view; });
+    const status: DynamicObjectKey<string> = {};
+    props.dicts
+      .filter((item) => item.type === 'base' && item.label === 'status')
+      .forEach((item) => { status[item.value] = item.name_view; });
+    setDictListColumns(getDictListColumns(roles, createdBy, status));
   }, [getUsersRes, props.dicts]);
 
   const onDictListRow = (record: UserI) => ({ onClick: () => props.history.push(`${ROUTES_MAP.user}/${record._id}`) });

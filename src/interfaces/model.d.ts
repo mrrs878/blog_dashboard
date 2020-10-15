@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-14 23:10:53
+ * @LastEditTime: 2020-10-15 10:45:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -18,6 +18,7 @@ interface UserI {
   department: string;
   address: string;
   tags: Array<string>;
+  status: number;
   teams: Array<string>;
   updateTime?: string;
   createTime: string;
