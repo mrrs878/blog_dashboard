@@ -1,25 +1,26 @@
 /*
  * @Author: your name
  * @Date: 2020-09-28 19:20:02
- * @LastEditTime: 2020-10-11 19:52:48
+ * @LastEditTime: 2020-10-15 23:23:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useRequest.ts
  */
 import { useEffect, useState, useCallback } from 'react';
 
-function useRequest<P, T>(api: (params: P) => Promise<T>, params?: P|undefined, visiable = true)
-  :[boolean, T|undefined, Function, Function] {
+function useRequest<P, T>(api: (params: P) => Promise<T>, params?: P, visiable = true)
+  :[boolean, T|undefined, (params?: P) => void, () => void] {
   const [res, setRes] = useState<T>();
   const [loading, setLoading] = useState(() => false);
-  const [newParams, setNewParams] = useState<P|undefined>(() => params);
+  const [newParams, setNewParams] = useState(() => params);
   const [autoFetch, setAutoFetch] = useState(() => visiable);
 
   const fetch = useCallback(async () => {
+    if (!newParams && autoFetch === false) return;
     if (autoFetch) {
-      if (newParams === undefined) return;
+      const _params = (newParams || {}) as P;
       setLoading(true);
-      const tmp = await api(newParams);
+      const tmp = await api(_params);
       setRes(tmp);
       setLoading(false);
     }
@@ -35,7 +36,7 @@ function useRequest<P, T>(api: (params: P) => Promise<T>, params?: P|undefined, 
   }, []);
 
   const reFetch = () => {
-    const _newParams = newParams as any;
+    const _newParams = newParams as P;
     setNewParams({ ..._newParams });
   };
 

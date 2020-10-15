@@ -13,7 +13,7 @@ import store, { actions } from '../store';
 import useRequest from './useRequest';
 
 export default function useGetDicts(autoMsg = true, authMatch: boolean = false) {
-  const [, getDictsRes, getDicts, reGetDicts] = useRequest<GetDictsReqT, GetDictsResT>(GET_DICTS, {}, authMatch);
+  const [, getDictsRes, getDicts, reGetDicts] = useRequest<GetDictsReqT, GetDictsResT>(GET_DICTS, undefined, authMatch);
   useEffect(() => {
     if (!getDictsRes) return;
     if (autoMsg) message.info(getDictsRes.msg);

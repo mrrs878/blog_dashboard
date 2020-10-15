@@ -52,8 +52,8 @@ const DictDetail = (props: PropsI) => {
   const [dictTypes, setDictTypes] = useState<Array<{ type: string, type_view: string }>>([]);
   const [dictLabels, setDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
   const [inputDictLabels, setInputDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
-  const [, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, emptyDict, false);
-  const [, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, emptyDict, false);
+  const [, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, undefined, false);
+  const [, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, undefined, false);
   const [getDicts] = useGetDicts(false);
   const [addDictform] = Form.useForm();
 

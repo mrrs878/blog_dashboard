@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-11 15:20:24
+ * @LastEditTime: 2020-10-15 23:23:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -49,7 +49,7 @@ const ArticleDetail = (props: PropsI) => {
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
-  const [, getArticleRes, reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
+  const [, getArticleRes, , reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
   const [, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
   const [getArticles] = useGetArticles(false);
   const [, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);

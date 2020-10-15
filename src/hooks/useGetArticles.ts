@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-30 12:40:32
- * @LastEditTime: 2020-10-11 11:21:01
+ * @LastEditTime: 2020-10-15 23:02:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetArticles.ts
@@ -13,7 +13,7 @@ import store, { actions } from '../store';
 import useRequest from './useRequest';
 
 export default function useGetArticles(autoMsg = true, autoFetch = false) {
-  const [, getArticlesRes, getArticles, reGetArticles] = useRequest<GetArticlesReqI, GetArticlesResI>(GET_USER_ARTICLES, {}, autoFetch);
+  const [, getArticlesRes, getArticles, reGetArticles] = useRequest<GetArticlesReqI, GetArticlesResI>(GET_USER_ARTICLES, undefined, autoFetch);
   useEffect(() => {
     if (!getArticlesRes) return;
     if (autoMsg) message.info(getArticlesRes.msg);

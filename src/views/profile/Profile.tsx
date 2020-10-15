@@ -46,11 +46,13 @@ const { TabPane } = Tabs;
 const ArticleSummary = (props: { article: ArticleI }) => (
   <Space direction="vertical">
     <h2 style={{ cursor: 'pointer' }}>{ props.article.title }</h2>
-    {
-      props.article.tags.split(' ').map((item) => (
-        <Tag>{item}</Tag>
-      ))
-    }
+    <Space>
+      {
+        props.article.tags.split(' ').map((item) => (
+          <Tag>{item}</Tag>
+        ))
+      }
+    </Space>
     <span>{ props.article.description }</span>
     <div>
       <span style={{ fontSize: 18, color: '#1890ff' }}>{ props.article.author }</span>
@@ -84,7 +86,7 @@ const Profile = (props: PropsI) => {
   const [editModalF, setEditModalF] = useState(false);
   const [editForm] = Form.useForm();
   const [, updateUserRes, updateUser] = useRequest(UPDATE_USER, undefined, false);
-  const [getUserInfo] = useGetUserInfoByToken(false, false);
+  const [getUserInfo] = useGetUserInfoByToken(false);
 
   useEffect(() => {
     editForm.setFieldsValue(props.user);

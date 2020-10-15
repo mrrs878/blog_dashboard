@@ -39,7 +39,7 @@ function getCommentListColumns(comments: Array<AuthCommentsI>): Array<ColumnProp
 }
 
 const Comments = (props: PropsI) => {
-  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetAuthCommentsResI>(GET_AUTHOR_COMMENTS, { id: '' });
+  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetAuthCommentsResI>(GET_AUTHOR_COMMENTS);
   const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<AuthCommentsI>>>([]);
   const [loadMoreF, setLoadMoreF] = useState(false);
   const [comment, setComment] = useState<Array<AuthCommentsI>>([]);

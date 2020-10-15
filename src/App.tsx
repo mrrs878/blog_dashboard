@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import store from './store';
 import './global.less';
@@ -11,13 +11,8 @@ import useGetMenus from './hooks/useGetMenus';
 
 function App() {
   useGetUserInfoByToken(false);
-  const [getDicts] = useGetDicts(false);
-  const [getMenus] = useGetMenus(false);
-
-  useEffect(() => {
-    getMenus();
-    getDicts();
-  }, [getDicts, getMenus]);
+  useGetDicts(false, true);
+  useGetMenus(false, true);
 
   return (
     <Provider store={store}>

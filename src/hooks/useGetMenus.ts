@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2020-10-14 18:32:12
+ * @LastEditTime: 2020-10-15 23:03:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
@@ -42,8 +42,8 @@ function getMenuRoutes(src: Array<MenuItemI>) {
   return menuRoutes;
 }
 
-export default function useGetMenus(autoMsg = true) {
-  const [, getMenusRes, getMenus] = useRequest<unknown, GetMenusResI>(GET_MENUS, undefined, false);
+export default function useGetMenus(autoMsg = true, authFetch = false) {
+  const [, getMenusRes, getMenus] = useRequest<unknown, GetMenusResI>(GET_MENUS, undefined, authFetch);
   useEffect(() => {
     if (!getMenusRes) return;
     if (autoMsg) message.info(getMenusRes.msg);

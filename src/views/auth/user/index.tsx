@@ -52,7 +52,7 @@ const mapState2Props = (state: AppState) => ({
 
 
 const User = (props: PropsI) => {
-  const [, getUsersRes] = useRequest(GET_ALL_USERS, {});
+  const [, getUsersRes] = useRequest(GET_ALL_USERS);
   const [users, setUsers] = useState<Array<UserI>>([]);
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<UserI>>>([]);
   useEffect(() => {

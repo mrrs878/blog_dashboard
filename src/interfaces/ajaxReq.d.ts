@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-14 16:23:48
+ * @LastEditTime: 2020-10-15 23:05:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\ajaxReq.d.ts
@@ -54,7 +54,7 @@ interface GetFileBlogReqI {
 
 interface UpdateArticleReqI {
   title: string;
-  tag: string;
+  tags: string;
   categories: string;
   content: string;
   _id: string;
@@ -89,4 +89,15 @@ interface GetCommentReqI {
   id: string;
 }
 
-interface UpdateUserInfoReqI extends UserI {}
+interface UpdateUserInfoReqI {
+  name: string;
+  role: number;
+  avatar: string;
+  createdBy: number;
+  profession: string;
+  signature: string;
+  department: string;
+  address: string;
+  tags: Array<string>;
+  teams: Array<string>;
+}
