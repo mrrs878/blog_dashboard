@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2020-10-15 23:03:07
+ * @LastEditTime: 2020-10-16 12:45:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
@@ -50,9 +50,9 @@ export default function useGetMenus(autoMsg = true, authFetch = false) {
     if (!getMenusRes.success) return;
     store.dispatch({ type: actions.UPDATE_MENU_TITLES, data: getMenuTitles(getMenusRes.data) });
     store.dispatch({ type: actions.UPDATE_MENU_ROUTES, data: getMenuRoutes(getMenusRes.data) });
-    store.dispatch({ type: actions.UPDATE_MENU, data: menuArray2Tree(getMenusRes.data) });
+    store.dispatch({ type: actions.UPDATE_MENU, data: menuArray2Tree(getMenusRes.data.filter(({ status }) => status !== 2)) });
     store.dispatch({ type: actions.UPDATE_MENU_ARRAY, data: getMenusRes.data });
   }, [getMenusRes, autoMsg]);
 
-  return [getMenus];
+  return { getMenusRes, getMenus };
 }

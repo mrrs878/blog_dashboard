@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-12 14:42:20
- * @LastEditTime: 2020-10-15 23:03:16
+ * @LastEditTime: 2020-10-16 10:41:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useLogout.ts
@@ -22,7 +22,7 @@ function useLogout() {
     }
   }, [logoutRes]);
 
-  return [logoutRes, logout];
+  return { logoutRes, logout };
 }
 
 export default useLogout;

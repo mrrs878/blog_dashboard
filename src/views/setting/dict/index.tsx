@@ -50,6 +50,14 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
       onFilter: (value, record) => value === record.status,
     },
     {
+      title: '创建者',
+      dataIndex: 'creator',
+    },
+    {
+      title: '更新者',
+      dataIndex: 'updater',
+    },
+    {
       title: '创建时间',
       dataIndex: 'createTime',
       ellipsis: true,

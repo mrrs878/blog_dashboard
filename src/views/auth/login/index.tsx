@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Form, Input, Button, message, Modal } from 'antd';
+import { Form, Input, Button, message, Modal, Spin } from 'antd';
 
-import authModule from '../../../modules/auth';
 import MVerify from '../../../components/MVerify';
+import { LOGIN } from '../../../api/auth';
+import useRequest from '../../../hooks/useRequest';
+import useGetMenus from '../../../hooks/useGetMenus';
+import MAIN_CONFIG from '../../../config';
+import store, { actions } from '../../../store';
 
 const layout = {
   labelCol: { span: 3, offset: 7 },
@@ -19,14 +23,26 @@ interface PropsI extends RouteComponentProps<any, any> {
 const Index = (props: PropsI) => {
   const [verifyModalF, setVerifyModalF] = useState(false);
   const [accountInfo, setAccountInfo] = useState<LoginReqI>({ name: '', password: '' });
+  const [isLogin, loginRes, login] = useRequest(LOGIN, undefined, false);
+  const { getMenusRes, getMenus } = useGetMenus(false);
 
-  async function onVerifySuccess() {
-    const { name, password } = accountInfo;
-    const res = await authModule.login({ name, password });
-    await message.info(res?.msg);
-    if (!res?.success) return;
-    await authModule.getMenu();
+  useEffect(() => {
+    if (!loginRes) return;
+    message.info(loginRes?.msg, 1000);
+    if (!loginRes.success) return;
+    localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, loginRes.data.token);
+    store.dispatch({ type: actions.UPDATE_USER, data: loginRes.data });
+    getMenus();
+  }, [getMenus, loginRes]);
+
+  useEffect(() => {
+    if (!getMenusRes || !getMenusRes.success) return;
     props.history.replace('/main');
+  }, [getMenusRes, props.history]);
+
+  function onVerifySuccess() {
+    const { name, password } = accountInfo;
+    login({ name, password });
   }
 
   function onFinish(values: any) {
@@ -85,6 +101,7 @@ const Index = (props: PropsI) => {
       <Modal style={{ padding: 0 }} visible={verifyModalF} width="max-content" footer={null} onCancel={() => setVerifyModalF(false)}>
         <MVerify onSuccess={onVerifySuccess} />
       </Modal>
+      <Spin spinning={isLogin} />
     </div>
   );
 };

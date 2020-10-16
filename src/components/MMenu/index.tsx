@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Menu, message, Modal } from 'antd';
+import { Menu, Modal } from 'antd';
 import * as _Icon from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { clone } from 'ramda';
 import style from './index.module.less';
 import { ROUTES_MAP } from '../../router';
 import { AppState } from '../../store';
-import AUTH_MODULE from '../../modules/auth';
+import useLogout from '../../hooks/useLogout';
 
 const { SubMenu } = Menu;
 const Icon: DynamicObjectKey<any> = clone(_Icon);
@@ -30,6 +30,7 @@ interface PropsI extends RouteComponentProps {
 
 const MMenu: React.FC<PropsI> = (props: PropsI) => {
   const [logoutModalF, setLogoutModalF] = useState(false);
+  const { logout } = useLogout();
 
   const MENU_CLICK_HANDLER: DynamicObjectKey<Function> = {
     async logout() {
@@ -41,13 +42,7 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
   };
 
   async function onLogoutCfmClick() {
-    const res = await AUTH_MODULE.logout();
-    setLogoutModalF(false);
-    await message.info(res.msg);
-    if (res.success) {
-      AUTH_MODULE.logout();
-      props.history.replace(ROUTES_MAP.login);
-    }
+    logout();
   }
 
   function onMenuClick({ key }: any) {
@@ -63,7 +58,7 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
 
   function walkMenu(item: MenuItemI) {
     item.icon = dynamicIcon(item.icon_name);
-    if (item.children.length > 0) {
+    if (item.sub_menu.length > 0) {
       return (
         <SubMenu key={item.key} icon={item.icon} title={item.title}>
           {

@@ -25,7 +25,7 @@ interface PropsI extends RouteComponentProps {
 
 const AvatarMenu = (props: PropsI) => {
   const [logoutModalF, setLogoutModalF] = useState(false);
-  const [logoutRes, logout] = useLogout();
+  const { logoutRes, logout } = useLogout();
 
   useEffect(() => {
     setLogoutModalF(false);

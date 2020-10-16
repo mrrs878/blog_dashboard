@@ -10,7 +10,6 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import { RuleObject, StoreValue } from 'rc-field-form/lib/interface';
 
 import { AppState } from '../../../store';
-import AUTH_MODULE from '../../../modules/auth';
 import MAIN_CONFIG from '../../../config';
 import { CREATE_MENU, UPDATE_MENU } from '../../../api/auth';
 import useRequest from '../../../hooks/useRequest';
@@ -65,19 +64,6 @@ function findMenuItemPathsBy(cond: (item: MenuItemI) => boolean) {
   return (src: Array<MenuItemI>) => src.filter(cond).map((item) => last(item.path.split('/')) || '');
 }
 
-
-function addToPosition(src: Array<MenuItemI>, values: any, target: MenuItemI | undefined) {
-  if (!target) return { newMenuItemArray: [], newMenuItemTree: [], newMenuItem: undefined };
-  const newMenuItem = clone<MenuItemI>(values) || {};
-  const newMenuArray = clone<Array<MenuItemI>>(src) || [];
-  newMenuItem.key = `${target.key}${newMenuItem.path.slice(0, 1).toUpperCase()}${newMenuItem.path.slice(1)}`;
-  newMenuItem.path = `${target.path ?? ''}/${newMenuItem.path}`;
-  newMenuItem.parent = target.key ?? '';
-  newMenuArray.push(newMenuItem);
-  const newMenuTree = AUTH_MODULE.menuArray2Tree(newMenuArray);
-  return { newMenuArray, newMenuTree, newMenuItem };
-}
-
 const MenuSetting = (props: PropsI) => {
   const [menuItemArray, setMenuItemArray] = useState<Array<MenuItemI>>([]);
   const [treeData, setTreeData] = useState<Array<MenuItemI>>([]);
@@ -92,7 +78,7 @@ const MenuSetting = (props: PropsI) => {
   const [paths, setPaths] = useState<Array<string>>([]);
   const [, createMenuRes, createMenu] = useRequest(CREATE_MENU, undefined, false);
   const [, updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
-  const [getMenus] = useGetMenus(false);
+  const { getMenus } = useGetMenus(false, false);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -147,9 +133,11 @@ const MenuSetting = (props: PropsI) => {
     },
     add(values: any) {
       const _values = { ...values, role: [0, 1], sub_menu: [] };
-      const { newMenuItem } = addToPosition(menuItemArray, _values, selectedMenuParent);
+      _values.key = `${selectedMenuParent?.key}${values.path.slice(0, 1).toUpperCase()}${values.path.slice(1)}`;
+      _values.path = `${selectedMenuParent?.path ?? ''}/${values.path}`;
+      _values.parent = selectedMenuParent?.key ?? '';
       setEditModalF(false);
-      createMenu(newMenuItem);
+      createMenu(_values);
     },
   };
   const formResetHandlers = {

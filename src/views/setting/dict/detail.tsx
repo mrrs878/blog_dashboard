@@ -42,7 +42,7 @@ const tailFormItemLayout = {
   },
 };
 
-const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', name_view: '', value: 0, createTime: '', updateTime: '' };
+const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', name_view: '', value: 0, createTime: '', updateTime: '', creator: '', updater: '' };
 
 const DictDetail = (props: PropsI) => {
   const [dicts] = useState(props.state.dicts);
@@ -99,7 +99,7 @@ const DictDetail = (props: PropsI) => {
 
   async function onFinish(values: Store) {
     const { type, label, name, status, value, name_view, label_view, type_view } = values;
-    const data: DictI = { type, label, name, status, value, type_view, label_view, name_view };
+    const data = { type, label, name, status, value, type_view, label_view, name_view };
     if (createOrUpdate) createDict(data);
     else updateDict({ ...data, _id: props.match.params.id });
   }

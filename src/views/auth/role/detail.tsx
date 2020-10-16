@@ -7,7 +7,8 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { EventDataNode } from 'rc-tree/lib/interface';
 import { AppState } from '../../../store';
-import AUTH_MODULE from '../../../modules/auth';
+import { UPDATE_MENU } from '../../../api/auth';
+import useRequest from '../../../hooks/useRequest';
 
 interface PropsI extends RouteComponentProps<{ id: string }> {
   state: CommonStateI
@@ -41,6 +42,7 @@ const RoleDetail = (props: PropsI) => {
   const [checkedKeys, setCheckedKeys] = useState<Array<ReactText>>([]);
   const [originCheckedKeys, setOriginCheckedKeys] = useState<Array<ReactText>>([]);
   const [modifyKeys, setModifyKeys] = useState<Array<string>>([]);
+  const [,, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
 
   useEffect(() => {
     (async () => {
@@ -134,7 +136,7 @@ const RoleDetail = (props: PropsI) => {
     });
     _modifyItems.forEach((modify) => {
       const { key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position } = modify;
-      AUTH_MODULE.updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position });
+      updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position });
     });
   }
 
