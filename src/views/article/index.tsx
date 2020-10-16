@@ -79,7 +79,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   const [articleListColumns, setDictListColumns] = useState<Array<ColumnProps<ArticleI>>>([]);
   const [articleCount, setArticleCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [, reGetArticles] = useGetArticles(false, true);
+  const { reGetArticles } = useGetArticles(false, true);
 
   useEffect(() => {
     setArticle(props.articles);

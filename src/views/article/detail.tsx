@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-15 23:23:23
+ * @LastEditTime: 2020-10-16 17:32:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -39,7 +39,8 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
           ?.replace(/\r\n/g, '')
           ?.replace(/\n/g, '')
           ?.match(/title:(.+)tags:(.+)categories:(.+)/) || [];
-  const [title, tags, categories] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
+  const [_title, tags, categories] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
+  const title = _title.replace(/date(.+)/, '');
   const article = { title, tags, categories, description: content.slice(0, 200), content: Base64.encode(markdownSrc) };
   return article;
 }
@@ -50,9 +51,9 @@ const ArticleDetail = (props: PropsI) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
   const [, getArticleRes, , reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
-  const [, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
-  const [getArticles] = useGetArticles(false);
-  const [, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
+  const [updateArticleLoading, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
+  const { getArticles } = useGetArticles(false);
+  const [createArticleLoading, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
 
   useEffect(() => {
     if (createOrEdit) return;
@@ -117,12 +118,12 @@ const ArticleDetail = (props: PropsI) => {
       if (!_article.categories) throw new Error('文章分类有误，请检查文章头部categories');
       if (!_article.tags) throw new Error('文章标签有误，请检查文章头部tag');
       if (createOrEdit) {
-        await createArticle(_article);
+        createArticle(_article);
       } else {
-        await updateArticle({ ..._article, _id: props.match.params.id });
-        await getArticles();
-        await reGetArticle();
-        message.info('更新成功');
+        updateArticle({ ..._article, _id: props.match.params.id });
+        await message.info('更新成功');
+        getArticles();
+        reGetArticle();
       }
     } catch (e) {
       message.error(e.message);
@@ -148,7 +149,7 @@ const ArticleDetail = (props: PropsI) => {
                 上传Markdown文件
               </Button>
             </Upload>
-            <Button icon={<SaveOutlined />} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
+            <Button icon={<SaveOutlined />} loading={updateArticleLoading || createArticleLoading} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
             <Button icon={<ReloadOutlined />} onClick={onResetClick}>重置</Button>
           </Space>
         </Col>

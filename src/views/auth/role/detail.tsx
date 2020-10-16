@@ -1,7 +1,5 @@
 import React, { ReactText, useEffect, useState } from 'react';
-import { Button, Space, Tree } from 'antd';
-// @ts-ignore
-import { OnDragEnterData, OnDropData } from 'rc-tree';
+import { Button, message, Space, Tree } from 'antd';
 import { clone } from 'ramda';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { connect } from 'react-redux';
@@ -38,11 +36,11 @@ function getCheckedKeys(src: Array<MenuItemI>, role: number) {
 }
 
 const RoleDetail = (props: PropsI) => {
-  const [treeData, setTreeData] = useState<Array<any>>(props.state.menu);
+  const [treeData] = useState<Array<any>>(props.state.menu);
   const [checkedKeys, setCheckedKeys] = useState<Array<ReactText>>([]);
   const [originCheckedKeys, setOriginCheckedKeys] = useState<Array<ReactText>>([]);
   const [modifyKeys, setModifyKeys] = useState<Array<string>>([]);
-  const [,, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
+  const [,updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
 
   useEffect(() => {
     (async () => {
@@ -52,64 +50,10 @@ const RoleDetail = (props: PropsI) => {
     })();
   }, [props.match.params.id, props.state.menuArray]);
 
-  function onDrop(info: OnDropData) {
-    const dropKey = info.node.props.eventKey;
-    const dragKey = info.dragNode.props.eventKey;
-    const dropPos = info.node.props.pos.split('-');
-    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
-
-    const loop = (data: Array<any>, key: string, callback: (item: any, index: number, arr: Array<any>) => void) => {
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].key === key) {
-          return callback(data[i], i, data);
-        }
-        if (data[i].children) {
-          loop(data[i].children, key, callback);
-        }
-      }
-    };
-    const data = clone(treeData);
-
-    let dragObj: any;
-    loop(data, dragKey, (item, index, arr) => {
-      arr.splice(index, 1);
-      dragObj = item;
-    });
-
-    if (!info.dropToGap) {
-      loop(data, dropKey, (item) => {
-        item.children = item.children || [];
-        item.children.push(dragObj);
-      });
-    } else if (
-      (info.node.props.children || []).length > 0
-      && info.node.props.expanded
-      && dropPosition === 1
-    ) {
-      loop(data, dropKey, (item) => {
-        item.children = item.children || [];
-        item.children.unshift(dragObj);
-      });
-    } else {
-      let ar: Array<any> = [];
-      let i = 0;
-      loop(data, dropKey, (item, index, arr) => {
-        ar = arr;
-        i = index;
-      });
-      if (dropPosition === -1) {
-        ar.splice(i, 0, dragObj);
-      } else {
-        ar.splice(i + 1, 0, dragObj);
-      }
-    }
-
-    setTreeData(data);
-  }
-
-  function onDragEnter(info: OnDragEnterData) {
-    // setExpandedKeys(info.expandedKeys);
-  }
+  useEffect(() => {
+    if (!updateMenuRes) return;
+    message.info(updateMenuRes?.msg);
+  }, [updateMenuRes]);
 
   function onCheck(keys: Array<ReactText> | { checked: ReactText[]; halfChecked: ReactText[]; }, info: { checked: boolean, node: EventDataNode }) {
     if (!Array.isArray(keys)) return;
@@ -135,8 +79,8 @@ const RoleDetail = (props: PropsI) => {
       }
     });
     _modifyItems.forEach((modify) => {
-      const { key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position } = modify;
-      updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, children, _id, position });
+      const { key, icon_name, title, path, parent, role, sub_menu, status, _id, position } = modify;
+      updateMenu({ key, icon_name, title, path, parent, role, sub_menu, status, _id, position });
     });
   }
 
@@ -153,8 +97,6 @@ const RoleDetail = (props: PropsI) => {
           draggable
           blockNode
           checkable
-          onDragEnter={onDragEnter}
-          onDrop={onDrop}
           onCheck={onCheck}
           checkedKeys={checkedKeys}
           treeData={treeData}

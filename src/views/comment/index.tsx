@@ -5,7 +5,6 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import useRequest from '../../hooks/useRequest';
 import { GET_AUTHOR_COMMENTS } from '../../api/comment';
 import getColumnSearchProps from '../../components/MTableSearch';
-import { ROUTES_MAP } from '../../router';
 
 interface PropsI extends RouteComponentProps {}
 
@@ -55,7 +54,7 @@ const Comments = (props: PropsI) => {
   function onCommentListRow(record: AuthCommentsI) {
     return {
       onClick: () => {
-        props.history.push(`${ROUTES_MAP.comment}/${record._id}`);
+        // props.history.push(`${ROUTES_MAP.comment}/${record._id}`);
       },
     };
   }

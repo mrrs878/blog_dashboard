@@ -62,7 +62,7 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
       return (
         <SubMenu key={item.key} icon={item.icon} title={item.title}>
           {
-            item.children.map((child) => walkMenu(child))
+            item.children?.map((child) => walkMenu(child))
           }
         </SubMenu>
       );

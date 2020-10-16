@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Axis, Chart, Coordinate, Interval, Line, Point, Tooltip } from 'bizcharts';
-import { compose } from 'ramda';
-import { GET_DASHBOARD_DATA } from '../../api/dashboard';
+import { compose, groupWith, map } from 'ramda';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
+import useGetArticles from '../../hooks/useGetArticles';
 
 interface PVChartDataI {
   page: string;
@@ -12,31 +14,27 @@ interface UVChartDataI {
   view: number;
 }
 
-function formatPVChartData(src: Array<DashboardDataI>) {
-  return src.filter((item) => item.group === 'pv').map((item) => ({ page: item.label, view: item.value }));
-}
-function formatUVChartData(src: Array<DashboardDataI>) {
-  return src.filter((item) => item.group === 'uv').map((item) => ({
-    date: new Date(+item.label).toLocaleDateString(),
-    view: item.value,
-  }));
+interface PropsI {
+  articles: Array<ArticleI>
 }
 
-const Dashboard = () => {
+const mapState2Props = (state: AppState) => ({
+  articles: state.common.articles,
+});
+
+const Dashboard = (props: PropsI) => {
+  const { getArticlesRes, getArticles } = useGetArticles(false, true);
   const [pvData, setPVData] = useState<Array<PVChartDataI>>([]);
-  const [uvData, setUVData] = useState<Array<UVChartDataI>>([]);
+  const [uvData] = useState<Array<UVChartDataI>>([]);
+
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await GET_DASHBOARD_DATA();
-        if (!res.success) return;
-        compose(setPVData, formatPVChartData)(res.data);
-        compose(setUVData, formatUVChartData)(res.data);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, []);
+    if (!getArticles || !getArticlesRes?.success) return;
+    compose(
+      setPVData,
+      map<Array<ArticleI>, PVChartDataI>((item) => ({ page: item[0].author, view: item.length })),
+      groupWith<ArticleI>((a, b) => a.author === b.author),
+    )(getArticlesRes.data);
+  }, [getArticles, getArticlesRes, props.articles]);
 
   return (
     <div className="container">
@@ -68,4 +66,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default connect(mapState2Props)(Dashboard);

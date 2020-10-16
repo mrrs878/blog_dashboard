@@ -20,5 +20,5 @@ export default function useGetArticles(autoMsg = true, autoFetch = false) {
     if (getArticlesRes.success) store.dispatch({ type: actions.UPDATE_ARTICLES, data: getArticlesRes.data || [] });
   }, [getArticlesRes, autoMsg]);
 
-  return [getArticles, reGetArticles];
+  return { getArticlesRes, getArticles, reGetArticles };
 }

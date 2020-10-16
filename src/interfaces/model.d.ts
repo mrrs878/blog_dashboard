@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-16 12:54:52
+ * @LastEditTime: 2020-10-16 16:23:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -31,7 +31,7 @@ interface MenuItemI {
   icon_name?: string;
   title: string;
   path: string;
-  children: Array<MenuItemI>;
+  children?: Array<MenuItemI>;
   sub_menu: Array<string>;
   parent: string;
   role?: Array<number>;
@@ -85,6 +85,8 @@ interface ArticleI {
   tags: string;
   description: string;
   author: string;
+  comments?: Array<CommentI>;
+  likes?: Array<{ name: string }>;
 }
 
 interface PathContentItemI {

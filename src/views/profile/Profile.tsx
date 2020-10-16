@@ -70,12 +70,12 @@ const ArticleSummary = (props: { article: ArticleI }) => (
       <span>
         <MessageOutlined />
         { ' ' }
-        12
+        { props.article.comments?.length }
       </span>
       <span>
         <LikeOutlined />
         { ' ' }
-        12
+        { props.article.likes?.length }
       </span>
     </Space>
     <Divider />
@@ -185,11 +185,13 @@ const Profile = (props: PropsI) => {
         <Col style={{ backgroundColor: '#fff', padding: 20 }} span={16} offset={1}>
           <Tabs type="card">
             <TabPane tab="文章" key="article">
-              <div onClick={(e) => console.log(e)}>
-                {
-                  props.articles.map((item) => <ArticleSummary key={item._id} article={item} />)
-                }
-              </div>
+              {
+                props.articles.map((item) => (
+                  <div>
+                    <ArticleSummary key={item._id} article={item} />
+                  </div>
+                ))
+              }
             </TabPane>
           </Tabs>
         </Col>
