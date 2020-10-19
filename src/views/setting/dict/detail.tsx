@@ -42,7 +42,7 @@ const tailFormItemLayout = {
   },
 };
 
-const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', name_view: '', value: 0, createTime: '', updateTime: '', creator: '', updater: '' };
+const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', name_view: '', value: 0, createTime: '', updateTime: '', creator: { name: '' }, updater: { name: '' } };
 
 const DictDetail = (props: PropsI) => {
   const [dicts] = useState(props.state.dicts);

@@ -8,7 +8,7 @@ import getColumnSearchProps from '../../components/MTableSearch';
 
 interface PropsI extends RouteComponentProps {}
 
-function getCommentListColumns(comments: Array<AuthCommentsI>): Array<ColumnProps<AuthCommentsI>> {
+function getCommentListColumns(comments: Array<AuthorCommentsI>): Array<ColumnProps<AuthorCommentsI>> {
   return [
     {
       title: '文章',
@@ -23,7 +23,7 @@ function getCommentListColumns(comments: Array<AuthCommentsI>): Array<ColumnProp
     },
     {
       title: '评论者',
-      dataIndex: 'name',
+      dataIndex: ['creator', 'name'],
       ellipsis: true,
       ...getColumnSearchProps('name'),
     },
@@ -38,10 +38,10 @@ function getCommentListColumns(comments: Array<AuthCommentsI>): Array<ColumnProp
 }
 
 const Comments = (props: PropsI) => {
-  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetAuthCommentsResI>(GET_AUTHOR_COMMENTS);
-  const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<AuthCommentsI>>>([]);
+  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetAuthorCommentsResI>(GET_AUTHOR_COMMENTS);
+  const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<AuthorCommentsI>>>([]);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [comment, setComment] = useState<Array<AuthCommentsI>>([]);
+  const [comment, setComment] = useState<Array<AuthorCommentsI>>([]);
   const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Comments = (props: PropsI) => {
     setCommentListColumns(getCommentListColumns(getCommentsRes.data || []));
   }, [getCommentsRes]);
 
-  function onCommentListRow(record: AuthCommentsI) {
+  function onCommentListRow(record: AuthorCommentsI) {
     return {
       onClick: () => {
         // props.history.push(`${ROUTES_MAP.comment}/${record._id}`);

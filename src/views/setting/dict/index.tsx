@@ -51,11 +51,11 @@ function getDictListColumns(dicts: Array<DictI>): Array<ColumnProps<DictI>> {
     },
     {
       title: '创建者',
-      dataIndex: 'creator',
+      dataIndex: ['creator', 'name'],
     },
     {
       title: '更新者',
-      dataIndex: 'updater',
+      dataIndex: ['updater', 'name'],
     },
     {
       title: '创建时间',

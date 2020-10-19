@@ -1,8 +1,8 @@
 /*
  * @Author: your name
- * @Date: 2020-10-14 21:55:55
- * @LastEditTime: 2020-10-14 22:42:51
- * @LastEditors: your name
+ * @Date: 2020-10-15 09:49:52
+ * @LastEditTime: 2020-10-19 10:58:12
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interfaces\ajaxRes.d.ts
  */
@@ -51,7 +51,7 @@ interface GetFileBlogResI extends FileBlobI {}
 
 interface GetCommentsResI extends BaseResI<Array<CommentI>> {}
 
-interface GetAuthCommentsResI extends BaseResI<Array<AuthCommentsI>> {}
+interface GetAuthorCommentsResI extends BaseResI<Array<AuthorCommentsI>> {}
 
 interface GetCommentResI extends BaseResI<Array<CommentI>> {}
 

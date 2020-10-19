@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-16 16:23:41
+ * @LastEditTime: 2020-10-19 11:48:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -51,8 +51,12 @@ interface DictI {
   value: number;
   createTime?: string;
   updateTime?: string;
-  creator?: string;
-  updater?: string;
+  creator?: {
+    name: string;
+  };
+  updater?: {
+    name: string;
+  };
 }
 
 interface AjaxErrorI extends Error{
@@ -128,15 +132,18 @@ interface CommentI {
   avatar?: string;
 }
 
-interface AuthCommentsI {
+interface AuthorCommentsI {
   _id: string;
-  content: string,
-  name: string,
-  createTime: string,
+  content: string;
+  name: string;
+  createTime: string;
   article: {
-    title: string,
-    categories: string,
-    author: string,
-    createTime: string,
+    title: string;
+    categories: string;
+    author: string;
+    createTime: string;
   },
+  creator: {
+    name: string;
+  }
 }
