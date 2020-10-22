@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef } from 'react';
+import { Spin } from 'antd';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './index.less';
 
 const l = 42; // 滑块边长
@@ -9,16 +9,11 @@ const h = 200; // canvas高度
 const { PI } = Math;
 const L = l + r * 2 + 3; // 滑块实际边长
 
+const BLOCK_POSITION_FIX = [0, 15, 0];
+
 interface PropsI {
-  onSuccess: Function
-}
-
-function addClass(tag: any, className: string) {
-  tag.classList.add(className);
-}
-
-function removeClass(tag: any, className: string) {
-  tag.classList.remove(className);
+  onSuccess: () => any;
+  onClose: () => any;
 }
 
 function sum(x: number, y: number) {
@@ -34,32 +29,8 @@ function getRandomNumberByRange(start: number, end: number) {
 }
 
 function getRandomImg() {
-  // return `https://picsum.photos/350/200/?image=${getRandomNumberByRange(0, 1084)}`;
-  return 'https://i.picsum.photos/id/648/350/200.jpg?hmac=2BO8hrHzcalCSb3b3oKIJ8lvFFd_wyhZakTGj3fDZ0k';
-}
-
-function createElement<T>(tagName: string, className: string = ''): T {
-  const elment = document.createElement(tagName) as any;
-  elment.className = className;
-  return elment;
-}
-
-function createCanvas(width: number, height: number) {
-  const canvas = createElement<HTMLCanvasElement>('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  return canvas;
-}
-
-function createImg(onload: (e: Event) => any) {
-  const img = createElement<HTMLImageElement>('img');
-  img.crossOrigin = 'Anonymous';
-  img.onload = onload;
-  img.onerror = () => {
-    img.src = getRandomImg();
-  };
-  img.src = getRandomImg();
-  return img;
+  return `https://picsum.photos/350/200?image=${getRandomNumberByRange(0, 1084)}`;
+  // return 'https://i.picsum.photos/id/648/350/200.jpg?hmac=2BO8hrHzcalCSb3b3oKIJ8lvFFd_wyhZakTGj3fDZ0k';
 }
 
 function drawD(ctx: CanvasRenderingContext2D|null, x: number, y: number, operation: 'fill'|'clip', shape: number) {
@@ -97,172 +68,172 @@ function drawD(ctx: CanvasRenderingContext2D|null, x: number, y: number, operati
   ctx.globalCompositeOperation = 'overlay';
 }
 
-function createDOM() {
-  const canvas = createCanvas(w, h); // 画布
-  const block = canvas.cloneNode(true) as HTMLCanvasElement; // 滑块
-  const sliderContainer = createElement<HTMLDivElement>('div', 'sliderContainer');
-  const refreshIcon = createElement<HTMLDivElement>('div', 'refreshIcon');
-  const sliderMask = createElement<HTMLDivElement>('div', 'sliderMask');
-  const slider = createElement<HTMLDivElement>('div', 'slider');
-  const sliderIcon = createElement<HTMLSpanElement>('span', 'sliderIcon');
-  const text = createElement<HTMLSpanElement>('span', 'sliderText');
-  const canvasCtx: CanvasRenderingContext2D | null = canvas.getContext('2d');
-  const blockCtx: CanvasRenderingContext2D | null = block.getContext('2d');
-  return {
-    canvas, block, sliderContainer, refreshIcon, sliderMask, slider, sliderIcon, text, canvasCtx, blockCtx,
-  };
+enum DragStatus {
+  pending,
+  start,
+  move,
+  end
+}
+
+enum VerifyStatus {
+  pending,
+  success,
+  fail
 }
 
 const MVerify = (props: PropsI) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { canvas, block, sliderContainer, refreshIcon, sliderMask, slider, sliderIcon, text, canvasCtx, blockCtx } = createDOM();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const blockRef = useRef<HTMLCanvasElement>(null);
+  const refreshIconRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const resultRef = useRef<HTMLSpanElement>(null);
+  const [dragStatus, setDragStatus] = useState(DragStatus.pending);
+  const [moveX, setMoveX] = useState(0);
+  const [blockLeft, setBlockLeft] = useState(0);
+  const [verifyStatus, setVerifyStatus] = useState(VerifyStatus.pending);
+  const [canvasCtx, setCanvasCtx] = useState(canvasRef?.current?.getContext('2d') || null);
+  const [blockCtx, setBlockCtx] = useState(blockRef?.current?.getContext('2d') || null);
+  const [imgSrc, setImgSrc] = useState(getRandomImg());
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [originPosition, setOriginPosition] = useState({ x: 0, y: 0 });
+  const [trail, setTrail] = useState([0]);
+  const [isImgLoading, setIsImgLoading] = useState(true);
 
-  let img: HTMLImageElement|null = null;
-  let trail: Array<number> = [];
-  const position = { x: 0, y: 0 };
-  let blockShape = 0;
-  const blockPositionFix = [0, 15, 0];
-
-  function initDOM() {
-    block.className = 'block';
-    text.innerHTML = '向右滑动填充拼图';
-
-    containerRef.current?.appendChild(canvas);
-    containerRef.current?.appendChild(refreshIcon);
-    containerRef.current?.appendChild(block);
-    slider.appendChild(sliderIcon);
-    sliderMask.appendChild(slider);
-    sliderContainer.appendChild(sliderMask);
-    sliderContainer.appendChild(text);
-    containerRef.current?.appendChild(sliderContainer);
-  }
-
-  function draw() {
-    const x = getRandomNumberByRange(L + 10, w - (L + 10));
-    const y = getRandomNumberByRange(10 + r * 2, h - (L + 10));
-    position.x = x;
-    position.y = y;
-    blockShape = (Math.random() * 100) % 3 >> 0;
-    drawD(canvasCtx, x, y, 'fill', blockShape);
-    drawD(blockCtx, x, y, 'clip', blockShape);
-  }
-
-  function initImg() {
-    const _img = createImg(() => {
-      draw();
-      const { y, x } = position;
-      canvasCtx?.drawImage(_img, 0, 0, w, h);
-      blockCtx?.drawImage(_img, 0, 0, w, h);
-      const _y = y - r * 2 - 1 + blockPositionFix[blockShape];
-      const imageData = blockCtx?.getImageData(x - 3, _y, L, L);
-      block.width = L;
-      if (imageData) blockCtx?.putImageData(imageData, 0, _y);
-    });
-    img = _img;
-  }
-
-  function clean() {
-    canvasCtx?.clearRect(0, 0, w, h);
-    blockCtx?.clearRect(0, 0, w, h);
-    block.width = w;
-  }
-
-  function verify() {
-    const arr = trail; // 拖动时y轴的移动距离
-    const average = arr.reduce(sum) / arr.length;
-    const deviations = arr.map((x) => x - average);
-    const stddev = Math.sqrt(deviations.map(square).reduce(sum) / arr.length);
-    const left = parseInt(block?.style.left || '', 10);
+  const verify = useCallback(() => {
+    const average = trail.reduce(sum) / trail.length;
+    const deviations = trail.map((x) => x - average);
+    const stddev = Math.sqrt(deviations.map(square).reduce(sum) / trail.length);
+    const left = parseInt(blockRef?.current?.style?.left || '', 10);
     return {
       spliced: Math.abs(left - position.x) < 10,
-      verified: stddev !== 0, // 简单验证下拖动轨迹，为零时表示Y轴上下没有波动，可能非人为操作
+      verified: stddev !== 0,
     };
-  }
+  }, [position.x, trail]);
 
-  function reset() {
-    sliderContainer.className = 'sliderContainer';
-    slider.style.left = '0';
-    block.style.left = '0';
-    sliderMask.style.width = '0';
-    clean();
-    if (img) img.src = getRandomImg();
-  }
+  const reset = useCallback(() => {
+    setMoveX(0);
+    setBlockLeft(0);
+    setTrail([0]);
+    setPosition({ x: 0, y: 0 });
+    setVerifyStatus(VerifyStatus.pending);
+    setDragStatus(DragStatus.pending);
+    setIsImgLoading(true);
+    canvasCtx?.clearRect(0, 0, w, h);
+    blockCtx?.clearRect(0, 0, w, h);
+    blockCtx?.canvas?.setAttribute('width', String(w));
+    setImgSrc(getRandomImg());
+    if (resultRef.current) resultRef.current.innerText = '';
+  }, [blockCtx, canvasCtx]);
 
-  function onFail() {}
+  const onFail = useCallback(() => {
+    setVerifyStatus(VerifyStatus.fail);
+    if (resultRef.current) resultRef.current.innerText = '验证失败，请重试';
+    setTimeout(reset, 1000);
+  }, [reset]);
 
-  function onRefresh() {}
-
-  function bindEvents() {
-    refreshIcon.onclick = () => {
+  const onSuccess = useCallback(() => {
+    setVerifyStatus(VerifyStatus.success);
+    if (resultRef.current) resultRef.current.innerText = '验证成功';
+    setTimeout(() => {
+      props.onClose();
+      props.onSuccess();
       reset();
-      onRefresh();
-    };
+    }, 1000);
+  }, [props, reset]);
 
-    let originX: number;
-    let originY: number;
-    const _trail: Array<number> = [];
-    let isMouseDown = false;
 
-    const handleDragStart = (e: any) => {
-      originX = e.clientX || e.touches[0].clientX;
-      originY = e.clientY || e.touches[0].clientY;
-      isMouseDown = true;
-    };
+  const handleDragStart = useCallback((e: any) => {
+    const x = e.clientX || e.touches[0].clientX;
+    const y = e.clientY || e.touches[0].clientY;
+    setOriginPosition({ x, y });
+    setDragStatus(() => DragStatus.start);
+  }, []);
 
-    const handleDragMove = (e: any) => {
-      if (!isMouseDown) return false;
-      const eventX = e.clientX || e.touches[0].clientX;
-      const eventY = e.clientY || e.touches[0].clientY;
-      const moveX = eventX - originX;
-      const moveY = eventY - originY;
-      if (moveX < 0 || moveX + 38 >= w) return false;
-      slider.style.left = `${moveX}px`;
-      const blockLeft = ((w - 40 - 20) / (w - 40)) * moveX;
-      block.style.left = `${blockLeft}px`;
+  const handleDragMove = useCallback((e: any) => {
+    if (dragStatus !== DragStatus.start) return false;
+    const eventX = e.clientX || e.touches[0].clientX;
+    const eventY = e.clientY || e.touches[0].clientY;
+    const _moveX = eventX - originPosition.x;
+    const moveY = eventY - originPosition.y;
+    if (_moveX < 0 || _moveX + 38 >= w) return false;
+    setMoveX(_moveX);
+    setBlockLeft(((w - 40 - 20) / (w - 40)) * _moveX);
+    setTrail((_trail) => [..._trail, moveY]);
+  }, [dragStatus, originPosition.x, originPosition.y]);
 
-      addClass(sliderContainer, 'sliderContainer_active');
-      sliderMask.style.width = `${moveX}px`;
-      _trail.push(moveY);
-    };
+  const handleDragEnd = useCallback((e: any) => {
+    if (dragStatus !== DragStatus.start) return false;
+    const eventX = e.clientX || e.changedTouches[0].clientX;
+    if (eventX === originPosition.x) return false;
+    const { spliced, verified } = verify();
+    if (spliced && verified) onSuccess();
+    else onFail();
+  }, [dragStatus, onFail, onSuccess, originPosition.x, verify]);
 
-    const handleDragEnd = (e: any) => {
-      if (!isMouseDown) return false;
-      isMouseDown = false;
-      const eventX = e.clientX || e.changedTouches[0].clientX;
-      if (eventX === originX) return false;
-      removeClass(sliderContainer, 'sliderContainer_active');
-      trail = _trail;
-      const { spliced, verified } = verify();
-      if (spliced) {
-        if (verified) {
-          addClass(sliderContainer, 'sliderContainer_success');
-          props.onSuccess();
-        } else {
-          addClass(sliderContainer, 'sliderContainer_fail');
-          text.innerHTML = '再试一次';
-          reset();
-        }
-      } else {
-        addClass(sliderContainer, 'sliderContainer_fail');
-        onFail();
-        setTimeout(() => {
-          reset();
-        }, 1000);
-      }
-    };
-    slider?.addEventListener('mousedown', handleDragStart);
-    slider?.addEventListener('touchstart', handleDragStart);
-    document.addEventListener('mousemove', handleDragMove);
-    document.addEventListener('touchmove', handleDragMove);
-    document.addEventListener('mouseup', handleDragEnd);
-    document.addEventListener('touchend', handleDragEnd);
-  }
+  const draw = useCallback(() => {
+    if (!imgRef.current) return;
+    setIsImgLoading(false);
+    const x = getRandomNumberByRange(L + 10, w - (L + 10));
+    const y = getRandomNumberByRange(10 + r * 2, h - (L + 10));
+    setPosition(() => ({ x, y }));
+    const _blockShape = (Math.random() * 100) % 3 >> 0;
+    drawD(canvasCtx, x, y, 'fill', _blockShape);
+    drawD(blockCtx, x, y, 'clip', _blockShape);
+    blockCtx?.drawImage(imgRef?.current, 0, 0, w, h);
+    canvasCtx?.drawImage(imgRef?.current, 0, 0, w, h);
+    const _y = y - r * 2 - 1 + BLOCK_POSITION_FIX[_blockShape];
+    const imageData = blockCtx?.getImageData(x - 3, _y, L, L);
+    if (imageData) {
+      blockCtx?.canvas.setAttribute('width', String(imageData?.width || L));
+      blockCtx?.putImageData(imageData, 0, _y);
+    }
+  }, [blockCtx, canvasCtx]);
+
+  const onImgLoadError = useCallback(() => {
+    if (resultRef.current) resultRef.current.innerText = '';
+  }, [resultRef]);
 
   useEffect(() => {
-    initDOM();
-    initImg();
-    bindEvents();
-  }, []);
+    imgRef?.current?.addEventListener('load', draw);
+    imgRef?.current?.addEventListener('error', onImgLoadError);
+    return () => {
+      imgRef?.current?.removeEventListener('load', draw);
+      imgRef?.current?.removeEventListener('error', onImgLoadError);
+    };
+  }, [imgRef, draw, onImgLoadError]);
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+    return () => {
+      document.removeEventListener('mousemove', handleDragMove);
+      document.removeEventListener('mouseup', handleDragEnd);
+    };
+  }, [handleDragEnd, handleDragMove]);
+
+  useEffect(() => {
+    sliderRef?.current?.addEventListener('mousedown', handleDragStart);
+    return () => {
+      sliderRef?.current?.removeEventListener('mousedown', handleDragStart);
+    };
+  }, [sliderRef, handleDragStart]);
+
+  useEffect(() => {
+    refreshIconRef?.current?.addEventListener('click', reset);
+    return () => {
+      refreshIconRef?.current?.removeEventListener('click', reset);
+    };
+  }, [reset, refreshIconRef]);
+
+  useEffect(() => {
+    setCanvasCtx(canvasRef?.current?.getContext('2d') || null);
+  }, [canvasRef]);
+
+  useEffect(() => {
+    setBlockCtx(blockRef?.current?.getContext('2d') || null);
+  }, [blockRef]);
 
   return (
     <div style={{
@@ -274,12 +245,43 @@ const MVerify = (props: PropsI) => {
       margin: '0 auto',
     }}
     >
-      <p>请完成以下验证后继续:</p>
+      <p className="un-copy">请完成以下验证后继续:</p>
       <div
-        ref={containerRef}
         style={{
-          borderRadius: 10, width: 350, height: 200, backgroundColor: '#fff', position: 'relative' }}
-      />
+          zIndex: isImgLoading ? 0 : 1,
+          borderRadius: 10,
+          width: 350,
+          height: 200,
+          backgroundColor: '#fff',
+          position: 'relative',
+        }}
+      >
+        <Spin spinning={isImgLoading} size="large" style={{ position: 'absolute', width: w, height: h, lineHeight: `${h}px` }} />
+        <img ref={imgRef} src={imgSrc} alt="" srcSet="" width={w} height={h} crossOrigin="anonymous" style={{ zIndex: -1, position: 'absolute' }} />
+        <canvas ref={canvasRef} width={w} height={h} />
+        <div ref={refreshIconRef} className="refreshIcon" />
+        <canvas ref={blockRef} height={h} style={{ left: `${blockLeft}px` }} className="block" />
+        <span
+          ref={resultRef}
+          className={`resultTip
+            ${verifyStatus === VerifyStatus.success ? 'success' : ''}
+            ${verifyStatus === VerifyStatus.fail ? 'fail' : ''}
+          `}
+          style={{ opacity: verifyStatus === VerifyStatus.pending ? 0 : 1 }}
+        />
+        <div
+          className={`sliderContainer
+            ${verifyStatus === VerifyStatus.success ? 'sliderContainer_success' : ''}
+            ${verifyStatus === VerifyStatus.fail ? 'sliderContainer_fail' : ''}
+          `}
+        >
+          <div style={{ width: `${moveX}px` }} className="sliderMask" />
+          <div ref={sliderRef} style={{ left: `${moveX}px` }} className="slider">
+            <span className="sliderIcon" />
+          </div>
+          <span ref={textRef} className="sliderText un-copy">向右滑动填充拼图</span>
+        </div>
+      </div>
     </div>
   );
 };

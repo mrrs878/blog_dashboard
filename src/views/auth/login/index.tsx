@@ -28,7 +28,7 @@ const Index = (props: PropsI) => {
 
   useEffect(() => {
     if (!loginRes) return;
-    message.info(loginRes?.msg, 1000);
+    message.info(loginRes?.msg);
     if (!loginRes.success) return;
     localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, loginRes.data.token);
     store.dispatch({ type: actions.UPDATE_USER, data: loginRes.data });
@@ -55,14 +55,27 @@ const Index = (props: PropsI) => {
   }
 
   return (
-    <div className="container" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', width: '100%', height: '100%', marginTop: 0 }}>
+    <div
+      className="container"
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+        marginTop: 0,
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      }}
+    >
       <div style={{
-        background: 'url(https://mrrsblog.oss-cn-shanghai.aliyuncs.com/timg.jpg) no-repeat center',
+        background: 'url(https://picsum.photos/1920/1080) no-repeat center',
         position: 'fixed',
         width: '100vw',
         left: 0,
         top: 0,
-        bottom: 70,
+        bottom: 0,
       }}
       />
       <Form
@@ -98,8 +111,8 @@ const Index = (props: PropsI) => {
           </Button>
         </Form.Item>
       </Form>
-      <Modal style={{ padding: 0 }} visible={verifyModalF} width="max-content" footer={null} onCancel={() => setVerifyModalF(false)}>
-        <MVerify onSuccess={onVerifySuccess} />
+      <Modal style={{ padding: 0 }} visible={verifyModalF} centered width="max-content" footer={null} onCancel={() => setVerifyModalF(false)}>
+        <MVerify onSuccess={onVerifySuccess} onClose={() => setVerifyModalF(false)} />
       </Modal>
       <Spin spinning={isLogin} />
     </div>
