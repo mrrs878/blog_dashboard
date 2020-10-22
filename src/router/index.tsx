@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import MAIN_CONFIG from '../config';
 import MLoading from '../components/MLoading';
 import { AUTH_ROUTES, AUTH_ROUTES_MAP } from './authRoutes';
-import { HOME_ROUTES, HOME_ROUTES_MAP } from './homeRoutes';
 import { PROFILE_ROUTES, PROFILE_ROUTES_MAP } from './profileRoutes';
 import { SETTING_ROUTES, SETTING_ROUTES_MAP } from './settingRoutes';
 import { ABOUT_ROUTES, ABOUT_ROUTES_MAP } from './aboutRoutes';
@@ -32,7 +31,6 @@ const mapState2Props = (state: AppState) => ({
 
 const ROUTES_MAP = {
   ...AUTH_ROUTES_MAP,
-  ...HOME_ROUTES_MAP,
   ...PROFILE_ROUTES_MAP,
   ...SETTING_ROUTES_MAP,
   ...ABOUT_ROUTES_MAP,
@@ -43,7 +41,6 @@ const ROUTES_MAP = {
 
 const ROUTES: Array<RouteConfigI> = [
   ...AUTH_ROUTES,
-  ...HOME_ROUTES,
   ...PROFILE_ROUTES,
   ...SETTING_ROUTES,
   ...ABOUT_ROUTES,

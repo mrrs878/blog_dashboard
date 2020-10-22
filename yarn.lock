@@ -2090,14 +2090,6 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
-"@uiw/react-codemirror@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npm.taobao.org/@uiw/react-codemirror/download/@uiw/react-codemirror-2.2.1.tgz#4b5785ccf088745394089bcbdfdb08ada0067602"
-  integrity sha1-S1eFzPCIdFOUCJvL39sIraAGdgI=
-  dependencies:
-    codemirror "^5.50.2"
-    prop-types "^15.7.2"
-
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"
@@ -3591,10 +3583,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@^5.50.2, codemirror@^5.55.0:
-  version "5.55.0"
-  resolved "https://registry.npm.taobao.org/codemirror/download/codemirror-5.55.0.tgz?cache=0&sync_timestamp=1592745428423&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcodemirror%2Fdownload%2Fcodemirror-5.55.0.tgz#23731f641288f202a6858fdc878f3149e0e04363"
-  integrity sha1-I3MfZBKI8gKmhY/ch48xSeDgQ2M=
+codemirror@^5.58.1:
+  version "5.58.1"
+  resolved "https://registry.npm.taobao.org/codemirror/download/codemirror-5.58.1.tgz#ec6bf38ad2a17f74c61bd00cc6dc5a69bd167854"
+  integrity sha1-7GvzitKhf3TGG9AMxtxaab0WeFQ=
 
 collapse-white-space@^1.0.2:
   version "1.0.6"
@@ -3657,9 +3649,9 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
     delayed-stream "~1.0.0"
 
 commander@*:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
-  integrity sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
+  version "6.1.0"
+  resolved "https://registry.npm.taobao.org/commander/download/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
+  integrity sha1-+Ncit4EDFBAGtm9Me6HpcxW6dbw=
 
 commander@^2.11.0, commander@^2.20.0:
   version "2.20.3"
@@ -8026,8 +8018,8 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@~0.5.1:
 
 mockjs@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mockjs/-/mockjs-1.1.0.tgz#e6a0c378e91906dbaff20911cc0273b3c7d75b06"
-  integrity sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==
+  resolved "https://registry.npm.taobao.org/mockjs/download/mockjs-1.1.0.tgz#e6a0c378e91906dbaff20911cc0273b3c7d75b06"
+  integrity sha1-5qDDeOkZBtuv8gkRzAJzs8fXWwY=
   dependencies:
     commander "*"
 
@@ -10261,6 +10253,11 @@ react-app-rewired@^2.1.5:
   dependencies:
     semver "^5.6.0"
 
+react-codemirror2@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.npm.taobao.org/react-codemirror2/download/react-codemirror2-7.2.1.tgz#38dab492fcbe5fb8ebf5630e5bb7922db8d3a10c"
+  integrity sha1-ONq0kvy+X7jr9WMOW7eSLbjToQw=
+
 react-dev-utils@^10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.2.1.tgz#f6de325ae25fa4d546d09df4bb1befdc6dd19c19"
@@ -12340,9 +12337,9 @@ url@^0.11.0:
     querystring "0.2.0"
 
 use-merge-value@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/use-merge-value/-/use-merge-value-1.0.1.tgz#51f27c34e381f98dc4a010e71cfb5862fedde26b"
-  integrity sha512-GXmzGbxDhtun+UQnUhDy7d+mRUvN6pewkSDhOSVeGlIqu0YjrVVbK+CxyU7CWaiE4u0jGAagYJ0wVizAYYqBhw==
+  version "1.0.2"
+  resolved "https://registry.npm.taobao.org/use-merge-value/download/use-merge-value-1.0.2.tgz#6da9de949a1ec9d08cbc2b43832fe2a214f502dc"
+  integrity sha1-banelJoeydCMvCtDgy/iohT1Atw=
 
 use@^3.1.0:
   version "3.1.1"

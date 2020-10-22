@@ -6,6 +6,7 @@ import { Base64 } from 'js-base64';
 import CodeBlock from './CodeBlock';
 import '../../assets/less/md.theme.orange.less';
 import style from './preview.module.less';
+import { useDocumentTitle } from '../../tools/hook';
 
 interface PropsI {
   value: ArticleI;
@@ -14,13 +15,12 @@ interface PropsI {
 
 const Preview = (props: PropsI) => {
   const [formattedMd, setFormattedMd] = useState<ArticleI>();
+  useDocumentTitle(formattedMd?.title || 'my blog');
+
   useEffect(() => {
     const { title, createTime, updateTime, tags, categories, content, author } = props.value;
     setFormattedMd({ title, createTime, updateTime, tags, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
   }, [props]);
-  useEffect(() => {
-    document.title = formattedMd?.title || 'my blog';
-  }, [formattedMd]);
 
   return (
     <div className={`container ${props.fullscreen ? '' : style.editScreen}`} id="write" style={{ display: 'block' }}>

@@ -1,21 +1,21 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-16 17:32:22
+ * @LastEditTime: 2020-10-22 18:20:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
  */
 import React, { useEffect, useState } from 'react';
 import { Button, Space, Upload, message, Row, Col } from 'antd';
-import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, FullscreenOutlined, FullscreenExitOutlined, ReloadOutlined } from '@ant-design/icons';
+import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
 import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/interface';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Base64 } from 'js-base64';
 import { connect } from 'react-redux';
 import MEditor from '../../components/MEditor/Editor';
 import MPreview from '../../components/MEditor/Preview';
-import store, { AppState } from '../../store';
+import { AppState } from '../../store';
 import useRequest from '../../hooks/useRequest';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
 import useGetArticles from '../../hooks/useGetArticles';
@@ -87,10 +87,6 @@ const ArticleDetail = (props: PropsI) => {
     setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: article.createTime, author: props.user.name, updateTime: new Date().toLocaleString() });
   }
 
-  function onToggleScreenClick() {
-    store.dispatch({ type: 'UPDATE_FULL_SCREEN', data: !props.fullScreen });
-  }
-
   function onUploadChange(info: UploadChangeParam) {
     console.log(info);
   }
@@ -153,13 +149,10 @@ const ArticleDetail = (props: PropsI) => {
             <Button icon={<ReloadOutlined />} onClick={onResetClick}>重置</Button>
           </Space>
         </Col>
-        <Col>
-          <Button icon={props.fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />} onClick={onToggleScreenClick}>全屏</Button>
-        </Col>
       </Row>
       <br />
       <div style={{
-        display: isEdit ? 'flex' : 'unset', justifyContent: 'space-between', flexDirection: 'row', overflow: 'auto',
+        height: '100%',
       }}
       >
         {
@@ -171,7 +164,7 @@ const ArticleDetail = (props: PropsI) => {
           && (
           <MEditor
             mode="markdown"
-            theme="base16-dark"
+            theme="material"
             keyMap="sublime"
             value={markdownSrc}
             onChange={onMarkdownChange}

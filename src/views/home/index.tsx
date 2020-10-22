@@ -3,7 +3,8 @@ import { Axis, Chart, Coordinate, Interval, Line, Point, Tooltip } from 'bizchar
 import { compose, groupWith, map } from 'ramda';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
-import useGetArticles from '../../hooks/useGetArticles';
+import { GET_ALL_ARTICLES } from '../../api/article';
+import useRequest from '../../hooks/useRequest';
 
 interface PVChartDataI {
   page: string;
@@ -23,7 +24,7 @@ const mapState2Props = (state: AppState) => ({
 });
 
 const Dashboard = (props: PropsI) => {
-  const { getArticlesRes, getArticles } = useGetArticles(false, true);
+  const [, getArticlesRes, getArticles] = useRequest(GET_ALL_ARTICLES, false);
   const [pvData, setPVData] = useState<Array<PVChartDataI>>([]);
   const [uvData] = useState<Array<UVChartDataI>>([]);
 
