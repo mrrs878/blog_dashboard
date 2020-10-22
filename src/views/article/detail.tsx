@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-22 19:17:10
+ * @LastEditTime: 2020-10-22 19:21:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -13,7 +13,6 @@ import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/inter
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Base64 } from 'js-base64';
 import { connect } from 'react-redux';
-import { curry } from 'ramda';
 import MCodeMirror from '../../components/MEditor/MCodeMirror';
 import MWangEditor from '../../components/MEditor/MWangEditor';
 import MPreview from '../../components/MEditor/Preview';
