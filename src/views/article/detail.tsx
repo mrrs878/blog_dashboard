@@ -1,19 +1,21 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-22 18:20:46
+ * @LastEditTime: 2020-10-22 19:17:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
  */
 import React, { useEffect, useState } from 'react';
-import { Button, Space, Upload, message, Row, Col } from 'antd';
+import { Button, Space, Upload, message, Row, Col, Menu, Dropdown } from 'antd';
 import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
 import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/interface';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Base64 } from 'js-base64';
 import { connect } from 'react-redux';
-import MEditor from '../../components/MEditor/Editor';
+import { curry } from 'ramda';
+import MCodeMirror from '../../components/MEditor/MCodeMirror';
+import MWangEditor from '../../components/MEditor/MWangEditor';
 import MPreview from '../../components/MEditor/Preview';
 import { AppState } from '../../store';
 import useRequest from '../../hooks/useRequest';
@@ -50,6 +52,7 @@ const ArticleDetail = (props: PropsI) => {
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
   const [, getArticleRes, , reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
   const [updateArticleLoading, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
   const { getArticles } = useGetArticles(false);
@@ -85,6 +88,11 @@ const ArticleDetail = (props: PropsI) => {
   function onToggleEditable() {
     setIsEdit(!isEdit);
     setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: article.createTime, author: props.user.name, updateTime: new Date().toLocaleString() });
+  }
+
+  function selectEditerMode() {
+    setEditMode(!editMode);
+    onToggleEditable();
   }
 
   function onUploadChange(info: UploadChangeParam) {
@@ -130,12 +138,50 @@ const ArticleDetail = (props: PropsI) => {
     window.location.href = props.location.pathname;
   }
 
+  const Editor = () => {
+    if (isEdit) {
+      return editMode
+        ? (
+          <MCodeMirror
+            mode="markdown"
+            theme="material"
+            keyMap="sublime"
+            value={markdownSrc}
+            onChange={onMarkdownChange}
+          />
+        ) : <MWangEditor />;
+    }
+    return <MPreview value={article} fullscreen={!isEdit} />;
+  };
+
   return (
     <div className="container">
       <Row>
         <Col flex={1}>
           <Space className="controller">
-            <Button icon={isEdit ? <EyeOutlined /> : <EditOutlined />} onClick={onToggleEditable} type={isEdit ? 'primary' : 'default'}>{ isEdit ? '预览' : '编辑' }</Button>
+            {
+              isEdit ? (
+                <Button icon={<EyeOutlined />} onClick={onToggleEditable} type="default">预览</Button>
+              ) : (
+                <Dropdown overlay={(
+                  <Menu onClick={() => selectEditerMode()}>
+                    <Menu.Item>
+                      经典模式
+                    </Menu.Item>
+                    <Menu.Item>
+                      富文本模式
+                    </Menu.Item>
+                  </Menu>
+                )}
+                >
+                  <Button>
+                    编辑
+                    {' '}
+                    <EditOutlined />
+                  </Button>
+                </Dropdown>
+              )
+            }
             {
               !createOrEdit && <Button icon={<RedoOutlined />} onClick={onSyncClick}>刷新</Button>
             }
@@ -155,22 +201,7 @@ const ArticleDetail = (props: PropsI) => {
         height: '100%',
       }}
       >
-        {
-          !isEdit
-          && <MPreview value={article} fullscreen={!isEdit} />
-        }
-        {
-          isEdit
-          && (
-          <MEditor
-            mode="markdown"
-            theme="material"
-            keyMap="sublime"
-            value={markdownSrc}
-            onChange={onMarkdownChange}
-          />
-          )
-        }
+        <Editor />
       </div>
     </div>
   );
