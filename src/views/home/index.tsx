@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Axis, Chart, Coordinate, Interval, Line, Point, Tooltip } from 'bizcharts';
-import { compose, groupWith, map } from 'ramda';
+import { compose, groupWith, map, sort } from 'ramda';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { GET_ALL_ARTICLES } from '../../api/article';
@@ -34,6 +34,7 @@ const Dashboard = (props: PropsI) => {
       setPVData,
       map<Array<ArticleI>, PVChartDataI>((item) => ({ page: item[0].author, view: item.length })),
       groupWith<ArticleI>((a, b) => a.author === b.author),
+      sort<ArticleI>((a, b) => (a.author === b.author ? 0 : -1)),
     )(getArticlesRes.data);
   }, [getArticles, getArticlesRes, props.articles]);
 

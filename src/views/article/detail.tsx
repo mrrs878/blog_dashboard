@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-22 19:21:21
+ * @LastEditTime: 2020-10-23 17:42:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -13,6 +13,7 @@ import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/inter
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Base64 } from 'js-base64';
 import { connect } from 'react-redux';
+import { clone } from 'ramda';
 import MCodeMirror from '../../components/MEditor/MCodeMirror';
 import MWangEditor from '../../components/MEditor/MWangEditor';
 import MPreview from '../../components/MEditor/Preview';
@@ -20,6 +21,7 @@ import { AppState } from '../../store';
 import useRequest from '../../hooks/useRequest';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
 import useGetArticles from '../../hooks/useGetArticles';
+import eventEmit from '../../tools/EventEmit';
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
@@ -35,7 +37,7 @@ const emptyArticle = { title: '', categories: '', tags: '', content: '', createT
 const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
-  const [, summary, content] = markdownSrc?.split('---');
+  const [, summary, content] = clone(markdownSrc?.split('---'));
   const info = summary
           ?.replace(/\r\n/g, '')
           ?.replace(/\n/g, '')
@@ -51,11 +53,21 @@ const ArticleDetail = (props: PropsI) => {
   const [article, setArticle] = useState<ArticleI>(emptyArticle);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(true);
   const [, getArticleRes, , reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
   const [updateArticleLoading, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
   const { getArticles } = useGetArticles(false);
   const [createArticleLoading, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
+
+  useEffect(() => {
+    eventEmit.on('sendEditorContent', (value: string) => {
+      setMarkdownSrc(value);
+      setArticle(({ createTime }) => ({ ...formatMarkdownSrc(value), createTime, author: props.user.name, updateTime: new Date().toLocaleString() }));
+    });
+    return () => {
+      eventEmit.removeHandler('sendEditorContent', setMarkdownSrc);
+    };
+  }, [props.user.name]);
 
   useEffect(() => {
     if (createOrEdit) return;
@@ -80,18 +92,15 @@ const ArticleDetail = (props: PropsI) => {
     setIsEdit(props.match.params.id === '-1');
   }, [props.match.params.id]);
 
-  function onMarkdownChange(instance: CodeMirror.Editor) {
-    setMarkdownSrc(instance.getValue());
-  }
 
   function onToggleEditable() {
     setIsEdit(!isEdit);
-    setArticle({ ...formatMarkdownSrc(markdownSrc), createTime: article.createTime, author: props.user.name, updateTime: new Date().toLocaleString() });
+    if (isEdit) eventEmit.emit('getEditorContent');
   }
 
-  function selectEditerMode() {
-    setEditMode(!editMode);
-    onToggleEditable();
+  function selectEditerMode(e: any) {
+    setEditMode(e.key === 'md');
+    setIsEdit(!isEdit);
   }
 
   function onUploadChange(info: UploadChangeParam) {
@@ -137,6 +146,7 @@ const ArticleDetail = (props: PropsI) => {
     window.location.href = props.location.pathname;
   }
 
+
   const Editor = () => {
     if (isEdit) {
       return editMode
@@ -146,9 +156,8 @@ const ArticleDetail = (props: PropsI) => {
             theme="material"
             keyMap="sublime"
             value={markdownSrc}
-            onChange={onMarkdownChange}
           />
-        ) : <MWangEditor />;
+        ) : <MWangEditor value={markdownSrc} />;
     }
     return <MPreview value={article} fullscreen={!isEdit} />;
   };
@@ -163,11 +172,11 @@ const ArticleDetail = (props: PropsI) => {
                 <Button icon={<EyeOutlined />} onClick={onToggleEditable} type="default">预览</Button>
               ) : (
                 <Dropdown overlay={(
-                  <Menu onClick={() => selectEditerMode()}>
-                    <Menu.Item>
+                  <Menu onClick={selectEditerMode}>
+                    <Menu.Item key="md">
                       经典模式
                     </Menu.Item>
-                    <Menu.Item>
+                    <Menu.Item key="text">
                       富文本模式
                     </Menu.Item>
                   </Menu>

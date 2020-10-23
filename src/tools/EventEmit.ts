@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2020-10-23 15:04:00
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\tools\EventEmit.ts
+ */
 class EventEmit {
   private readonly events: DynamicObjectKey<Array<Function>>;
 
@@ -58,4 +66,6 @@ class EventEmit {
   }
 }
 
-export default EventEmit.getInstance()();
+const eventEmit:EventEmit = EventEmit.getInstance()();
+
+export default eventEmit;

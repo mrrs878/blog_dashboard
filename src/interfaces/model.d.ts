@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-19 11:48:47
+ * @LastEditTime: 2020-10-23 17:10:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\model.d.ts
@@ -89,6 +89,7 @@ interface ArticleI {
   tags: string;
   description: string;
   author: string;
+  author_id?: string;
   comments?: Array<CommentI>;
   likes?: Array<{ name: string }>;
 }
