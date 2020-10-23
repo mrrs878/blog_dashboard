@@ -37,4 +37,3 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: mrrs878/blog_dashboard
         tags: latest
-        path: /build
