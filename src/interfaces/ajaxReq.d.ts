@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-15 23:05:06
+ * @LastEditTime: 2020-10-26 22:25:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\ajaxReq.d.ts
@@ -100,4 +100,9 @@ interface UpdateUserInfoReqI {
   address: string;
   tags: Array<string>;
   teams: Array<string>;
+}
+
+interface UpdateUserStatusReqI {
+  status: number;
+  userId: string;
 }

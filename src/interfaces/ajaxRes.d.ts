@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-15 09:49:52
- * @LastEditTime: 2020-10-19 10:58:12
+ * @LastEditTime: 2020-10-26 22:26:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interfaces\ajaxRes.d.ts
@@ -62,3 +62,5 @@ interface AddCommentResI extends BaseResI<CommentI> {}
 interface GetUsersResI extends BaseResI<Array<UserI>> {}
 
 interface UpdateUserInfoResI extends BaseResI<UserI> {}
+
+interface UpdateUserStatusI extends BaseResI<any> {}

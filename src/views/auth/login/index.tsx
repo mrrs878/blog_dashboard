@@ -37,7 +37,7 @@ const Index = (props: PropsI) => {
 
   useEffect(() => {
     if (!getMenusRes || !getMenusRes.success) return;
-    props.history.replace('/main');
+    props.history.replace('/home');
   }, [getMenusRes, props.history]);
 
   function onVerifySuccess() {

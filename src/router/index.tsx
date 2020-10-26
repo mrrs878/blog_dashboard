@@ -51,7 +51,7 @@ const ROUTES: Array<RouteConfigI> = [
 
 const redirectMain = new Chain((route: RouteConfigI) => {
   if (route.path === '/') {
-    window.location.href = '/main';
+    window.location.href = '/home';
   }
   return NEXT_SUCCESSOR;
 });
