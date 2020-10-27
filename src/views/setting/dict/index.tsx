@@ -79,7 +79,7 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<DictI>>>([]);
   const [dictCount, setDictCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [, reGetDicts] = useGetDicts(false, true);
+  const [, reGetDicts, getDictsLoading] = useGetDicts(false, true);
 
   useEffect(() => {
     setDict(props.common.dicts);
@@ -124,7 +124,7 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
         title={() => (
           <Space>
             <Button type="primary" style={{ width: 100 }} onClick={onCreateDictsClick}>添加字段</Button>
-            <Button type="primary" style={{ width: 100 }} onClick={onRefreshDictsClick}>刷新</Button>
+            <Button type="primary" style={{ width: 100 }} loading={getDictsLoading} onClick={onRefreshDictsClick}>刷新</Button>
             {
               dictCount > dict.length
               && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>

@@ -38,7 +38,7 @@ function getCommentListColumns(comments: Array<AuthorCommentsI>): Array<ColumnPr
 }
 
 const Comments = (props: PropsI) => {
-  const [, getCommentsRes] = useRequest<GetCommentsReqI, GetAuthorCommentsResI>(GET_AUTHOR_COMMENTS);
+  const [getCommentsLoading, getCommentsRes, , reGetComments] = useRequest<GetCommentsReqI, GetAuthorCommentsResI>(GET_AUTHOR_COMMENTS);
   const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<AuthorCommentsI>>>([]);
   const [loadMoreF, setLoadMoreF] = useState(false);
   const [comment, setComment] = useState<Array<AuthorCommentsI>>([]);
@@ -58,8 +58,6 @@ const Comments = (props: PropsI) => {
       },
     };
   }
-
-  function onUpdateCommentClick() {}
 
   async function onLoadMore() {
     try {
@@ -81,7 +79,7 @@ const Comments = (props: PropsI) => {
         pagination={{ defaultPageSize: 20 }}
         title={() => (
           <Space>
-            <Button type="primary" style={{ width: 100 }} onClick={onUpdateCommentClick}>刷新</Button>
+            <Button type="primary" style={{ width: 100 }} loading={getCommentsLoading} onClick={reGetComments}>刷新</Button>
             {
             commentCount > comment.length
             && <Button style={{ marginLeft: 10, width: 100 }} loading={loadMoreF} onClick={onLoadMore}>加载更多</Button>

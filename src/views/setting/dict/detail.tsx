@@ -52,8 +52,8 @@ const DictDetail = (props: PropsI) => {
   const [dictTypes, setDictTypes] = useState<Array<{ type: string, type_view: string }>>([]);
   const [dictLabels, setDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
   const [inputDictLabels, setInputDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
-  const [, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, undefined, false);
-  const [, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, undefined, false);
+  const [createDictLoading, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, undefined, false);
+  const [updateDictLoading, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, undefined, false);
   const [getDicts] = useGetDicts(false);
   const [addDictform] = Form.useForm();
 
@@ -245,7 +245,7 @@ const DictDetail = (props: PropsI) => {
         <Form.Item wrapperCol={tailFormItemLayout.wrapperCol}>
           <Button htmlType="reset">重置</Button>
           <Divider type="vertical" />
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" loading={createDictLoading || updateDictLoading} htmlType="submit">
             { createOrUpdate ? '添加' : '确定' }
           </Button>
         </Form.Item>
