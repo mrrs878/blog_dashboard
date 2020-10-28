@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/addon/display/autorefresh';
 import 'codemirror/addon/comment/comment';
@@ -24,11 +24,11 @@ interface PropsI {
 }
 
 const Editor = (props: PropsI) => {
-  const [content, setContent] = useState(props.value);
+  const codeMirrorRef = useRef<CodeMirror>(null);
 
   const getEditorContentHandler = useCallback(() => {
-    eventEmit.emit('sendEditorContent', content);
-  }, [content]);
+    eventEmit.emit('sendEditorContent', (codeMirrorRef.current as any).editor.getValue());
+  }, []);
 
   useEffect(() => {
     eventEmit.on('getEditorContent', getEditorContentHandler);
@@ -39,9 +39,9 @@ const Editor = (props: PropsI) => {
 
   return (
     <CodeMirror
+      ref={codeMirrorRef}
       className={style.codeMirror}
       value={props.value}
-      onChange={(instance: CodeMirror.Editor, data: CodeMirror.EditorChange, value: string) => setContent(value)}
       options={{
         mode: props.mode,
         theme: 'material-darker',

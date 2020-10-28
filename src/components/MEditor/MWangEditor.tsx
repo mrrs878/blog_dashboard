@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import E from 'wangeditor';
 import showdown from 'showdown';
 import eventEmit from '../../tools/EventEmit';
@@ -16,11 +16,9 @@ function formatMarkdownSrc(src: string): [string, string] {
 }
 
 const MWangEditor = (props: PropsI) => {
-  const [value, setValue] = useState('');
-
   const getEditorContentHandler = useCallback(() => {
-    eventEmit.emit('sendEditorContent', showdownConverter.makeMarkdown(value).slice(1));
-  }, [value]);
+    eventEmit.emit('sendEditorContent', showdownConverter.makeMarkdown(editor.txt.text() || '').slice(1));
+  }, []);
 
   useEffect(() => {
     eventEmit.on('getEditorContent', getEditorContentHandler);
@@ -48,7 +46,6 @@ const MWangEditor = (props: PropsI) => {
       'undo',
       'redo',
     ];
-    editor.config.onchange = setValue;
     const [header, content] = formatMarkdownSrc(props.value);
     editor.create();
     editor.txt.html(`<p>---${header}---</p>${showdownConverter.makeHtml(content)}`);

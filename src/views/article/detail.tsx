@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-23 17:42:16
+ * @LastEditTime: 2020-10-28 23:16:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -199,7 +199,7 @@ const ArticleDetail = (props: PropsI) => {
                 上传Markdown文件
               </Button>
             </Upload>
-            <Button icon={<SaveOutlined />} loading={updateArticleLoading || createArticleLoading} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
+            <Button icon={<SaveOutlined />} disabled={isEdit} loading={updateArticleLoading || createArticleLoading} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
             <Button icon={<ReloadOutlined />} onClick={onResetClick}>重置</Button>
           </Space>
         </Col>
