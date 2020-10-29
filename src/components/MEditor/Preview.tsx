@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Space } from 'antd';
 import { CalendarOutlined, FolderOutlined, UserOutlined, PaperClipOutlined } from '@ant-design/icons';
@@ -14,13 +14,14 @@ interface PropsI {
 }
 
 const Preview = (props: PropsI) => {
-  const [formattedMd, setFormattedMd] = useState<ArticleI>();
+  const formattedMd = useMemo(
+    () => {
+      const { title, createTime, updateTime, tags, categories, content, author } = props.value;
+      return ({ title, createTime, updateTime, tags, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
+    },
+    [props.value],
+  );
   useDocumentTitle(formattedMd?.title || 'my blog');
-
-  useEffect(() => {
-    const { title, createTime, updateTime, tags, categories, content, author } = props.value;
-    setFormattedMd({ title, createTime, updateTime, tags, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
-  }, [props]);
 
   return (
     <div className={`container ${props.fullscreen ? '' : style.editScreen}`} id="write" style={{ display: 'block' }}>

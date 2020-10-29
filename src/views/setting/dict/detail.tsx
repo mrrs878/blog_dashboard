@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Divider, Form, Input, Radio, message, AutoComplete } from 'antd';
 import { connect } from 'react-redux';
@@ -45,12 +45,11 @@ const tailFormItemLayout = {
 const emptyDict: DictI = { _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', name_view: '', value: 0, createTime: '', updateTime: '', creator: { name: '' }, updater: { name: '' } };
 
 const DictDetail = (props: PropsI) => {
-  const [dicts] = useState(props.state.dicts);
   const [dataDict, setDataDict] = useState<DictI>(emptyDict);
+  const dictLabels = useMemo(() => uniq(props.state.dicts.map(({ type, label, label_view }) => ({ type, label, label_view }))), [props.state.dicts]);
+  const dictTypes = useMemo(() => uniq(props.state.dicts.map(({ type, type_view }) => ({ type, type_view }))), [props.state.dicts]);
+  const dictStatus = useMemo(() => props.state.dicts.filter((item) => item.label === 'status').map((item) => ({ value: item.value, title: item.name_view })), [props.state.dicts]);
   const [createOrUpdate, setCreateOrUpdate] = useState(false);
-  const [dictStatus, setDictStatus] = useState<Array<{ value: number; title: string }>>([]);
-  const [dictTypes, setDictTypes] = useState<Array<{ type: string, type_view: string }>>([]);
-  const [dictLabels, setDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
   const [inputDictLabels, setInputDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
   const [createDictLoading, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, undefined, false);
   const [updateDictLoading, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, undefined, false);
@@ -58,18 +57,9 @@ const DictDetail = (props: PropsI) => {
   const [addDictform] = Form.useForm();
 
   useEffect(() => {
-    const _dictTypes = uniq(dicts.map(({ type, type_view }) => ({ type, type_view })));
-    const _dictLabels = uniq(dicts.map(({ type, label, label_view }) => ({ type, label, label_view })));
-    const _dictStatus = dicts.filter((item) => item.label === 'status').map((item) => ({ value: item.value, title: item.name_view }));
-    setDictLabels(_dictLabels);
-    setDictTypes(_dictTypes);
-    setDictStatus(_dictStatus);
-  }, [dicts]);
-
-  useEffect(() => {
     const { type, type_view, label, label_view, name, status, value, name_view } = dataDict;
     addDictform.setFieldsValue({ type, type_view, label, label_view, name, status, value, name_view });
-  }, [dataDict, addDictform, dicts]);
+  }, [dataDict, addDictform, props.state.dicts]);
 
   useEffect(() => {
     if (props.match.params.id === String(-1)) {
@@ -77,9 +67,9 @@ const DictDetail = (props: PropsI) => {
       setTimeout(addDictform.resetFields);
       return;
     }
-    const data = dicts.find((item) => item._id === props.match.params.id) || emptyDict;
+    const data = props.state.dicts.find((item) => item._id === props.match.params.id) || emptyDict;
     setDataDict(data);
-  }, [addDictform, props.match.params.id, dicts]);
+  }, [addDictform, props.match.params.id, props.state.dicts]);
 
   useEffect(() => {
     if (!createDictRes) return;
@@ -120,14 +110,14 @@ const DictDetail = (props: PropsI) => {
   function validateDictValue(rule: RuleObject, _value: StoreValue) {
     if (_value === '' || (_value >> 0 === dataDict.value)) return Promise.resolve();
     const { type, label } = addDictform.getFieldsValue(['type', 'label']);
-    const tmp = dicts.filter((item) => item.type === type && item.label === label).map(({ value }) => value);
+    const tmp = props.state.dicts.filter((item) => item.type === type && item.label === label).map(({ value }) => value);
     return tmp.includes(_value >> 0) ? Promise.reject(new Error('该值已被占用，请输入其他值')) : Promise.resolve();
   }
 
   function validateDictName(rule: RuleObject, value: StoreValue) {
     if (value === '' || value === dataDict.name) return Promise.resolve();
     const { type, label } = addDictform.getFieldsValue(['type', 'label']);
-    const tmp = dicts.filter((item) => item.type === type && item.label === label).map(({ name }) => name);
+    const tmp = props.state.dicts.filter((item) => item.type === type && item.label === label).map(({ name }) => name);
     return tmp.includes(value) ? Promise.reject(new Error('该名称已被占用，请输入其他值')) : Promise.resolve();
   }
 
