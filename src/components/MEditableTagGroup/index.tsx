@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Tag, Input } from 'antd';
 import { TweenOneGroup } from 'rc-tween-one';
@@ -15,14 +15,14 @@ const MEditableTagGroup = (props: PropsI) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  function handleClose(removedTag: string) {
+  const handleClose = useCallback((removedTag: string) => {
     const _tags = tags.filter((tag) => tag !== removedTag);
     setTags(_tags);
     props.onRemove(_tags);
-  }
+  }, [props, tags]);
 
-  function forMap(tag: string) {
-    const tagElem = (
+  const ForMap = (tag: string) => (
+    <span key={tag} style={{ display: 'inline-block' }}>
       <Tag
         closable
         onClose={(e: any) => {
@@ -32,23 +32,18 @@ const MEditableTagGroup = (props: PropsI) => {
       >
         {tag}
       </Tag>
-    );
-    return (
-      <span key={tag} style={{ display: 'inline-block' }}>
-        {tagElem}
-      </span>
-    );
-  }
+    </span>
+  );
 
-  function showInput() {
+  const showInput = useCallback(() => {
     setInputVisible(true);
-  }
+  }, []);
 
-  function handleInputChange(e: any) {
+  const handleInputChange = useCallback((e: any) => {
     setInputValue(e.target.value);
-  }
+  }, []);
 
-  function handleInputConfirm() {
+  const handleInputConfirm = useCallback(() => {
     let _tags: Array<string> = [];
     if (inputValue && tags.indexOf(inputValue) === -1) {
       _tags = [...tags, inputValue];
@@ -57,7 +52,7 @@ const MEditableTagGroup = (props: PropsI) => {
     setInputValue('');
     setInputVisible(false);
     props.onConfirm(_tags);
-  }
+  }, [inputValue, props, tags]);
 
   return (
     <>
@@ -75,7 +70,7 @@ const MEditableTagGroup = (props: PropsI) => {
           leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
           appear={false}
         >
-          {tags.map(forMap)}
+          {tags.map(ForMap)}
         </TweenOneGroup>
       </div>
       {inputVisible && (

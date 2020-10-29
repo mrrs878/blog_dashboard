@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Menu, Modal } from 'antd';
 import * as _Icon from '@ant-design/icons';
@@ -41,22 +41,20 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
     },
   };
 
-  async function onLogoutCfmClick() {
-    logout();
-  }
+  const onLogoutCfmClick = useCallback(logout, []);
 
-  function onMenuClick({ key }: any) {
+  const onMenuClick = useCallback(({ key }: any) => {
     const path = props.menuRoutes[key];
     if (path) MENU_CLICK_HANDLER.navigate(path);
     else MENU_CLICK_HANDLER[key]();
-  }
+  }, [MENU_CLICK_HANDLER, props.menuRoutes]);
 
-  function dynamicIcon(iconType: string | Object | undefined) {
+  const dynamicIcon = useCallback((iconType: string | Object | undefined) => {
     if (typeof iconType !== 'string') return iconType;
     return iconType ? React.createElement(Icon[iconType]) : '';
-  }
+  }, []);
 
-  function walkMenu(item: MenuItemI) {
+  const walkMenu = useCallback((item: MenuItemI) => {
     item.icon = dynamicIcon(item.icon_name);
     if (item.sub_menu.length > 0) {
       return (
@@ -68,18 +66,17 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
       );
     }
     return <Menu.Item icon={item.icon} key={item.key}>{ item.title }</Menu.Item>;
-  }
+  }, [dynamicIcon]);
 
-  function generateMenu(menuTree: Array<MenuItemI> | undefined) {
-    if (!menuTree) return;
-    return (
+  const generateMenu = useCallback((menuTree: Array<MenuItemI> | undefined) => (
+    menuTree && (
       <Menu onClick={onMenuClick} mode="inline" theme="dark">
         {
-          menuTree.map((item) => walkMenu(item))
+          menuTree?.map((item) => walkMenu(item))
         }
       </Menu>
-    );
-  }
+    )
+  ), [onMenuClick, walkMenu]);
 
   return props.location.pathname === ROUTES_MAP.login ? <></> : (
     <div className={style.menuContainer}>

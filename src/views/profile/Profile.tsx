@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Col, Row, Divider, Tabs, Tag, Space, Form, Button, Modal, Input, message } from 'antd';
 import { HomeOutlined, ContactsOutlined, ClusterOutlined, MessageOutlined, LikeOutlined, EditOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -48,8 +48,8 @@ const ArticleSummary = (props: { article: ArticleI }) => (
     <h2 style={{ cursor: 'pointer' }}>{ props.article.title }</h2>
     <Space>
       {
-        props.article.tags.split(' ').map((item) => (
-          <Tag>{item}</Tag>
+        props.article.tags.trimStart().trimEnd().split(' ').map((item) => (
+          <Tag key={item}>{item}</Tag>
         ))
       }
     </Space>
@@ -99,40 +99,40 @@ const Profile = (props: PropsI) => {
     if (success) getUserInfo();
   }, [getUserInfo, updateUserRes]);
 
-  function onEditClick() {
+  const onEditClick = useCallback(() => {
     setEditModalF(true);
-  }
+  }, []);
 
-  function onFinish(value: any) {
+  const onFinish = useCallback((value: any) => {
     const {
       _id, name, role, avatar, createdBy, profession, tags, signature, department, address, teams,
     } = props.user;
     const newInfo = { _id, name, role, avatar, createdBy, profession, tags, signature, department, address, teams, ...value };
     updateUser(newInfo);
     setEditModalF(false);
-  }
+  }, [props.user, updateUser]);
 
-  function onReset() {
+  const onReset = useCallback(() => {
     editForm.setFieldsValue(props.user);
-  }
+  }, [editForm, props.user]);
 
-  function onTagsEdit(tags: Array<string>) {
+  const onTagsEdit = useCallback((tags: Array<string>) => {
     const {
       _id, name, role, avatar, createdBy, profession, signature, department, address, teams,
     } = props.user;
     const newInfo = { _id, name, role, avatar, createdBy, profession, signature, department, address, teams, tags };
     updateUser(newInfo);
     setEditModalF(false);
-  }
+  }, [props.user, updateUser]);
 
-  function onTeamsEdit(teams: Array<string>) {
+  const onTeamsEdit = useCallback((teams: Array<string>) => {
     const {
       _id, name, role, avatar, createdBy, profession, signature, tags, department, address,
     } = props.user;
     const newInfo = { _id, name, role, avatar, createdBy, profession, signature, department, address, tags, teams };
     updateUser(newInfo);
     setEditModalF(false);
-  }
+  }, [props.user, updateUser]);
 
   return (
     <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
@@ -187,9 +187,7 @@ const Profile = (props: PropsI) => {
             <TabPane tab="文章" key="article">
               {
                 props.articles.map((item) => (
-                  <div>
-                    <ArticleSummary key={item._id} article={item} />
-                  </div>
+                  <ArticleSummary key={item._id} article={item} />
                 ))
               }
             </TabPane>

@@ -28,13 +28,9 @@ interface PropsI {
 const CodeBlock = (props: PropsI) => {
   const codeEl = useRef<HTMLElement>(null);
 
-  function highlightCode() {
-    if (codeEl.current) hljs.highlightBlock(codeEl.current);
-  }
-
   useEffect(() => {
-    highlightCode();
-  });
+    if (codeEl.current) hljs.highlightBlock(codeEl.current);
+  }, [codeEl]);
 
   return (
     <pre>
@@ -43,6 +39,11 @@ const CodeBlock = (props: PropsI) => {
       </code>
     </pre>
   );
+};
+
+CodeBlock.defaultProps = {
+  value: '',
+  language: '',
 };
 
 export default CodeBlock;

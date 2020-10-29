@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row, Badge, Avatar, Menu, Dropdown, Modal } from 'antd';
 import { MailOutlined, LogoutOutlined, ProfileOutlined } from '@ant-design/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -31,14 +31,14 @@ const AvatarMenu = (props: PropsI) => {
     setLogoutModalF(false);
   }, [logoutRes]);
 
-  function onDrapMenuClick({ key }: any) {
+  const onDrapMenuClick = useCallback(({ key }: any) => {
     if (key === DROP_MENU_KEYS.profile) {
       props.history.push(ROUTES_MAP.profile);
     }
     if (key === DROP_MENU_KEYS.logout) {
       setLogoutModalF(true);
     }
-  }
+  }, [props.history]);
 
   return (
     <>
