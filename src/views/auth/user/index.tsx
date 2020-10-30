@@ -1,6 +1,6 @@
 import { ColumnProps } from 'antd/lib/table';
 import { message, Modal, Switch, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { GET_ALL_USERS } from '../../../api/user';
@@ -25,23 +25,22 @@ const User = (props: PropsI) => {
   const [roles, setRoles] = useState<DynamicObjectKey<string>>({});
   const [createdBy, setCreatedBy] = useState<DynamicObjectKey<string>>({});
   const [, updateUserStatusRes, updateUserStatus] = useRequest(UPDATE_USER_STATUS, undefined, false);
-  const [curUserId, setCurUserId] = useState('');
 
-  const onStatusChange = (status: boolean) => {
+  const onStatusChange = useCallback((status: boolean, userId) => {
     const text = status ? '启用' : '停用';
     Modal.confirm({
       title: '提示',
       content: `确定${text}该账号吗？`,
       okText: text,
-      cancelText: '关闭',
+      cancelText: '取消',
       onCancel: () => Promise.resolve(),
       onOk: () => {
-        updateUserStatus({ status: Number(status), userId: curUserId });
+        updateUserStatus({ status: Number(status), userId });
       },
     });
-  };
+  }, [updateUserStatus]);
 
-  const columns: Array<ColumnProps<UserI>> = [
+  const columns: Array<ColumnProps<UserI>> = useMemo(() => [
     {
       title: '名称',
       dataIndex: 'name',
@@ -61,12 +60,7 @@ const User = (props: PropsI) => {
     {
       title: '状态',
       dataIndex: 'status',
-      onCell: (item) => ({
-        onClick() {
-          setCurUserId(item._id);
-        },
-      }),
-      render: (item) => <Switch onChange={onStatusChange} checked={item} />,
+      render: (item, record) => <Switch onChange={(status) => onStatusChange(status, record._id)} checked={item} />,
     },
     {
       title: '创建时间',
@@ -82,7 +76,7 @@ const User = (props: PropsI) => {
       sorter: (a, b) => new Date(a.createTime || '').getTime() - new Date(b.createTime || '').getTime(),
       sortDirections: ['descend', 'ascend'],
     },
-  ];
+  ], [createdBy, onStatusChange, roles]);
 
   useEffect(() => {
     if (!getUsersRes) return;

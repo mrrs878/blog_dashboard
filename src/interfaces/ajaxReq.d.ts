@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-26 22:25:29
+ * @LastEditTime: 2020-10-30 16:45:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\ajaxReq.d.ts
@@ -59,6 +59,11 @@ interface UpdateArticleReqI {
   content: string;
   _id: string;
   description: string;
+}
+
+interface UpdateArticleStatusReqI {
+  status: number;
+  _id: string;
 }
 
 interface CreateArticleReqI {

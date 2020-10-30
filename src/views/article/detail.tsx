@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-28 23:16:54
+ * @LastEditTime: 2020-10-30 17:53:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -22,6 +22,7 @@ import useRequest from '../../hooks/useRequest';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
 import useGetArticles from '../../hooks/useGetArticles';
 import eventEmit from '../../tools/EventEmit';
+import { EMPTY_ARTICLE } from '../../model';
 
 const mapState2Props = (state: AppState) => ({
   fullScreen: state.common.fullScreen,
@@ -33,7 +34,6 @@ interface PropsI extends RouteComponentProps<{ id: string }>{
   user: UserI,
 }
 
-const emptyArticle = { title: '', categories: '', tags: '', content: '', createTime: '', description: '', author: '' };
 const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
@@ -50,7 +50,7 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
 
 const ArticleDetail = (props: PropsI) => {
   const [markdownSrc, setMarkdownSrc] = useState(emptyMarkdownSrc);
-  const [article, setArticle] = useState<ArticleI>(emptyArticle);
+  const [article, setArticle] = useState<ArticleI>(EMPTY_ARTICLE);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(true);
@@ -75,7 +75,7 @@ const ArticleDetail = (props: PropsI) => {
       message.error(getArticleRes?.msg);
       return;
     }
-    setArticle(getArticleRes?.data || emptyArticle);
+    setArticle(getArticleRes?.data || EMPTY_ARTICLE);
     setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || '') || emptyMarkdownSrc);
   }, [getArticleRes, createOrEdit]);
 
