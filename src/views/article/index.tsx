@@ -3,6 +3,8 @@ import { Table, Button, Space, message, Switch, Modal } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ColumnProps } from 'antd/es/table';
 import { connect } from 'react-redux';
+import { EyeOutlined } from '@ant-design/icons';
+
 import getColumnSearchProps from '../../components/MTableSearch';
 import { AppState } from '../../store';
 import { ROUTES_MAP } from '../../router';
@@ -44,7 +46,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
     setTimeout(reGetArticles, 2000);
   }, [reGetArticles, updateArticleRes]);
 
-  const onStatusChange = useCallback((status: boolean, _id: string = '') => {
+  const onStatusChange = useCallback((status: boolean, _id = '') => {
     const text = status ? '启用' : '关闭';
     Modal.confirm({
       title: '提示',
@@ -57,6 +59,10 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
       },
     });
   }, [updateArticle]);
+
+  const onViewClick = useCallback((_id = '') => {
+    props.history.push(`${ROUTES_MAP.article}/${_id}`);
+  }, [props.history]);
 
   const articleListColumns: Array<ColumnProps<ArticleI>> = useMemo(() => [
     {
@@ -104,7 +110,13 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
       sorter: (a, b) => new Date(a.updateTime || '').getTime() - new Date(b.updateTime || '').getTime(),
       sortDirections: ['descend', 'ascend'],
     },
-  ], [categories, onStatusChange]);
+    {
+      title: '操作',
+      dataIndex: '',
+      key: 'action',
+      render: (item, record) => <Button onClick={() => onViewClick(record._id)} icon={<EyeOutlined />} />,
+    },
+  ], [categories, onStatusChange, onViewClick]);
 
   const onCreateArticleClick = useCallback(() => {
     props.history.push(`${ROUTES_MAP.article}/-1`);
