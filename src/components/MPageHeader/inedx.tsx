@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Route } from 'antd/es/breadcrumb/Breadcrumb';
-import { clone } from 'ramda';
 import { connect } from 'react-redux';
 import style from './index.module.less';
 import { ROUTES_MAP } from '../../router';
@@ -19,11 +18,6 @@ const mapState2Props = (state: AppState) => ({
 
 const MPageHeader = (props: PropsI) => {
   const [breadcrumb, setBreadcrumb] = useState<Array<Route>>([]);
-  const [routesMap, setRoutesMap] = useState<DynamicObjectKey<string>>({});
-
-  useEffect(() => {
-    setRoutesMap(clone(ROUTES_MAP));
-  }, []);
 
   useEffect(() => {
     function getPaths(pathname: string) {
@@ -41,18 +35,13 @@ const MPageHeader = (props: PropsI) => {
     setBreadcrumb(newBreadcrumb);
   }, [props.location.pathname, props.menuTitles]);
 
-  function navigate(path: string) {
-    if (path === props.location.pathname.slice(1)) return;
-    props.history.push(routesMap[path]);
-  }
-
   return (
     <div className={style.container} style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
       <Breadcrumb>
         {
           breadcrumb.map((item) => (
             <Breadcrumb.Item key={item.path}>
-              <span role="link" onClick={() => navigate(item.path)} style={{ cursor: 'pointer' }}>{ item.breadcrumbName }</span>
+              { item.breadcrumbName }
             </Breadcrumb.Item>
           ))
         }
