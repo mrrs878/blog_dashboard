@@ -94,7 +94,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (item, record) => <Switch onChange={(status) => onStatusChange(status, record._id)} checked={item} />,
+      render: (item, record) => <Switch onChange={(status) => onStatusChange(status, record._id)} checked={item === 1} />,
     },
     {
       title: '创建时间',

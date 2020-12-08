@@ -86,6 +86,7 @@
   },
   "scripts": {
     "start": "dotenv -e .env.development react-app-rewired start",
+    "start:test": "dotenv -e .env.test react-app-rewired start",
     "build:prod": "dotenv -e .env.production react-app-rewired build",
     "build:test": "dotenv -e .env.test react-app-rewired build",
     "test": "jest --passWithNoTests",
