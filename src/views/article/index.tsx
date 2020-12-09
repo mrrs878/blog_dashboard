@@ -37,7 +37,7 @@ function getCategories(articles: Array<ArticleI>) {
 
 const Articles: React.FC<PropsI> = (props: PropsI) => {
   const categories = useMemo(getCategories(props.articles), [props.articles]);
-  const [, updateArticleRes, updateArticle] = useRequest(UPDATE_ARTICLE_STATUS, undefined, false);
+  const [, updateArticleRes, updateArticle] = useRequest(UPDATE_ARTICLE_STATUS, false);
   const { getArticlesLoading, reGetArticles } = useGetArticles(false, true);
 
   useEffect(() => {

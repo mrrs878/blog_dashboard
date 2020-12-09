@@ -76,8 +76,8 @@ const MenuSetting = (props: PropsI) => {
   const [isMenuAdding, setIsMenuAdding] = useState<boolean>(false);
   const [couldAddMenu, setCouldAddMenu] = useState<boolean>(true);
   const [paths, setPaths] = useState<Array<string>>([]);
-  const [, createMenuRes, createMenu] = useRequest(CREATE_MENU, undefined, false);
-  const [, updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
+  const [, createMenuRes, createMenu] = useRequest(CREATE_MENU, false);
+  const [, updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, false);
   const { getMenus } = useGetMenus(false, false);
   const [form] = Form.useForm();
 

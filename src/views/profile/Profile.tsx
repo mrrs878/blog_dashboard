@@ -85,7 +85,7 @@ const ArticleSummary = (props: { article: ArticleI }) => (
 const Profile = (props: PropsI) => {
   const [editModalF, setEditModalF] = useState(false);
   const [editForm] = Form.useForm();
-  const [, updateUserRes, updateUser] = useRequest(UPDATE_USER, undefined, false);
+  const [, updateUserRes, updateUser] = useRequest(UPDATE_USER, false);
   const [getUserInfo] = useGetUserInfoByToken(false);
 
   useEffect(() => {

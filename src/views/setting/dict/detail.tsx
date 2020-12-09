@@ -51,8 +51,8 @@ const DictDetail = (props: PropsI) => {
   const dictStatus = useMemo(() => props.state.dicts.filter((item) => item.label === 'status').map((item) => ({ value: item.value, title: item.name_view })), [props.state.dicts]);
   const [createOrUpdate, setCreateOrUpdate] = useState(false);
   const [inputDictLabels, setInputDictLabels] = useState<Array<{ type: string, label_view: string, label: string }>>([]);
-  const [createDictLoading, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, undefined, false);
-  const [updateDictLoading, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, undefined, false);
+  const [createDictLoading, createDictRes, createDict] = useRequest<CreateDictReqT, GetDictResT>(CREATE_DICT, false);
+  const [updateDictLoading, updateDictRes, updateDict] = useRequest<UpdateDictReqT, GetDictResT>(UPDATE_DICT, false);
   const [getDicts] = useGetDicts(false);
   const [addDictform] = Form.useForm();
 

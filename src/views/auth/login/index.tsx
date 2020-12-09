@@ -23,7 +23,7 @@ interface PropsI extends RouteComponentProps<any, any> {
 const Index = (props: PropsI) => {
   const [verifyModalF, setVerifyModalF] = useState(false);
   const [accountInfo, setAccountInfo] = useState<LoginReqI>({ name: '', password: '' });
-  const [isLogin, loginRes, login] = useRequest(LOGIN, undefined, false);
+  const [isLogin, loginRes, login] = useRequest(LOGIN, false);
   const { getMenusRes, getMenus } = useGetMenus(false);
 
   useEffect(() => {

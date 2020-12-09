@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-10-12 14:42:20
- * @LastEditTime: 2020-10-16 10:41:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-09 16:12:30
+ * @LastEditors: mrrs878
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useLogout.ts
  */
@@ -13,7 +13,7 @@ import { ROUTES_MAP } from '../router';
 import useRequest from './useRequest';
 
 function useLogout() {
-  const [, logoutRes, logout] = useRequest<unknown, LogoutResI>(LOGOUT, undefined, false);
+  const [, logoutRes, logout] = useRequest<unknown, LogoutResI>(LOGOUT, false);
   useEffect(() => {
     if (!logoutRes) return;
     message.info(logoutRes.msg);

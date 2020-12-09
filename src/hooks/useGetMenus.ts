@@ -43,7 +43,7 @@ function getMenuRoutes(src: Array<MenuItemI>) {
 }
 
 export default function useGetMenus(autoMsg = true, authFetch = false) {
-  const [, getMenusRes, getMenus] = useRequest<unknown, GetMenusResI>(GET_MENUS, undefined, authFetch);
+  const [, getMenusRes, getMenus] = useRequest<unknown, GetMenusResI>(GET_MENUS, authFetch);
   useEffect(() => {
     if (!getMenusRes) return;
     if (autoMsg) message.info(getMenusRes.msg);

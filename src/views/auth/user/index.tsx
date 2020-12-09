@@ -24,7 +24,7 @@ const User = (props: PropsI) => {
   const [users, setUsers] = useState<Array<UserI>>([]);
   const [roles, setRoles] = useState<DynamicObjectKey<string>>({});
   const [createdBy, setCreatedBy] = useState<DynamicObjectKey<string>>({});
-  const [, updateUserStatusRes, updateUserStatus] = useRequest(UPDATE_USER_STATUS, undefined, false);
+  const [, updateUserStatusRes, updateUserStatus] = useRequest(UPDATE_USER_STATUS, false);
 
   const onStatusChange = useCallback((status: boolean, userId) => {
     const text = status ? '启用' : '停用';

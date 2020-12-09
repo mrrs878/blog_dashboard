@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-09-30 12:40:32
- * @LastEditTime: 2020-10-27 11:28:33
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-09 16:12:20
+ * @LastEditors: mrrs878
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetDicts.ts
  */
@@ -17,7 +17,7 @@ export default function useGetDicts(autoMsg = true, authMatch: boolean = false):
   () => void,
   boolean,
 ] {
-  const [getDictsLoading, getDictsRes, getDicts, reGetDicts] = useRequest<GetDictsReqT, GetDictsResT>(GET_DICTS, undefined, authMatch);
+  const [getDictsLoading, getDictsRes, getDicts, reGetDicts] = useRequest<GetDictsReqT, GetDictsResT>(GET_DICTS, authMatch);
   useEffect(() => {
     if (!getDictsRes) return;
     if (autoMsg) message.info(getDictsRes.msg);

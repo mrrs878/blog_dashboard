@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-30 17:53:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-09 15:35:42
+ * @LastEditors: mrrs878
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
  */
@@ -54,10 +54,10 @@ const ArticleDetail = (props: PropsI) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(true);
-  const [, getArticleRes, , reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, { id: props.match.params.id }, props.match.params.id !== '-1');
-  const [updateArticleLoading, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, undefined, false);
+  const [, getArticleRes, , reGetArticle] = useRequest<GetArticleReqI, GetArticleResI>(GET_ARTICLE, props.match.params.id !== '-1', { id: props.match.params.id });
+  const [updateArticleLoading, , updateArticle] = useRequest<UpdateArticleReqI, UpdateArticleResI>(UPDATE_ARTICLE, false);
   const { getArticles } = useGetArticles(false);
-  const [createArticleLoading, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, undefined, false);
+  const [createArticleLoading, createArticleRes, createArticle] = useRequest<CreateArticleReqI, CreateArticleResI>(CREATE_ARTICLE, false);
 
   useEffect(() => {
     eventEmit.on('sendEditorContent', (value: string) => {

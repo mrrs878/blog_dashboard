@@ -40,7 +40,7 @@ const RoleDetail = (props: PropsI) => {
   const [checkedKeys, setCheckedKeys] = useState<Array<ReactText>>([]);
   const [originCheckedKeys, setOriginCheckedKeys] = useState<Array<ReactText>>([]);
   const [modifyKeys, setModifyKeys] = useState<Array<string>>([]);
-  const [,updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, undefined, false);
+  const [,updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, false);
 
   useEffect(() => {
     (async () => {
