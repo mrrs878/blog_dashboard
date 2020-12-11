@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-12-09 15:35:42
- * @LastEditors: mrrs878
+ * @LastEditTime: 2020-12-11 19:03:21
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
  */
@@ -34,7 +34,7 @@ interface PropsI extends RouteComponentProps<{ id: string }>{
   user: UserI,
 }
 
-const emptyMarkdownSrc = '---\n title: \n tags: \n categories: \n---';
+const emptyMarkdownSrc = '---\n\n title: \n\n tags: \n\n categories: \n\n---';
 
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
   const [, summary, content] = clone(markdownSrc?.split('---'));
