@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-10-22 15:15:58
- * @LastEditTime: 2020-10-22 15:16:03
- * @LastEditors: your name
+ * @LastEditTime: 2020-12-14 15:16:46
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\hook.ts
  */
@@ -78,11 +78,30 @@ export function useInternetStateChange() {
   return internetState;
 }
 
-export function useWindowScroll(onWindowScrroll: (value?: any) => any) {
+export function useWindowScroll(onWindowScroll: (value?: any) => any) {
   useEffect(() => {
-    window.addEventListener('scroll', onWindowScrroll);
+    window.addEventListener('scroll', onWindowScroll);
     return () => {
-      window.removeEventListener('scroll', onWindowScrroll);
+      window.removeEventListener('scroll', onWindowScroll);
     };
-  }, [onWindowScrroll]);
+  }, [onWindowScroll]);
+}
+
+export function useImgPreLoad(config: { imgUrl: string, backupImgUrl?: string }): [boolean, string, string] {
+  const [loading, setLoading] = useState(() => true);
+  const [errMsg, setErrMsg] = useState(() => '');
+  const [imgUrl, setImgUrl] = useState(() => (config.backupImgUrl || ''));
+
+  const imgEle = new Image();
+  imgEle.src = config.imgUrl;
+  imgEle.addEventListener('load', () => {
+    setLoading(false);
+    setImgUrl(config.imgUrl);
+  });
+  imgEle.onerror = (err) => {
+    setLoading(false);
+    setErrMsg(err.toString);
+  };
+
+  return [loading, imgUrl, errMsg];
 }
