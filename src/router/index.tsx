@@ -20,6 +20,7 @@ import { ARTICLE_ROUTES, ARTICLE_ROUTES_MAP } from './articleRoutes';
 import store, { actions, AppState } from '../store';
 import Chain, { NEXT_SUCCESSOR } from '../tools/Chain';
 import { COMMENT_ROUTES_MAP, COMMENT_ROUTES } from './commentsRoutes';
+import { MOCK_API_ROUTES, MOCK_API_ROUTES_MAP } from './mockApi';
 
 interface PropsI {
   menuTitles: MenuTitlesI,
@@ -37,6 +38,7 @@ const ROUTES_MAP = {
   ...DASHBOARD_ROUTES_MAP,
   ...ARTICLE_ROUTES_MAP,
   ...COMMENT_ROUTES_MAP,
+  ...MOCK_API_ROUTES_MAP,
 };
 
 const ROUTES: Array<RouteConfigI> = [
@@ -47,6 +49,7 @@ const ROUTES: Array<RouteConfigI> = [
   ...DASHBOARD_ROUTES,
   ...ARTICLE_ROUTES,
   ...COMMENT_ROUTES,
+  ...MOCK_API_ROUTES,
 ];
 
 const redirectMain = new Chain((route: RouteConfigI) => {

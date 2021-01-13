@@ -70,7 +70,7 @@ const Index = (props: PropsI) => {
       }}
     >
       <div style={{
-        background: 'url(https://picsum.photos/1920/1080) no-repeat center',
+        background: 'url(https://api.btstu.cn/sjbz/api.php?lx=fengjing&format=images) no-repeat center',
         position: 'fixed',
         width: '100vw',
         left: 0,
