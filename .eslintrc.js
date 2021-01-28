@@ -1,12 +1,21 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-12 22:27:13
+ * @LastEditTime: 2021-01-28 22:15:14
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\.eslintrc.js
+ */
 module.exports = {
   root: true,
   env: {
     node: true
   },
   extends: [
-    'airbnb-typescript'
+    'airbnb-typescript',
+    'plugin:react-hooks:recommend',
   ],
-  plugins: ['@typescript-eslint', 'react-hooks'],
+  plugins: ['@typescript-eslint'],
   parserOptions: {
     project: './tsconfig.json'
   },
