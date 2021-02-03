@@ -1,9 +1,16 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:29:51
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/App.tsx
+ */
 import { Provider } from 'react-redux';
 import React from 'react';
 
 import store from './store';
 import './global.less';
-import './mock';
 import MLayout from './layout';
 import useGetUserInfoByToken from './hooks/useGetUserInfoByToken';
 import useGetDicts from './hooks/useGetDicts';

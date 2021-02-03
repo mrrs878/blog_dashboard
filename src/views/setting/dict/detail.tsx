@@ -4,6 +4,7 @@ import { Button, Divider, Form, Input, Radio, message, AutoComplete } from 'antd
 import { connect } from 'react-redux';
 import { uniq } from 'ramda';
 import { Store } from 'antd/lib/form/interface';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { RuleObject, StoreValue } from 'rc-field-form/lib/interface';
 
 import { CREATE_DICT, UPDATE_DICT } from '../../../api/setting';
@@ -121,7 +122,7 @@ const DictDetail = (props: PropsI) => {
     return tmp.includes(value) ? Promise.reject(new Error('该名称已被占用，请输入其他值')) : Promise.resolve();
   }
 
-  function onDictTypeSelect(_type: string, option: any) {
+  function onDictTypeSelect(_type: string) {
     setInputDictLabels(dictLabels.filter((item) => item.type === _type).map(({ type, label_view, label }) => ({ label, label_view, type })));
     if (_type === dataDict.type) return;
     addDictform.setFieldsValue({
@@ -134,7 +135,7 @@ const DictDetail = (props: PropsI) => {
   function onDictTypeBlur(event: React.FocusEvent<HTMLElement>) {
     if (event.target.getAttribute('value') === dataDict.type) return;
     addDictform.setFieldsValue({
-      type_view: dictTypes.find((item) => item.type === addDictform.getFieldValue('type')) ?.type_view || '',
+      type_view: dictTypes.find((item) => item.type === addDictform.getFieldValue('type'))?.type_view || '',
       label_view: '',
       label: '',
     });

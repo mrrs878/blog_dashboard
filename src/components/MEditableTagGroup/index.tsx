@@ -96,4 +96,9 @@ const MEditableTagGroup = (props: PropsI) => {
   );
 };
 
+MEditableTagGroup.defaultProps = {
+  defaultTags: [],
+  addBtnText: '',
+};
+
 export default MEditableTagGroup;

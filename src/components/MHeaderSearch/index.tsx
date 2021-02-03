@@ -103,4 +103,16 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props: HeaderSearchProps) => 
   );
 };
 
+HeaderSearch.defaultProps = {
+  onSearch: () => {},
+  onChange: () => {},
+  onVisibleChange: () => {},
+  className: '',
+  placeholder: '',
+  defaultOpen: false,
+  open: false,
+  defaultValue: '',
+  value: '',
+};
+
 export default HeaderSearch;

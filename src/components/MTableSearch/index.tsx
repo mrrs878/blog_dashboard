@@ -1,13 +1,21 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 16:21:35
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/components/MTableSearch/index.tsx
+ */
 import { Button, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import React, { ReactText, RefObject, useRef } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { FilterDropdownProps } from 'antd/es/table/interface';
+import { FilterConfirmProps, FilterDropdownProps } from 'antd/es/table/interface';
 
 interface SearchInputPropsI {
   selectedKeys?: Array<React.Key>;
   setSelectedKeys?: (selectedKeys: string[]) => void;
-  confirm?: () => void | undefined;
+  confirm?: (params: FilterConfirmProps) => void;
   clearFilters?: () => void;
 }
 
@@ -15,11 +23,11 @@ export default function getColumnSearchProps(dataIndex: string) {
   let inputRef: RefObject<Input | undefined>;
   let searchText: ReactText | undefined;
   let searchedColumn: string;
-  const SearchInput = (props: SearchInputPropsI) => {
+  const SearchInput: React.FC<SearchInputPropsI> = (props: SearchInputPropsI) => {
     inputRef = useRef<Input>();
 
-    function handleSearch(selectedKeys: React.Key[] | undefined, confirm: (() => void) | undefined, index: string) {
-      if (confirm) confirm();
+    function handleSearch(selectedKeys: React.Key[] | undefined, confirm: ((params: FilterConfirmProps) => void) | undefined, index: string) {
+      if (confirm) confirm({ closeDropdown: false });
       searchText = selectedKeys && selectedKeys[0];
       searchedColumn = index;
     }
@@ -51,6 +59,12 @@ export default function getColumnSearchProps(dataIndex: string) {
         </Button>
       </div>
     );
+  };
+  SearchInput.defaultProps = {
+    selectedKeys: [],
+    setSelectedKeys: () => {},
+    confirm: () => {},
+    clearFilters: () => {},
   };
 
   return {

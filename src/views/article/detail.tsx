@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-12-11 19:03:21
+ * @LastEditTime: 2021-02-03 15:40:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -9,7 +9,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Space, Upload, message, Row, Col, Menu, Dropdown } from 'antd';
 import { EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
-import { RcCustomRequestOptions, UploadChangeParam } from 'antd/lib/upload/interface';
+import { UploadChangeParam } from 'antd/lib/upload/interface';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Base64 } from 'js-base64';
 import { connect } from 'react-redux';
@@ -39,9 +39,9 @@ const emptyMarkdownSrc = '---\n\n title: \n\n tags: \n\n categories: \n\n---';
 function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
   const [, summary, content] = clone(markdownSrc?.split('---'));
   const info = summary
-          ?.replace(/\r\n/g, '')
-          ?.replace(/\n/g, '')
-          ?.match(/title:(.+)tags:(.+)categories:(.+)/) || [];
+    ?.replace(/\r\n/g, '')
+    ?.replace(/\n/g, '')
+    ?.match(/title:(.+)tags:(.+)categories:(.+)/) || [];
   const [_title, tags, categories] = info.slice(1, 5).map((infoItem: string) => infoItem.trimStart());
   const title = _title.replace(/date(.+)/, '');
   const article = { title, tags, categories, description: content.slice(0, 200), content: Base64.encode(markdownSrc) };
@@ -92,7 +92,6 @@ const ArticleDetail = (props: PropsI) => {
     setIsEdit(props.match.params.id === '-1');
   }, [props.match.params.id]);
 
-
   function onToggleEditable() {
     setIsEdit(!isEdit);
     if (isEdit) eventEmit.emit('getEditorContent');
@@ -112,7 +111,7 @@ const ArticleDetail = (props: PropsI) => {
     message.info('刷新成功');
   }
 
-  function upload(options: RcCustomRequestOptions) {
+  function upload(options: any) {
     const fileReader = new FileReader();
     fileReader.readAsText(options.file);
     fileReader.onload = async () => {
@@ -145,7 +144,6 @@ const ArticleDetail = (props: PropsI) => {
   async function onResetClick() {
     window.location.href = props.location.pathname;
   }
-
 
   const Editor = () => {
     if (isEdit) {

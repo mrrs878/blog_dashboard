@@ -72,13 +72,13 @@ enum DragStatus {
   pending,
   start,
   move,
-  end
+  end,
 }
 
 enum VerifyStatus {
   pending,
   success,
-  fail
+  fail,
 }
 
 const MVerify = (props: PropsI) => {
@@ -142,7 +142,6 @@ const MVerify = (props: PropsI) => {
       reset();
     }, 1000);
   }, [props, reset]);
-
 
   const handleDragStart = useCallback((e: any) => {
     const x = e.clientX || e.touches[0].clientX;

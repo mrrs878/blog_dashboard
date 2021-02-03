@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:32:37
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/components/MEditor/CodeBlock.tsx
+ */
 import React, { useEffect, useRef } from 'react';
 import hljs from 'highlight.js';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -39,11 +47,6 @@ const CodeBlock = (props: PropsI) => {
       </code>
     </pre>
   );
-};
-
-CodeBlock.defaultProps = {
-  value: '',
-  language: '',
 };
 
 export default CodeBlock;

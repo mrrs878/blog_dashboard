@@ -1,4 +1,13 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 16:09:55
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/components/MEditor/MWangEditor.tsx
+ */
 import React, { useCallback, useEffect } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import E from 'wangeditor';
 import showdown from 'showdown';
 import eventEmit from '../../tools/EventEmit';

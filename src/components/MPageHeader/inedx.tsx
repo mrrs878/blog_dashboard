@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:35:43
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/components/MPageHeader/inedx.tsx
+ */
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -49,6 +57,5 @@ const MPageHeader = (props: PropsI) => {
     </div>
   );
 };
-
 
 export default connect(mapState2Props)(withRouter(MPageHeader));

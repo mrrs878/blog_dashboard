@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-22 15:15:58
- * @LastEditTime: 2020-12-14 15:16:46
+ * @LastEditTime: 2021-02-03 15:39:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\hook.ts
@@ -31,7 +31,7 @@ export function useInputValue(initValue: string)
   : [
     string,
     (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void,
-    React.Dispatch<React.SetStateAction<string>>
+    React.Dispatch<React.SetStateAction<string>>,
   ] {
   const [value, setValue] = useState(initValue);
 

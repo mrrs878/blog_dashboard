@@ -1,5 +1,13 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:40:30
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/views/auth/reg/index.tsx
+ */
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Form, Input, Button, Space } from 'antd';
 
 import style from './index.module.less';
@@ -11,9 +19,6 @@ const layout = {
 const tailLayout = {
   wrapperCol: { offset: 11, span: 1 },
 };
-
-interface PropsI extends RouteComponentProps<any, any> {
-}
 
 const Login = () => {
   function onFinish(values: any) {

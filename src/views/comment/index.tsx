@@ -1,14 +1,20 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:41:16
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/views/comment/index.tsx
+ */
 import React, { useState, useEffect } from 'react';
 import { ColumnProps } from 'antd/lib/table';
 import { Space, Table, Button } from 'antd';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router';
 import useRequest from '../../hooks/useRequest';
 import { GET_AUTHOR_COMMENTS } from '../../api/comment';
 import getColumnSearchProps from '../../components/MTableSearch';
 
-interface PropsI extends RouteComponentProps {}
-
-function getCommentListColumns(comments: Array<AuthorCommentsI>): Array<ColumnProps<AuthorCommentsI>> {
+function getCommentListColumns(): Array<ColumnProps<AuthorCommentsI>> {
   return [
     {
       title: '文章',
@@ -37,7 +43,7 @@ function getCommentListColumns(comments: Array<AuthorCommentsI>): Array<ColumnPr
   ];
 }
 
-const Comments = (props: PropsI) => {
+const Comments = () => {
   const [getCommentsLoading, getCommentsRes, , reGetComments] = useRequest<GetCommentsReqI, GetAuthorCommentsResI>(GET_AUTHOR_COMMENTS);
   const [commentListColumns, setCommentListColumns] = useState<Array<ColumnProps<AuthorCommentsI>>>([]);
   const [loadMoreF, setLoadMoreF] = useState(false);
@@ -48,10 +54,10 @@ const Comments = (props: PropsI) => {
     if (!getCommentsRes) return;
     setComment(getCommentsRes.data || []);
     setCommentCount(getCommentsRes.data?.length || 0);
-    setCommentListColumns(getCommentListColumns(getCommentsRes.data || []));
+    setCommentListColumns(getCommentListColumns());
   }, [getCommentsRes]);
 
-  function onCommentListRow(record: AuthorCommentsI) {
+  function onCommentListRow() {
     return {
       onClick: () => {
         // props.history.push(`${ROUTES_MAP.comment}/${record._id}`);

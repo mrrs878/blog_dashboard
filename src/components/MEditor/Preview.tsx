@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:33:33
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/components/MEditor/Preview.tsx
+ */
 import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Space } from 'antd';
@@ -45,7 +53,7 @@ const Preview = (props: PropsI) => {
                 创建于
                   { formattedMd?.createTime }
               </span>
-            )}
+              )}
             { formattedMd?.updateTime && (
               <span>
                 更新于
@@ -59,7 +67,7 @@ const Preview = (props: PropsI) => {
                 分类于
                 <a href={`/all/category/${formattedMd?.categories}`}>{ formattedMd?.categories }</a>
               </span>
-          ) }
+            ) }
             { formattedMd?.tags && (
             <span>
               <PaperClipOutlined />
@@ -67,10 +75,10 @@ const Preview = (props: PropsI) => {
               标签
               <a href={`/all/category/${formattedMd?.tags}`}>{ formattedMd?.tags }</a>
             </span>
-          ) }
+            ) }
           </Space>
         </div>
-      )
+        )
 }
       <ReactMarkdown
         source={formattedMd?.content}
@@ -78,6 +86,10 @@ const Preview = (props: PropsI) => {
       />
     </div>
   );
+};
+
+Preview.defaultProps = {
+  fullscreen: false,
 };
 
 export default Preview;

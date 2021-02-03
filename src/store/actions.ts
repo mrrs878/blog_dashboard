@@ -1,3 +1,12 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 15:38:36
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/store/actions.ts
+ */
+/* eslint-disable @typescript-eslint/no-redeclare */
 export const ADD_COUNT = 'ADD_COUNT';
 export type ADD_COUNT = typeof ADD_COUNT;
 export const UPDATE_USER = 'UPDATE_USER';

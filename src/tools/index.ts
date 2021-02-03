@@ -1,13 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-26 23:00:25
+ * @LastEditTime: 2021-02-03 15:29:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\index.ts
  */
-import { createFromIconfontCN } from '@ant-design/icons/es';
-import Mock from 'mockjs';
+import { createFromIconfontCN } from '@ant-design/icons';
 import { curry } from 'ramda';
 import MAIN_CONFIG from '../config';
 
@@ -15,10 +14,6 @@ export function createIconFromIconfont() {
   return createFromIconfontCN({
     scriptUrl: MAIN_CONFIG.ICONFONT_URL,
   });
-}
-
-export function createMockRes<T, P>(url: string | RegExp, type: MockMethodT, template: (req: MockReqI<T>) => P) {
-  return Mock.mock(url, type, template);
 }
 
 export function getLastItem<T>(src: Array<T>) {

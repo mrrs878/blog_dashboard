@@ -1,4 +1,12 @@
-import React, { useCallback, useState } from 'react';
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 13:16:42
+ * @LastEditTime: 2021-02-03 16:11:23
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /my-app/src/components/MMenu/index.tsx
+ */
+import React, { useCallback, useMemo, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Menu, Modal } from 'antd';
 import * as _Icon from '@ant-design/icons';
@@ -32,16 +40,16 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
   const [logoutModalF, setLogoutModalF] = useState(false);
   const { logout } = useLogout();
 
-  const MENU_CLICK_HANDLER: DynamicObjectKey<Function> = {
+  const MENU_CLICK_HANDLER: DynamicObjectKey<Function> = useMemo(() => ({
     async logout() {
       setLogoutModalF(true);
     },
     navigate(path: string) {
       props.history.push(path);
     },
-  };
+  }), [props.history]);
 
-  const onLogoutCfmClick = useCallback(logout, []);
+  const onLogoutCfmClick = useCallback(logout, [logout]);
 
   const onMenuClick = useCallback(({ key }: any) => {
     const path = props.menuRoutes[key];

@@ -18,7 +18,6 @@ const mapState2Props = (state: AppState) => ({
   dicts: state.common.dicts,
 });
 
-
 const User = (props: PropsI) => {
   const [, getUsersRes, , reGetUsers] = useRequest(GET_ALL_USERS);
   const [users, setUsers] = useState<Array<UserI>>([]);
