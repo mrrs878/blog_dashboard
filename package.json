@@ -47,7 +47,7 @@
     "start:test": "dotenv -e .env.test craco start",
     "build:test": "dotenv -e .env.test craco build",
     "build:prod": "dotenv -e .env.production craco build",
-    "test": "craco test",
+    "test": "jest --passWithNoTests",
     "eject": "craco eject"
   },
   "eslintConfig": {
