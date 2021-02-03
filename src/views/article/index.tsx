@@ -21,22 +21,20 @@ interface PropsI extends RouteComponentProps {
 }
 
 function getCategories(articles: Array<ArticleI>) {
-  return () => {
-    const categories: Map<string, number> = new Map();
-    articles.forEach((item) => {
-      const count = categories.get(item.categories) || 0;
-      categories.set(item.categories, count + 1);
-    });
-    const tmp: Array<{ text: string; value: string }> = [];
-    categories.forEach((key, value) => {
-      tmp.push({ text: `${value}(${key})`, value });
-    });
-    return tmp;
-  };
+  const categories: Map<string, number> = new Map();
+  articles.forEach((item) => {
+    const count = categories.get(item.categories) || 0;
+    categories.set(item.categories, count + 1);
+  });
+  const tmp: Array<{ text: string; value: string }> = [];
+  categories.forEach((key, value) => {
+    tmp.push({ text: `${value}(${key})`, value });
+  });
+  return tmp;
 }
 
 const Articles: React.FC<PropsI> = (props: PropsI) => {
-  const categories = useMemo(getCategories(props.articles), [props.articles]);
+  const categories = useMemo(() => getCategories(props.articles), [props.articles]);
   const [, updateArticleRes, updateArticle] = useRequest(UPDATE_ARTICLE_STATUS, false);
   const { getArticlesLoading, reGetArticles } = useGetArticles(false, true);
 

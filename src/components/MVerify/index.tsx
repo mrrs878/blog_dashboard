@@ -195,13 +195,14 @@ const MVerify = (props: PropsI) => {
   }, [resultRef]);
 
   useEffect(() => {
-    imgRef?.current?.addEventListener('load', draw);
-    imgRef?.current?.addEventListener('error', onImgLoadError);
+    const ele = imgRef.current;
+    ele?.addEventListener('load', draw);
+    ele?.addEventListener('error', onImgLoadError);
     return () => {
-      imgRef?.current?.removeEventListener('load', draw);
-      imgRef?.current?.removeEventListener('error', onImgLoadError);
+      ele?.removeEventListener('load', draw);
+      ele?.removeEventListener('error', onImgLoadError);
     };
-  }, [imgRef, draw, onImgLoadError]);
+  }, [draw, onImgLoadError]);
 
   useEffect(() => {
     document.addEventListener('mousemove', handleDragMove);
@@ -213,16 +214,18 @@ const MVerify = (props: PropsI) => {
   }, [handleDragEnd, handleDragMove]);
 
   useEffect(() => {
-    sliderRef?.current?.addEventListener('mousedown', handleDragStart);
+    const ele = sliderRef?.current;
+    ele?.addEventListener('mousedown', handleDragStart);
     return () => {
-      sliderRef?.current?.removeEventListener('mousedown', handleDragStart);
+      ele?.removeEventListener('mousedown', handleDragStart);
     };
   }, [sliderRef, handleDragStart]);
 
   useEffect(() => {
-    refreshIconRef?.current?.addEventListener('click', reset);
+    const ele = refreshIconRef.current;
+    ele?.addEventListener('click', reset);
     return () => {
-      refreshIconRef?.current?.removeEventListener('click', reset);
+      ele?.removeEventListener('click', reset);
     };
   }, [reset, refreshIconRef]);
 
