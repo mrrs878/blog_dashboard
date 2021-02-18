@@ -43,11 +43,13 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "postinstall": "is-ci || husky install",
     "start:dev": "dotenv -e .env.development craco start",
     "start:test": "dotenv -e .env.test craco start",
     "build:test": "dotenv -e .env.test craco build",
     "build:prod": "dotenv -e .env.production craco build",
     "test": "jest --passWithNoTests",
+    "lint": "eslint",
     "eject": "craco eject"
   },
   "eslintConfig": {
