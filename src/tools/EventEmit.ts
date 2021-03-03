@@ -1,8 +1,8 @@
 /*
- * @Author: your name
+ * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
  * @LastEditTime: 2020-10-23 15:04:00
- * @LastEditors: your name
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\EventEmit.ts
  */

@@ -5,6 +5,7 @@
     "commitlint",
     "hljs",
     "htmlmixed",
+    "linebreak",
     "matchbrackets",
     "vbscript"
   ]

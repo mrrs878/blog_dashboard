@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-10 17:15:23
+ * @LastEditTime: 2021-03-03 23:31:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\plugins\error.ts
@@ -36,6 +36,6 @@ function handleError(error: ErrorT) {
   handler(error);
 }
 
-export default function () {
+export default () => {
   console.error = (...errors: Array<ErrorT>) => errors.forEach((error) => handleError(error));
-}
+};

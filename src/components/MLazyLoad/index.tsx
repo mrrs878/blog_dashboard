@@ -1,3 +1,11 @@
+/*
+ * @Author: mrrs878@foxmail.com
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2021-03-03 23:32:50
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\components\MLazyLoad\index.tsx
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import { clone } from 'ramda';
 
@@ -44,8 +52,6 @@ const LazyLoad: React.FC<PropsI> = (props: PropsI) => {
   );
 };
 
-export default function (element: () => JSX.Element) {
-  return (
-    <LazyLoad element={element} />
-  );
-}
+export default (element: () => JSX.Element) => (
+  <LazyLoad element={element} />
+);

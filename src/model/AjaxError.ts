@@ -1,3 +1,11 @@
+/*
+ * @Author: mrrs878@foxmail.com
+ * @Date: 2020-09-22 09:42:32
+ * @LastEditTime: 2021-03-03 23:31:03
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog_dashboard\src\model\AjaxError.ts
+ */
 class AjaxError implements AjaxErrorI {
   message: string;
 
@@ -29,6 +37,5 @@ class AjaxError implements AjaxErrorI {
     this.url = url;
   }
 }
-
 
 export default AjaxError;

@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: mrrs878@foxmail.com
  * @Date: 2021-01-12 22:27:13
- * @LastEditTime: 2021-02-03 16:14:13
+ * @LastEditTime: 2021-03-03 23:21:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\.eslintrc.js
@@ -21,6 +21,7 @@ module.exports = {
     createDefaultProgram: true,
   },
   rules: {
+    'linebreak-style': ['off', 'window'],
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'max-len': 'off',
