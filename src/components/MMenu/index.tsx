@@ -1,84 +1,68 @@
 /*
- * @Author: mrrs878@foxmail.com
- * @Date: 2020-12-23 13:16:42
- * @LastEditTime: 2021-02-03 16:11:23
+ * @Author: your name
+ * @Date: 2021-02-24 10:25:01
+ * @LastEditTime: 2021-03-01 14:37:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /my-app/src/components/MMenu/index.tsx
+ * @FilePath: /components_library/src/components/MMenu.tsx
  */
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Menu, Modal } from 'antd';
+import { Menu } from 'antd';
 import * as _Icon from '@ant-design/icons';
-import { connect } from 'react-redux';
 import { clone } from 'ramda';
 import style from './index.module.less';
-import { ROUTES_MAP } from '../../router';
-import { AppState } from '../../store';
-import useLogout from '../../hooks/useLogout';
+import { useModel } from '../../store';
 
 const { SubMenu } = Menu;
-const Icon: DynamicObjectKey<any> = clone(_Icon);
+const Icon: Record<string, any> = clone(_Icon);
 
-const mapState2Props = (state: AppState) => ({
-  menu: state.common.menu,
-  menuRoutes: state.common.menuRoutes,
-});
-
-// const mapAction2Props = (dispatch: Dispatch<ActionsT>) => ({
-//   setMenuTitles(data: Array<string>) {
-//     dispatch({ type: actions.UPDATE_MENU_TITLES, data });
-//   },
-// });
+type MenuClickActions = 'navigate';
 
 interface PropsI extends RouteComponentProps {
-  menu: Array<MenuItemI>;
-  menuRoutes: MenuRoutesI;
 }
 
 const MMenu: React.FC<PropsI> = (props: PropsI) => {
-  const [logoutModalF, setLogoutModalF] = useState(false);
-  const { logout } = useLogout();
+  const [menu] = useModel('menu');
 
-  const MENU_CLICK_HANDLER: DynamicObjectKey<Function> = useMemo(() => ({
-    async logout() {
-      setLogoutModalF(true);
-    },
+  const MENU_CLICK_HANDLER: Record<MenuClickActions, Function> = useMemo(() => ({
     navigate(path: string) {
-      props.history.push(path);
+      props.history.push(`${path}`);
     },
   }), [props.history]);
 
-  const onLogoutCfmClick = useCallback(logout, [logout]);
-
   const onMenuClick = useCallback(({ key }: any) => {
-    const path = props.menuRoutes[key];
-    if (path) MENU_CLICK_HANDLER.navigate(path);
-    else MENU_CLICK_HANDLER[key]();
-  }, [MENU_CLICK_HANDLER, props.menuRoutes]);
+    MENU_CLICK_HANDLER.navigate(key);
+  }, [MENU_CLICK_HANDLER]);
 
-  const dynamicIcon = useCallback((iconType: string | Object | undefined) => {
-    if (typeof iconType !== 'string') return iconType;
-    return iconType ? React.createElement(Icon[iconType]) : '';
+  const dynamicIcon = useCallback((iconName: string | Object | undefined) => {
+    if (typeof iconName !== 'string') return iconName;
+    return iconName ? React.createElement(Icon[iconName]) : '';
   }, []);
 
-  const walkMenu = useCallback((item: MenuItemI) => {
-    item.icon = dynamicIcon(item.icon_name);
+  const walkMenu = useCallback((item: IMenuItem) => {
+    const icon = dynamicIcon(item.icon_name);
+    if (item.status !== 0) return <></>;
     if (item.sub_menu.length > 0) {
       return (
-        <SubMenu key={item.key} icon={item.icon} title={item.title}>
+        <SubMenu key={item.path} icon={icon} title={item.title}>
           {
             item.children?.map((child) => walkMenu(child))
           }
         </SubMenu>
       );
     }
-    return <Menu.Item icon={item.icon} key={item.key}>{ item.title }</Menu.Item>;
+    return <Menu.Item icon={icon} key={item.path}>{ item.title }</Menu.Item>;
   }, [dynamicIcon]);
 
-  const generateMenu = useCallback((menuTree: Array<MenuItemI> | undefined) => (
+  const generateMenu = useCallback((menuTree: Array<IMenuItem> | undefined) => (
     menuTree && (
-      <Menu onClick={onMenuClick} mode="inline" theme="dark">
+      <Menu onClick={onMenuClick} activeKey={window.location.pathname} defaultSelectedKeys={[window.location.pathname]} mode="inline" theme="dark">
+        <div className={style.logo}>
+          <a href="https://" target="_blank" rel="noreferrer">
+            Mr.RS
+          </a>
+        </div>
         {
           menuTree?.map((item) => walkMenu(item))
         }
@@ -86,21 +70,13 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
     )
   ), [onMenuClick, walkMenu]);
 
-  return props.location.pathname === ROUTES_MAP.login ? <></> : (
+  return (
     <div className={style.menuContainer}>
       {
-        generateMenu(props.menu)
+        generateMenu(menu)
       }
-      <Modal
-        title="提示"
-        visible={logoutModalF}
-        onOk={onLogoutCfmClick}
-        onCancel={() => setLogoutModalF(false)}
-      >
-        确定要退出登录吗?
-      </Modal>
     </div>
   );
 };
 
-export default connect(mapState2Props)(withRouter(MMenu));
+export default withRouter(MMenu);

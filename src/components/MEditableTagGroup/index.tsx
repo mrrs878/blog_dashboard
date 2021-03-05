@@ -16,9 +16,9 @@ const MEditableTagGroup = (props: PropsI) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleClose = useCallback((removedTag: string) => {
-    const _tags = tags.filter((tag) => tag !== removedTag);
-    setTags(_tags);
-    props.onRemove(_tags);
+    const newTags = tags.filter((tag) => tag !== removedTag);
+    setTags(newTags);
+    props.onRemove(newTags);
   }, [props, tags]);
 
   const ForMap = (tag: string) => (
@@ -44,14 +44,14 @@ const MEditableTagGroup = (props: PropsI) => {
   }, []);
 
   const handleInputConfirm = useCallback(() => {
-    let _tags: Array<string> = [];
+    let newTags: Array<string> = [];
     if (inputValue && tags.indexOf(inputValue) === -1) {
-      _tags = [...tags, inputValue];
+      newTags = [...tags, inputValue];
     }
-    setTags(_tags);
+    setTags(newTags);
     setInputValue('');
     setInputVisible(false);
-    props.onConfirm(_tags);
+    props.onConfirm(newTags);
   }, [inputValue, props, tags]);
 
   return (
@@ -67,7 +67,9 @@ const MEditableTagGroup = (props: PropsI) => {
               e.target.style = '';
             },
           }}
-          leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+          leave={{
+            opacity: 0, width: 0, scale: 0, duration: 200,
+          }}
           appear={false}
         >
           {tags.map(ForMap)}

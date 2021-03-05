@@ -1,10 +1,10 @@
 /*
- * @Author: mrrs878@foxmail.com
- * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2021-03-03 23:32:50
+ * @Author: your name
+ * @Date: 2021-03-05 17:29:22
+ * @LastEditTime: 2021-03-05 19:11:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\components\MLazyLoad\index.tsx
+ * @FilePath: /blog_dashboard/src/components/MLazyLoad/index.tsx
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { clone } from 'ramda';

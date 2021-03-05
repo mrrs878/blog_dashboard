@@ -1,12 +1,29 @@
-interface CommonStateI {
-  count: number,
-  user: UserI,
-  menu: Array<MenuItemI>;
-  menuArray: Array<MenuItemI>;
-  menuRoutes: MenuRoutesI;
-  dicts: Array<DictI>;
-  baseDicts: Array<DictI>;
-  menuTitles: MenuTitlesI;
+/*
+ * @Author: your name
+ * @Date: 2021-02-24 09:45:17
+ * @LastEditTime: 2021-03-05 17:45:17
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /components_library/src/interfaces/index.d.ts
+ */
+interface IUser {
+  name: string;
+  age: number;
+}
+
+interface IState {
   fullScreen: boolean;
-  articles: Array<ArticleI>;
+  user: IUser;
+  addresses?: Array<string>;
+  menu: Array<IMenuItem>;
+  menuRoutes: Record<string, string>;
+  menuTitles: Record<string, string>;
+  dicts: Array<IDict>;
+  baseDicts: Array<IDict>;
+  articles: Array<IArticle>;
+}
+
+interface IActions<T extends Actions, P> {
+  type: T;
+  data: P;
 }

@@ -1,60 +1,57 @@
-/**
- * @overview: 主布局配置文件
- * @description: 页面整体布局
- * @author: Mr.RS<mrrs878@foxmail.com>
- * @date 2020/7/1/0001
-*/
+/*
+ * @Author: your name
+ * @Date: 2021-02-24 10:13:41
+ * @LastEditTime: 2021-02-26 18:29:36
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /components_library/src/layout/index.tsx
+ */
 
-import React, { Suspense } from 'react';
 import { Layout } from 'antd';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-import MMenu from '../components/MMenu';
 import MHeader from '../components/MHeader';
-import MPageHeader from '../components/MPageHeader/inedx';
-import Router from '../router';
-import { AppState } from '../store';
-import MLoading from '../components/MLoading';
+import MMenu from '../components/MMenu';
+import MPageHeader from '../components/MPageHeader';
+import useGetMenu from '../hooks/useGetMenu';
+import Router from '../route';
+import { useFullScreen } from '../store';
 
 const { Content, Footer, Sider } = Layout;
 
-const mapState2Props = (state: AppState) => ({
-  fullScreen: state.common.fullScreen,
-});
-
-interface PropsI{
-  fullScreen: boolean
-}
-
-const MLayout = (props: PropsI) => (
-  <BrowserRouter>
-    <Layout style={{ minHeight: '100vh' }}>
-      {
-        !props.fullScreen && (
-        <Sider collapsible>
-          <MMenu />
-        </Sider>
-        )
-      }
-      <Layout className="site-layout">
+const MLayout = () => {
+  const [isFullScreen] = useFullScreen();
+  useGetMenu(false, true);
+  return (
+    <BrowserRouter>
+      <Layout style={{ minHeight: '100vh' }}>
         {
-          !props.fullScreen && (
-            <MHeader />
+          !isFullScreen && (
+          <Sider collapsible>
+            <MMenu />
+          </Sider>
           )
         }
-        <Content style={{ margin: '0 16px' }}>
+        <Layout className="site-layout">
           {
-            !props.fullScreen && <MPageHeader />
+            !isFullScreen && (
+              <MHeader />
+            )
           }
-          <Suspense fallback={<MLoading />}>
+          <Content style={{ margin: '0 16px' }}>
+            {
+              !isFullScreen && <MPageHeader />
+            }
             <Router />
-          </Suspense>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>Powered by Mr.RS</Footer>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            {`${new Date().getFullYear()}`}
+            &nbsp;&copy; Mr.RS
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
-  </BrowserRouter>
-);
+    </BrowserRouter>
+  );
+};
 
-export default connect(mapState2Props)(MLayout);
+export default MLayout;

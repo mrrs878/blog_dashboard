@@ -1,12 +1,12 @@
 /*
- * @Author: mrrs878@foxmail.com
- * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-30 17:54:49
+ * @Author: your name
+ * @Date: 2021-02-24 14:31:07
+ * @LastEditTime: 2021-03-05 17:54:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\interface\model.d.ts
+ * @FilePath: /components_library/src/interfaces/model.d.ts
  */
-interface UserI {
+interface IUser {
   _id: string;
   name: string;
   role: number;
@@ -24,14 +24,14 @@ interface UserI {
   createTime: string;
 }
 
-interface MenuItemI {
-  _id?: string;
+interface IMenuItem {
+  _id?: number;
   key: string;
   icon?: Object;
   icon_name?: string;
   title: string;
   path: string;
-  children?: Array<MenuItemI>;
+  children?: Array<IMenuItem>;
   sub_menu: Array<string>;
   parent: string;
   role?: Array<number>;
@@ -39,7 +39,7 @@ interface MenuItemI {
   position: number;
 }
 
-interface DictI {
+interface IDict {
   _id?: string;
   status: number;
   label: string;
@@ -79,7 +79,7 @@ interface DashboardDataI {
   value: number;
 }
 
-interface ArticleI {
+interface IArticle {
   _id?: string;
   createTime: string;
   updateTime?: string;

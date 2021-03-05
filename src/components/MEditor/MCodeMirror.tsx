@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-05 17:29:22
+ * @LastEditTime: 2021-03-05 17:56:47
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /test/src/components/MEditor/MCodeMirror.tsx
+ */
 import React, { useCallback, useEffect, useRef } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/addon/display/autorefresh';
@@ -19,8 +27,6 @@ import eventEmit from '../../tools/EventEmit';
 interface PropsI {
   value: string;
   mode: string;
-  theme: string;
-  keyMap: string;
 }
 
 const Editor = (props: PropsI) => {

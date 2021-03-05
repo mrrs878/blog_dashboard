@@ -1,5 +1,5 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-10-12 14:42:20
  * @LastEditTime: 2020-12-09 16:12:30
  * @LastEditors: mrrs878
@@ -9,7 +9,7 @@
 import { message } from 'antd';
 import { useEffect } from 'react';
 import { LOGOUT } from '../api/auth';
-import { ROUTES_MAP } from '../router';
+import { ROUTES_MAP } from '../route';
 import useRequest from './useRequest';
 
 function useLogout() {
