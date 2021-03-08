@@ -1,8 +1,8 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-12-23 13:16:42
  * @LastEditTime: 2021-02-03 15:32:37
- * @LastEditors: mrrs878@foxmail.com
+ * @LastEditors: your name
  * @Description: In User Settings Edit
  * @FilePath: /my-app/src/components/MEditor/CodeBlock.tsx
  */

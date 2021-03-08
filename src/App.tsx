@@ -1,32 +1,25 @@
 /*
- * @Author: mrrs878@foxmail.com
- * @Date: 2020-12-23 13:16:42
- * @LastEditTime: 2021-02-03 15:29:51
- * @LastEditors: mrrs878@foxmail.com
+ * @Author: your name
+ * @Date: 2021-02-23 11:21:04
+ * @LastEditTime: 2021-02-26 18:56:28
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /my-app/src/App.tsx
+ * @FilePath: /components_library/src/App.tsx
  */
-import { Provider } from 'react-redux';
-import React from 'react';
-
-import store from './store';
-import './global.less';
+import React, { useReducer } from 'react';
+import MErrorBoundary from './components/MErrorBoundary';
 import MLayout from './layout';
-import useGetUserInfoByToken from './hooks/useGetUserInfoByToken';
-import useGetDicts from './hooks/useGetDicts';
-import useGetMenus from './hooks/useGetMenus';
+import { defaultState, reducer, StoreContext } from './store';
 
 function App() {
-  useGetUserInfoByToken(false);
-  useGetDicts(false, true);
-  useGetMenus(false, true);
+  const [state, dispatch] = useReducer(reducer, defaultState, undefined);
 
   return (
-    <Provider store={store}>
-      <div className="app">
+    <MErrorBoundary>
+      <StoreContext.Provider value={{ state, dispatch }}>
         <MLayout />
-      </div>
-    </Provider>
+      </StoreContext.Provider>
+    </MErrorBoundary>
   );
 }
 

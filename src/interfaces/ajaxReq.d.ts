@@ -1,5 +1,5 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-09-22 09:42:32
  * @LastEditTime: 2020-10-30 16:45:20
  * @LastEditors: Please set LastEditors
@@ -13,9 +13,9 @@ interface LoginReqI {
 interface GetMenuReqI {
 }
 
-interface CreateMenuReqI extends MenuItemI {}
+interface CreateMenuReqI extends IMenuItem {}
 
-interface UpdateMenuReqI extends MenuItemI {}
+interface UpdateMenuReqI extends IMenuItem {}
 
 interface GetDictsReqT {
 }
@@ -24,10 +24,10 @@ interface GetDictReqT {
   id: string
 }
 
-interface UpdateDictReqT extends DictI {
+interface UpdateDictReqT extends IDict {
 }
 
-interface CreateDictReqT extends DictI{
+interface CreateDictReqT extends IDict{
 }
 
 interface DeleteDictReqT {

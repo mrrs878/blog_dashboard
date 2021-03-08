@@ -1,13 +1,13 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-23 15:04:00
- * @LastEditors: mrrs878@foxmail.com
+ * @LastEditTime: 2021-03-05 17:56:19
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\tools\EventEmit.ts
  */
 class EventEmit {
-  private readonly events: DynamicObjectKey<Array<Function>>;
+  private readonly events: Record<string, Array<Function>>;
 
   private maxWatchers: number;
 

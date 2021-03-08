@@ -1,7 +1,7 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-14 16:25:32
+ * @LastEditTime: 2021-03-05 17:27:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\api\setting.ts

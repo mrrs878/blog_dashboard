@@ -1,31 +1,37 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-12-23 13:16:42
- * @LastEditTime: 2021-02-03 15:33:33
- * @LastEditors: mrrs878@foxmail.com
+ * @LastEditTime: 2021-03-05 17:58:27
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my-app/src/components/MEditor/Preview.tsx
  */
 import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Space } from 'antd';
-import { CalendarOutlined, FolderOutlined, UserOutlined, PaperClipOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined, FolderOutlined, UserOutlined, PaperClipOutlined,
+} from '@ant-design/icons';
 import { Base64 } from 'js-base64';
 import CodeBlock from './CodeBlock';
 import '../../assets/less/md.theme.orange.less';
 import style from './preview.module.less';
-import { useDocumentTitle } from '../../tools/hook';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 interface PropsI {
-  value: ArticleI;
+  value: IArticle;
   fullscreen?: boolean;
 }
 
 const Preview = (props: PropsI) => {
   const formattedMd = useMemo(
     () => {
-      const { title, createTime, updateTime, tags, categories, content, author } = props.value;
-      return ({ title, createTime, updateTime, tags, categories, author, description: '', content: Base64.decode(content).split('---')[2] });
+      const {
+        title, createTime, updateTime, tags, categories, content, author,
+      } = props.value;
+      return ({
+        title, createTime, updateTime, tags, categories, author, description: '', content: Base64.decode(content).split('---')[2],
+      });
     },
     [props.value],
   );

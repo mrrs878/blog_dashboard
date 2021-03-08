@@ -48,6 +48,7 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props: HeaderSearchProps) => 
   });
 
   return (
+    // eslint-disable-next-line
     <div
       className={styles.headerSearch}
       onClick={() => {

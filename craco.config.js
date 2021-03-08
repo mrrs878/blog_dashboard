@@ -1,20 +1,15 @@
 /*
- * @Author: mrrs878@foxmail.com
- * @Date: 2021-02-03 15:10:56
- * @LastEditTime: 2021-02-03 16:32:20
+ * @Author: your name
+ * @Date: 2021-02-23 14:42:04
+ * @LastEditTime: 2021-02-25 11:19:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /my-app/craco.config.js
+ * @FilePath: /components_library/craco.config.js
  */
-const CracoAntDesignPlugin = require('craco-antd');
 const CracoLessPlugin = require('craco-less');
+const CracoAntDesignPlugin = require('craco-antd');
 
 module.exports = {
-  babel: {
-    plugins: [
-      ['@babel/plugin-proposal-decorators', { legacy: true }],
-    ],
-  },
   plugins: [
     {
       plugin: CracoAntDesignPlugin,
@@ -26,11 +21,6 @@ module.exports = {
     {
       plugin: CracoLessPlugin,
       options: {
-        lessLoaderOptions: {
-          lessOptions: {
-            javascriptEnabled: true,
-          },
-        },
         modifyLessRule() {
           return {
             test: /\.module\.less$/,

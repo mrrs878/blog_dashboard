@@ -1,0 +1,26 @@
+{
+  "menu": [
+    {
+      "id": 0,
+      "key": "home",
+      "icon_name": "DashboardOutlined",
+      "title": "首页",
+      "path": "/home",
+      "sub_menu": [],
+      "parent": "root",
+      "position": 0,
+      "status": 0
+    },
+    {
+      "id": 1,
+      "key": "profile",
+      "icon_name": "UserOutlined",
+      "title": "个人中心",
+      "path": "/profile",
+      "sub_menu": [],
+      "parent": "root",
+      "position": 1,
+      "status": 0
+    }
+  ]
+}

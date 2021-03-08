@@ -1,7 +1,7 @@
 /*
- * @Author: mrrs878@foxmail.com
+ * @Author: your name
  * @Date: 2020-12-23 13:16:42
- * @LastEditTime: 2021-02-03 16:21:35
+ * @LastEditTime: 2021-03-05 18:03:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my-app/src/components/MTableSearch/index.tsx
@@ -14,6 +14,7 @@ import { FilterConfirmProps, FilterDropdownProps } from 'antd/es/table/interface
 
 interface SearchInputPropsI {
   selectedKeys?: Array<React.Key>;
+  // eslint-disable-next-line react/no-unused-prop-types
   setSelectedKeys?: (selectedKeys: string[]) => void;
   confirm?: (params: FilterConfirmProps) => void;
   clearFilters?: () => void;
@@ -26,7 +27,8 @@ export default function getColumnSearchProps(dataIndex: string) {
   const SearchInput: React.FC<SearchInputPropsI> = (props: SearchInputPropsI) => {
     inputRef = useRef<Input>();
 
-    function handleSearch(selectedKeys: React.Key[] | undefined, confirm: ((params: FilterConfirmProps) => void) | undefined, index: string) {
+    function handleSearch(selectedKeys: React.Key[] | undefined,
+      confirm: ((params: FilterConfirmProps) => void) | undefined, index: string) {
       if (confirm) confirm({ closeDropdown: false });
       searchText = selectedKeys && selectedKeys[0];
       searchedColumn = index;
@@ -68,8 +70,17 @@ export default function getColumnSearchProps(dataIndex: string) {
   };
 
   return {
-    filterDropdown({ setSelectedKeys, selectedKeys, confirm, clearFilters }: FilterDropdownProps) {
-      return <SearchInput confirm={confirm} setSelectedKeys={setSelectedKeys} selectedKeys={selectedKeys} clearFilters={clearFilters} />;
+    filterDropdown({
+      setSelectedKeys, selectedKeys, confirm, clearFilters,
+    }: FilterDropdownProps) {
+      return (
+        <SearchInput
+          confirm={confirm}
+          setSelectedKeys={setSelectedKeys}
+          selectedKeys={selectedKeys}
+          clearFilters={clearFilters}
+        />
+      );
     },
     filterIcon(filtered: boolean) {
       return <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />;
