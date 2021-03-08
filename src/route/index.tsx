@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-26 18:16:29
- * @LastEditTime: 2021-03-05 18:56:41
+ * @LastEditTime: 2021-03-08 22:36:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/route/index.tsx
@@ -11,7 +11,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import MLoading from '../components/MLoading';
 import useDocumentTitle from '../hooks/useDocumentTitle';
-import { useModel } from '../store';
+import { useFullScreen, useModel } from '../store';
 import { getCookie } from '../tools';
 
 const HOME = React.lazy(() => import('../view/home'));
@@ -35,6 +35,7 @@ const MENU_SETTING = React.lazy(() => import('../view/setting/menu'));
 interface GuardComponentPropsI {
   component: any;
   auth: boolean;
+  fullScreen: boolean;
   path: string;
 }
 
@@ -46,6 +47,7 @@ const ROUTES_MAP = {
   user: '/auth/user',
   role: '/auth/role',
   article: '/articles',
+  comment: '/comment',
   setting: '/setting',
   dict: '/setting/dict',
   menuSetting: '/setting/menu',
@@ -69,18 +71,22 @@ const ROUTES: Array<RouteConfigI> = [
   {
     path: ROUTES_MAP.login,
     component: LOGIN,
+    auth: false,
+    fullScreen: true,
   },
   {
     path: ROUTES_MAP.reg,
     component: REG,
+    auth: false,
+    fullScreen: true,
   },
   {
     path: `${ROUTES_MAP.article}/:id`,
-    component: ARTICLE,
+    component: ARTICLE_DETAIL,
   },
   {
     path: ROUTES_MAP.article,
-    component: ARTICLE_DETAIL,
+    component: ARTICLE,
   },
   {
     path: ROUTES_MAP.user,
@@ -130,11 +136,13 @@ const ROUTES: Array<RouteConfigI> = [
 
 const GuardComponent = (props: GuardComponentPropsI) => {
   const [titles] = useModel('menuTitles');
+  const [, fullScreen] = useFullScreen();
   useDocumentTitle(titles[props.path]);
   const Component = (props.component) as any;
   useEffect(() => {
-    if (props.auth && !getCookie('auth_token')) window.location.href = '/auth/login';
-  }, [props.auth]);
+    if (props.auth && !getCookie('auth_token')) window.location.href = ROUTES_MAP.login;
+    if (props.fullScreen) fullScreen();
+  }, [fullScreen, props.auth, props.fullScreen]);
   return <Component />;
 };
 
@@ -152,6 +160,7 @@ const Router = () => (
                 path={route.path}
                 component={route.component}
                 auth={route.auth || false}
+                fullScreen={route.fullScreen || false}
               />
             )}
           />

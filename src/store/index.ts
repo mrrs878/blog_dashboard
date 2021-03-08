@@ -41,6 +41,7 @@ const defaultState: IState = {
   addresses: [],
   fullScreen: false,
   menu: [],
+  menuTree: [],
   menuRoutes: {},
   menuTitles: {},
   dicts: [],

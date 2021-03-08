@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2021-03-05 18:16:09
+ * @LastEditTime: 2021-03-08 22:46:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -23,6 +23,7 @@ import useRequest from '../../hooks/useRequest';
 import useGetArticles from '../../hooks/useGetArticles';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
 import eventEmit from '../../tools/EventEmit';
+import { useModel } from '../../store';
 
 const EMPTY_ARTICLE: IArticle = {
   title: '',
@@ -36,7 +37,6 @@ const EMPTY_ARTICLE: IArticle = {
 };
 
 interface PropsI extends RouteComponentProps<{ id: string }>{
-  user: IUser,
 }
 
 const emptyMarkdownSrc = '---\n\n title: \n\n tags: \n\n categories: \n\n---';
@@ -62,6 +62,7 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
 }
 
 const ArticleDetail = (props: PropsI) => {
+  const [user] = useModel('user');
   const [markdownSrc, setMarkdownSrc] = useState(emptyMarkdownSrc);
   const [article, setArticle] = useState<IArticle>(EMPTY_ARTICLE);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -77,14 +78,14 @@ const ArticleDetail = (props: PropsI) => {
       setArticle(({ createTime }) => ({
         ...formatMarkdownSrc(value),
         createTime,
-        author: props.user.name,
+        author: user.name,
         updateTime: new Date().toLocaleString(),
       }));
     });
     return () => {
       eventEmit.removeHandler('sendEditorContent', setMarkdownSrc);
     };
-  }, [props.user.name]);
+  }, [user.name]);
 
   useEffect(() => {
     if (createOrEdit) return;
@@ -92,6 +93,8 @@ const ArticleDetail = (props: PropsI) => {
       message.error(getArticleRes?.msg);
       return;
     }
+    console.log(getArticleRes);
+
     setArticle(getArticleRes?.data || EMPTY_ARTICLE);
     setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || '') || emptyMarkdownSrc);
   }, [getArticleRes, createOrEdit]);
