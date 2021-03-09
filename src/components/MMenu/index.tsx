@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-24 10:25:01
- * @LastEditTime: 2021-03-08 22:35:48
+ * @LastEditTime: 2021-03-09 22:54:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /components_library/src/components/MMenu.tsx
@@ -24,9 +24,6 @@ interface PropsI extends RouteComponentProps {
 
 const MMenu: React.FC<PropsI> = (props: PropsI) => {
   const [menuTree] = useModel('menuTree');
-
-  console.log(menuTree);
-
   const MENU_CLICK_HANDLER: Record<MenuClickActions, Function> = useMemo(() => ({
     navigate(path: string) {
       props.history.push(`${path}`);
