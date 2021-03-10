@@ -1,13 +1,21 @@
 #!/bin/bash
+###
+ # @Author: your name
+ # @Date: 2021-03-05 17:33:59
+ # @LastEditTime: 2021-03-10 10:23:00
+ # @LastEditors: Please set LastEditors
+ # @Description: In User Settings Edit
+ # @FilePath: /blog_dashboard/update.sh
+### 
 
-# echo "updating code..."
-# git pull
+echo "updating code..."
+git pull
 
-# echo "installing packages..."
-# yarn install
+echo "installing packages..."
+yarn install
 
-# echo "building..."
-# yarn build:prod
+echo "building..."
+yarn build:prod
 
 # echo "building image..."
 # docker build -t mrrs878/blog_dashboard:latest .
