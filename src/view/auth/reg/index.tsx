@@ -1,8 +1,8 @@
 /*
- * @Author: your name
+ * @Author: mrrs878@foxmail.com
  * @Date: 2020-12-23 13:16:42
  * @LastEditTime: 2021-02-03 15:40:30
- * @LastEditors: your name
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: /my-app/src/views/auth/reg/index.tsx
  */

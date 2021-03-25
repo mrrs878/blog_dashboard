@@ -1,6 +1,6 @@
 #!/bin/bash
 ###
- # @Author: your name
+ # @Author: mrrs878@foxmail.com
  # @Date: 2021-03-05 17:33:59
  # @LastEditTime: 2021-03-10 11:26:51
  # @LastEditors: Please set LastEditors

@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 14:29:29
- * @LastEditTime: 2021-03-09 22:52:54
+ * @LastEditTime: 2021-03-24 18:22:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /components_library/src/tool/ajax.ts
@@ -20,7 +20,7 @@ ajax.interceptors.request.use((config) => {
   return tmp;
 });
 ajax.interceptors.response.use(async (response) => {
-  if ([401].includes(response.data.code) && window.location.pathname !== '/auth/login') {
+  if ([401, 403].includes(response.data.code) && window.location.pathname !== '/auth/login') {
     localStorage.removeItem(MAIN_CONFIG.TOKEN_NAME);
     window.location.href = '/auth/login';
     return null;
