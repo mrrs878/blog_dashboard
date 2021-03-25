@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2021-03-25 11:21:32
+ * @LastEditTime: 2021-03-25 12:22:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -15,29 +15,17 @@ import {
   Button, Space, Upload, message, Row, Col,
 } from 'antd';
 import {
-  EditOutlined, UploadOutlined, SaveOutlined, RedoOutlined, EyeOutlined, ReloadOutlined,
+  UploadOutlined, SaveOutlined, RedoOutlined, ReloadOutlined,
 } from '@ant-design/icons';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Base64 } from 'js-base64';
 import { clone } from 'ramda';
 import 'bytemd/dist/index.min.css';
-import MPreview from '../../components/MEditor/Preview';
 import useRequest from '../../hooks/useRequest';
 import useGetArticles from '../../hooks/useGetArticles';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
-import { useModel } from '../../store';
+import '../../assets/less/md.theme.orange.less';
 import style from './detail.module.less';
-
-const EMPTY_ARTICLE: IArticle = {
-  title: '',
-  categories: '',
-  tags: '',
-  content: '',
-  createTime: '',
-  description: '',
-  author: '',
-  _id: '',
-};
 
 interface IProps extends RouteComponentProps<{ id: string }>{
 }
@@ -65,10 +53,7 @@ function formatMarkdownSrc(markdownSrc: string): CreateArticleReqI {
 }
 
 const ArticleDetail = (props: IProps) => {
-  const [user] = useModel('user');
   const [markdownSrc, setMarkdownSrc] = useState(emptyMarkdownSrc);
-  const [article, setArticle] = useState<IArticle>(EMPTY_ARTICLE);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [createOrEdit, setCreateOrEdit] = useState<boolean>(false);
   const [, getArticleRes, , reGetArticle] = useRequest(GET_ARTICLE, props.match.params.id !== '-1', { id: props.match.params.id });
   const [updateArticleLoading, , updateArticle] = useRequest(UPDATE_ARTICLE, false);
@@ -81,7 +66,6 @@ const ArticleDetail = (props: IProps) => {
       message.error(getArticleRes?.msg);
       return;
     }
-    setArticle(getArticleRes?.data || EMPTY_ARTICLE);
     setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || '') || emptyMarkdownSrc);
   }, [getArticleRes, createOrEdit]);
 
@@ -95,22 +79,11 @@ const ArticleDetail = (props: IProps) => {
 
   useEffect(() => {
     setCreateOrEdit(props.match.params.id === '-1');
-    setIsEdit(props.match.params.id === '-1');
   }, [props.match.params.id]);
 
   const onEditorChange = useCallback((value) => {
     setMarkdownSrc(value);
-    setArticle(({ createTime }) => ({
-      ...formatMarkdownSrc(value),
-      createTime,
-      author: user.name,
-      updateTime: new Date().toLocaleString(),
-    }));
-  }, [user.name]);
-
-  const onToggleEditable = useCallback(() => {
-    setIsEdit(!isEdit);
-  }, [isEdit]);
+  }, []);
 
   const onSyncClick = useCallback(async () => {
     await reGetArticle();
@@ -122,8 +95,6 @@ const ArticleDetail = (props: IProps) => {
     fileReader.readAsText(options.file);
     fileReader.onload = async () => {
       setMarkdownSrc(fileReader.result?.toString() || '');
-      const newArticle = formatMarkdownSrc(fileReader.result?.toString() || '');
-      setArticle({ ...newArticle, createTime: new Date().toLocaleString(), author: '' });
     };
     fileReader.onerror = () => message.error('上传失败！');
   }, []);
@@ -158,17 +129,6 @@ const ArticleDetail = (props: IProps) => {
         <Col flex={1}>
           <Space className="controller">
             {
-              isEdit ? (
-                <Button icon={<EyeOutlined />} onClick={onToggleEditable}>预览</Button>
-              ) : (
-                <Button onClick={onToggleEditable}>
-                  编辑
-                  {' '}
-                  <EditOutlined />
-                </Button>
-              )
-            }
-            {
               !createOrEdit && <Button icon={<RedoOutlined />} onClick={onSyncClick}>刷新</Button>
             }
             <Upload accept=".md" customRequest={upload} showUploadList={false}>
@@ -177,27 +137,21 @@ const ArticleDetail = (props: IProps) => {
                 上传Markdown文件
               </Button>
             </Upload>
-            <Button icon={<SaveOutlined />} disabled={isEdit} loading={updateArticleLoading || createArticleLoading} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
+            <Button icon={<SaveOutlined />} loading={updateArticleLoading || createArticleLoading} onClick={onSaveClick}>{ createOrEdit ? '发表' : '保存更改' }</Button>
             <Button icon={<ReloadOutlined />} onClick={onResetClick}>重置</Button>
           </Space>
         </Col>
       </Row>
       <br />
-      {
-        isEdit ? (
-          <Editor
-            value={markdownSrc}
-            onChange={onEditorChange}
-            plugins={[
-              hl(),
-              gfm(),
-              breaks(),
-            ]}
-          />
-        ) : (
-          <MPreview value={article} fullscreen={!isEdit} />
-        )
-      }
+      <Editor
+        value={markdownSrc}
+        onChange={onEditorChange}
+        plugins={[
+          hl(),
+          gfm(),
+          breaks(),
+        ]}
+      />
     </div>
   );
 };
