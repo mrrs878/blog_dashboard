@@ -40,7 +40,7 @@ const Index = (props: PropsI) => {
 
   useEffect(() => {
     if (!getMenusRes || !getMenusRes.success) return;
-    props.history.replace('/home');
+    window.location.href = '/home';
   }, [getMenusRes, props.history]);
 
   function onVerifySuccess() {
