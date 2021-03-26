@@ -1,8 +1,8 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-03-05 17:31:28
- * @LastEditTime: 2021-03-05 18:26:46
- * @LastEditors: mrrs878@foxmail.com
+ * @LastEditTime: 2021-03-26 13:02:10
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /test/src/view/auth/role/index.tsx
  */
@@ -72,7 +72,7 @@ const Role: React.FC<PropsI> = (props: PropsI) => {
   const [dicts] = useModel('dicts');
   const [dict, setDict] = useState<Array<IDict>>([]);
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<IDict>>>([]);
-  const [getDicts] = useGetDicts(false);
+  const { getDicts } = useGetDicts(false);
 
   useEffect(() => {
     getDicts();

@@ -13,7 +13,7 @@ import useRequest from '../../../hooks/useRequest';
 import useGetDicts from '../../../hooks/useGetDicts';
 import { useModel } from '../../../store';
 
-interface PropsI extends RouteComponentProps<{ id: string }> {
+interface IProps extends RouteComponentProps<{ id: string }> {
 }
 
 interface IDictLabel { type: string, label_view: string, label: string }
@@ -45,7 +45,7 @@ const emptyDict: IDict = {
   _id: '', status: 0, label: '', label_view: '', type: '', type_view: '', name: '', name_view: '', value: 0, createTime: '', updateTime: '', creator: { name: '' }, updater: { name: '' },
 };
 
-const DictDetail = (props: PropsI) => {
+const DictDetail = (props: IProps) => {
   const [dicts] = useModel('dicts');
   const [dataDict, setDataDict] = useState<IDict>(emptyDict);
   const dictLabels = useMemo(
@@ -66,7 +66,7 @@ const DictDetail = (props: PropsI) => {
   const [inputDictLabels, setInputDictLabels] = useState<Array<IDictLabel>>([]);
   const [createDictLoading, createDictRes, createDict] = useRequest(CREATE_DICT, false);
   const [updateDictLoading, updateDictRes, updateDict] = useRequest(UPDATE_DICT, false);
-  const [getDicts] = useGetDicts(false);
+  const { getDicts } = useGetDicts(false);
   const [addDictForm] = Form.useForm();
 
   useEffect(() => {

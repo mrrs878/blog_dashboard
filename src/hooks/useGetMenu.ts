@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2021-03-08 22:35:57
+ * @LastEditTime: 2021-03-26 12:49:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
@@ -12,6 +12,7 @@ import { clone } from 'ramda';
 import { GET_MENUS } from '../api/auth';
 import useRequest from './useRequest';
 import { useModel } from '../store';
+import { ITEM_STATUS } from '../constant';
 
 function menuArray2Tree(src: Array<IMenuItem>) {
   const res: Array<IMenuItem> = [];
@@ -54,8 +55,10 @@ export default function useGetMenu(autoMsg = true, authFetch = false) {
     if (!getMenusRes.success) return;
     updateMenuTitles(getMenuTitles(getMenusRes.data));
     updateMenuRoutes(getMenuRoutes(getMenusRes.data));
-    updateMenu(getMenusRes.data.filter(({ status }) => status !== 2));
-    updateMenuTree(menuArray2Tree(getMenusRes.data.filter(({ status }) => status !== 2)));
+    updateMenu(getMenusRes.data.filter(({ status }) => status !== ITEM_STATUS.removed));
+    updateMenuTree(menuArray2Tree(getMenusRes.data.filter(
+      ({ status }) => status !== ITEM_STATUS.removed,
+    )));
   }, [getMenusRes, autoMsg, updateMenuTitles, updateMenuRoutes, updateMenu, updateMenuTree]);
 
   return { getMenusRes, getMenus };

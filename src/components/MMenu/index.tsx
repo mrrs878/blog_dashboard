@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 10:25:01
- * @LastEditTime: 2021-03-09 22:54:27
+ * @LastEditTime: 2021-03-26 12:55:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /components_library/src/components/MMenu.tsx
@@ -13,6 +13,7 @@ import * as _Icon from '@ant-design/icons';
 import { clone } from 'ramda';
 import style from './index.module.less';
 import { useModel } from '../../store';
+import { ITEM_STATUS } from '../../constant';
 
 const { SubMenu } = Menu;
 const Icon: Record<string, any> = clone(_Icon);
@@ -41,7 +42,7 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
 
   const walkMenu = useCallback((item: IMenuItem) => {
     const icon = dynamicIcon(item.icon_name);
-    if (item.status === 0) return <></>;
+    if (item.status !== ITEM_STATUS.enable) return <></>;
     if (item.sub_menu.length > 0) {
       return (
         <SubMenu key={item.path} icon={icon} title={item.title}>

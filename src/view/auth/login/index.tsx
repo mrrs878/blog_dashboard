@@ -10,6 +10,7 @@ import useRequest from '../../../hooks/useRequest';
 import useGetMenus from '../../../hooks/useGetMenu';
 import MAIN_CONFIG from '../../../config';
 import { useModel } from '../../../store';
+import useGetDicts from '../../../hooks/useGetDicts';
 
 const layout = {
   labelCol: { span: 3, offset: 7 },
@@ -27,6 +28,7 @@ const Index = (props: PropsI) => {
   const [accountInfo, setAccountInfo] = useState<LoginReqI>({ name: '', password: '' });
   const [isLogin, loginRes, login] = useRequest(LOGIN, false);
   const { getMenusRes, getMenus } = useGetMenus(false);
+  const { getDicts } = useGetDicts(false);
   const [, updateUser] = useModel('user');
 
   useEffect(() => {
@@ -36,7 +38,8 @@ const Index = (props: PropsI) => {
     localStorage.setItem(MAIN_CONFIG.TOKEN_NAME, loginRes.data.token);
     updateUser(loginRes.data);
     getMenus();
-  }, [getMenus, loginRes, updateUser]);
+    getDicts();
+  }, [getDicts, getMenus, loginRes, updateUser]);
 
   useEffect(() => {
     if (!getMenusRes || !getMenusRes.success) return;

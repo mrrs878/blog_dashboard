@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-23 18:24:16
- * @LastEditTime: 2021-03-05 18:08:30
+ * @LastEditTime: 2021-03-26 13:05:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /components_library/src/store/index.ts
@@ -29,9 +29,6 @@ type UpdateFullScreen = IActions<Actions.UPDATE_FULLSCREEN, boolean>;
 type UpdateMenu = IActions<Actions.UPDATE_MENU, Array<IMenuItem>>;
 type UpdateMenuRoutes = IActions<Actions.UPDATE_MENU_ROUTES, Record<string, string>>;
 type UpdateMenuTitles = IActions<Actions.UPDATE_MENU_TITLES, Record<string, string>>;
-// type UpdateDicts = IActions<Actions.UPDATE_DICTS, Array<IDict>>;
-// type UpdateBaseDicts = IActions<Actions.UPDATE_BASE_DICTS, Array<IDict>>;
-// type UpdateArticles = IActions<Actions.UPDATE_ARTICLES, Array<IArticle>>;
 
 type Action = UpdateModel<keyof IState>|UpdateUser|UpdateAddresses|UpdateFullScreen|UpdateMenu|
 UpdateMenuRoutes|UpdateMenuTitles;

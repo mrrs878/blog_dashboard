@@ -19,6 +19,8 @@ import { CREATE_MENU, UPDATE_MENU } from '../../../api/auth';
 import useRequest from '../../../hooks/useRequest';
 import useGetMenus from '../../../hooks/useGetMenu';
 import { useModel } from '../../../store';
+import { ITEM_STATUS_ARRAY } from '../../../constant';
+import useGetDicts from '../../../hooks/useGetDicts';
 
 const Icons = clone<Record<string, any>>(_Icons);
 
@@ -70,7 +72,6 @@ const MenuSetting = () => {
   const [createOrUpdate, setCreateOrUpdate] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<IMenuItem>();
   const [selectedMenuParent, setSelectedMenuParent] = useState<IMenuItem>();
-  const [dictStatus, setDictStatus] = useState<Array<{ value: number; title: string }>>([]);
   const [couldIcon, setCouldIcon] = useState<boolean>(false);
   const [isMenuAdding, setIsMenuAdding] = useState<boolean>(false);
   const [couldAddMenu, setCouldAddMenu] = useState<boolean>(true);
@@ -78,22 +79,16 @@ const MenuSetting = () => {
   const [, createMenuRes, createMenu] = useRequest(CREATE_MENU, false);
   const [, updateMenuRes, updateMenu] = useRequest(UPDATE_MENU, false);
   const { getMenus } = useGetMenus(false, false);
-  const [menu] = useModel('menu');
+  const [menuTree] = useModel('menuTree');
   const [menuArray] = useModel('menu');
-  const [dicts] = useModel('dicts');
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setTreeData(formatMenu(menu));
-  }, [menu]);
+    setTreeData(formatMenu(menuTree));
+  }, [menuTree]);
   useEffect(() => {
     setMenuItemArray(menuArray);
   }, [menuArray]);
-  useEffect(() => {
-    const dictStatusTmp = dicts.filter((item) => item.label === 'status')
-      .map((item) => ({ value: item.value, title: item.name }));
-    setDictStatus(dictStatusTmp);
-  }, [dicts]);
 
   useEffect(() => {
     if (!createMenuRes) return;
@@ -134,10 +129,10 @@ const MenuSetting = () => {
       const {
         role, sub_menu, key, parent, _id,
       } = menuArray.find((item) => item._id === selectedMenu?._id) || {};
-      const { position, path } = values;
+      const { position } = values;
       const newPosition = parseInt(position, 10);
       const newValues = {
-        role, sub_menu, parent, key, _id, ...values, position: newPosition, path: path.startsWith('/') ? path : `/${path}`,
+        role, sub_menu, parent, key, _id, ...values, position: newPosition, path: `${selectedMenuParent?.path ?? ''}/${values.path}`,
       };
       setEditModalF(false);
       updateMenu(newValues);
@@ -256,8 +251,8 @@ const MenuSetting = () => {
             >
               <Radio.Group>
                 {
-                  dictStatus.map((item) => (
-                    <Radio key={item.title} value={item.value}>{ item.title }</Radio>
+                  ITEM_STATUS_ARRAY.map((item) => (
+                    <Radio key={item.label} value={item.value}>{ item.label }</Radio>
                   ))
                 }
               </Radio.Group>

@@ -73,7 +73,7 @@ const Dict: React.FC<PropsI> = (props: PropsI) => {
   const [dictListColumns, setDictListColumns] = useState<Array<ColumnProps<IDict>>>([]);
   const [dictCount, setDictCount] = useState(0);
   const [loadMoreF, setLoadMoreF] = useState(false);
-  const [, reGetDicts, getDictsLoading] = useGetDicts(false, true);
+  const { reGetDicts, getDictsLoading } = useGetDicts(false, true);
   const [dicts] = useModel('dicts');
 
   useEffect(() => {

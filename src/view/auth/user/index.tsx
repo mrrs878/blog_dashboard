@@ -5,18 +5,16 @@ import {
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { GET_ALL_USERS } from '../../../api/user';
 import getColumnSearchProps from '../../../components/MTableSearch';
 import useRequest from '../../../hooks/useRequest';
 import { UPDATE_USER_STATUS } from '../../../api/auth';
 import { isTruth } from '../../../tools';
+import { useModel } from '../../../store';
 
-interface PropsI extends RouteComponentProps {
-  dicts: Array<IDict>;
-}
-
-const User = (props: PropsI) => {
+const User = () => {
+  const [dicts] = useModel('dicts');
   const [, getUsersRes, , reGetUsers] = useRequest(GET_ALL_USERS);
   const [users, setUsers] = useState<Array<IUser>>([]);
   const [roles, setRoles] = useState<Record<string, string>>({});
@@ -84,16 +82,16 @@ const User = (props: PropsI) => {
     if (!getUsersRes) return;
     setUsers(getUsersRes.data || []);
     const newRoles: Record<string, string> = {};
-    props.dicts
+    dicts
       .filter((item) => item.type === 'user' && item.label === 'user_role' && item.status !== 2)
       .forEach((item) => { newRoles[item.value] = item.name_view; });
     const createdByTmp: Record<string, string> = {};
-    props.dicts
+    dicts
       .filter((item) => item.type === 'common' && item.label === 'created_by')
       .forEach((item) => { createdByTmp[item.value] = item.name_view; });
     setRoles(newRoles);
     setCreatedBy(createdByTmp);
-  }, [getUsersRes, props.dicts]);
+  }, [dicts, getUsersRes]);
 
   useEffect(() => {
     if (!updateUserStatusRes) return;
