@@ -20,7 +20,6 @@ import useRequest from '../../../hooks/useRequest';
 import useGetMenus from '../../../hooks/useGetMenu';
 import { useModel } from '../../../store';
 import { ITEM_STATUS_ARRAY } from '../../../constant';
-import useGetDicts from '../../../hooks/useGetDicts';
 
 const Icons = clone<Record<string, any>>(_Icons);
 
