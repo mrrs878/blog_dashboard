@@ -9,6 +9,7 @@
     "htmlmixed",
     "linebreak",
     "matchbrackets",
+    "noninteractive",
     "vbscript"
   ]
 }

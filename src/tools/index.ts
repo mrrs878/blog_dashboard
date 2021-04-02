@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-26 18:21:49
- * @LastEditTime: 2021-03-05 18:29:54
+ * @LastEditTime: 2021-04-02 16:12:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/tool/index.ts
@@ -42,3 +42,34 @@ export function getLastItem<T>(src: Array<T>) {
 }
 
 export const isTruth: (value: any) => boolean = curry((value: any) => !!value);
+
+export function insertBefore<T>(list: T[], from: T, to?: T): T[] {
+  const copy = [...list];
+  const fromIndex = copy.indexOf(from);
+  if (from === to) {
+    return copy;
+  }
+  copy.splice(fromIndex, 1);
+  const newToIndex = to ? copy.indexOf(to) : -1;
+  if (to && newToIndex >= 0) {
+    copy.splice(newToIndex, 0, from);
+  } else {
+    // 没有 To 或 To 不在序列里，将元素移动到末尾
+    copy.push(from);
+  }
+  return copy;
+}
+
+/** 判断是否数组相等 */
+export function isEqualBy<T>(a: T[], b: T[], key: keyof T) {
+  const aList = a.map((item) => item[key]);
+  const bList = b.map((item) => item[key]);
+
+  let flag = true;
+  aList.forEach((i, idx) => {
+    if (i !== bList[idx]) {
+      flag = false;
+    }
+  });
+  return flag;
+}

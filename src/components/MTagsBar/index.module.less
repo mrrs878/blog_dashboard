@@ -1,0 +1,96 @@
+.container {
+  background-color: #f0f2f5;
+  overflow: hidden;
+}
+
+.top {
+  width: 100%;
+  height: 5px;
+}
+
+.content {
+  padding: 0 10px;
+  display: flex;
+  user-select: none;
+  position: relative;
+}
+
+.tagC {
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 8px 10px 0;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  width: 120px;
+  box-sizing: border-box;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tagC.active {
+  background-color: #fff;
+  z-index: 999;
+}
+.tagC.active::before {
+  position: absolute;
+  content: "";
+  height: 5px;
+  width: 9999px;
+  background-color: #f0f2f5;
+  left: -9999px;
+  border-bottom-right-radius: 10px;
+  bottom: -5px;
+}
+.tagC.active::after {
+  position: absolute;
+  content: "";
+  height: 5px;
+  width: 9999px;
+  background-color: #f0f2f5;
+  left: 120px;
+  border-bottom-left-radius: 10px;
+  bottom: -5px;
+}
+
+.tagText {
+  width: 80%;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tagClose {
+  transition: all ease 0.2;
+}
+.tagClose:hover {
+  color: #666;
+}
+
+.bottom {
+  width: 100%;
+  height: 8px;
+  background-color: #fff;
+}
+
+.menu {
+  position: fixed;
+  list-style: none;
+  border-radius: 5px;
+  overflow: hidden;
+  font-size: 12px;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 999;
+}
+.menuItem {
+  background-color: #f0f2f5;
+  padding: 5px 20px;
+  transition: background-color ease 0.2s;
+  user-select: none;
+}
+.menuItem:hover {
+  background-color: #fefefe;
+}
