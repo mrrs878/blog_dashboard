@@ -1,38 +1,49 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-15 09:49:52
- * @LastEditTime: 2021-03-05 17:51:33
+ * @LastEditTime: 2021-05-20 14:12:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interfaces\ajaxRes.d.ts
  */
 interface BaseResI<T> {
   success: boolean;
-  code: number;
+  return_code: number;
   data: T;
-  msg: string;
+  return_message: string;
 }
 
-interface LoginResI extends BaseResI<IUser>{
+interface ILoginRes extends BaseResI<UserI>{
 }
-interface GetInfoByTokenResI extends BaseResI<IUser>{
+interface GetInfoByTokenResI extends BaseResI<UserI>{
 }
 interface LogoutResI extends BaseResI<any>{
 }
-interface GetMenusResI extends BaseResI<Array<IMenuItem>>{
+interface IGetMenusRes extends BaseResI<Array<IMenuItem>>{
 }
-interface CreateMenuResI extends BaseResI<IMenuItem> {}
+interface ICreateMenuRes extends BaseResI<IMenuItem> {}
 
-interface UpdateMenuResI extends BaseResI<IMenuItem> {}
+interface IUpdateMenuRes extends BaseResI<IMenuItem> {}
 
-interface GetDictsResT extends BaseResI<Array<IDict>>{
+interface IGetPuzzleImgRes extends BaseResI<{ canvas: string, block: string, session: string }> {}
+
+interface ICheckPuzzleRes extends BaseResI<any> {}
+
+interface IGetPermissionUrlsRes extends BaseResI<Array<IPermissionUrl>> {}
+
+interface GetDictsResT extends BaseResI<Array<DictI>>{
 }
 
-interface GetDictResT extends BaseResI<IDict>{
+interface GetDictResT extends BaseResI<DictI>{
 }
 
-interface GetDashboardDataResI extends BaseResI<Array<DashboardDataI>>{
-}
+interface GetAuthorCommentsResI extends BaseResI<Array<AuthorCommentsI>> {}
+
+interface GetUsersResI extends BaseResI<Array<UserI>> {}
+
+interface UpdateUserInfoResI extends BaseResI<UserI> {}
+
+interface UpdateUserStatusI extends BaseResI<any> {}
 
 interface GetArticlesResI extends BaseResI<Array<IArticle>>{
 }
@@ -43,24 +54,3 @@ interface GetArticleResI extends BaseResI<IArticle>{
 interface UpdateArticleResI extends BaseResI<undefined> {}
 
 interface CreateArticleResI extends BaseResI<undefined> {}
-
-interface GetRepoPathContentResI extends Array<PathContentItemI> {
-}
-
-interface GetFileBlogResI extends FileBlobI {}
-
-interface GetCommentsResI extends BaseResI<Array<CommentI>> {}
-
-interface GetAuthorCommentsResI extends BaseResI<Array<AuthorCommentsI>> {}
-
-interface GetCommentResI extends BaseResI<Array<CommentI>> {}
-
-interface GetCommentResI extends BaseResI<CommentI> {}
-
-interface AddCommentResI extends BaseResI<CommentI> {}
-
-interface GetUsersResI extends BaseResI<Array<IUser>> {}
-
-interface UpdateUserInfoResI extends BaseResI<IUser> {}
-
-interface UpdateUserStatusI extends BaseResI<any> {}

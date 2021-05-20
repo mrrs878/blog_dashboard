@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-02-24 10:34:53
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: /components_library/src/react-app-env.d.ts
+ * @FilePath: /dashboard_template/src/react-app-env.d.ts
  */
 /// <reference types="react-scripts" />
 declare module '*.module.less' {

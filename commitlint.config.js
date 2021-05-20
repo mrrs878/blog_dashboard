@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-02-25 16:45:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /components_library/commitlint.config.js
+ * @FilePath: /dashboard_template/commitlint.config.js
  */
 module.exports = {
   extends: ['@commitlint/config-conventional'],

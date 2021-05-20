@@ -6,8 +6,7 @@
       "icon_name": "DashboardOutlined",
       "title": "首页",
       "path": "/home",
-      "sub_menu": [],
-      "parent": "root",
+      "parent": -1,
       "position": 0,
       "status": 0
     },
@@ -17,10 +16,376 @@
       "icon_name": "UserOutlined",
       "title": "个人中心",
       "path": "/profile",
-      "sub_menu": [],
-      "parent": "root",
-      "position": 1,
+      "parent": -1,
+      "position": 3,
       "status": 0
+    },
+    {
+      "parent": -1,
+      "key": "setting",
+      "id": 2,
+      "title": "设置",
+      "path": "/setting",
+      "icon_name": "SettingOutlined",
+      "status": 0,
+      "position": 1
+    },
+    {
+      "id": 3,
+      "key": "menuSetting",
+      "icon_name": "UserOutlined",
+      "title": "菜单设置",
+      "path": "/setting/menu",
+      "parent": 2,
+      "position": 0,
+      "status": 0
+    },
+    {
+      "title": "访客管理",
+      "path": "/profile/visitors",
+      "icon_name": "TeamOutlined",
+      "status": 0,
+      "position": 0,
+      "key": "profileVisitors",
+      "parent": 1,
+      "id": 4
+    },
+    {
+      "title": "权限管理",
+      "path": "/setting/permission",
+      "status": 0,
+      "position": 1,
+      "key": "settingPermission",
+      "parent": 2,
+      "id": 5
+    },
+    {
+      "parent": -1,
+      "key": "rootArticle",
+      "id": 6,
+      "title": "文本编辑器",
+      "path": "/editor",
+      "icon_name": "EditOutlined",
+      "status": 0,
+      "position": 4
+    },
+    {
+      "title": "异常监控",
+      "path": "/exceptionSentry",
+      "icon_name": "AlertOutlined",
+      "status": 0,
+      "position": 5,
+      "key": "rootExceptionSentry",
+      "parent": -1,
+      "id": 7
+    }
+  ],
+  "user": [
+    {
+      "id": 0,
+      "name": "tom",
+      "age": 23,
+      "address": "Shanghai China",
+      "role": 0,
+      "token": "dalkd~!L/'.,;'noaMDSODJSODUSO"
+    },
+    {
+      "id": 1,
+      "name": "jerry",
+      "age": 23,
+      "address": "Taiwan China",
+      "role": 1,
+      "token": "dsasahhcuwhe23823~[]lu9cu"
+    }
+  ],
+  "permissionUrl": [
+    {
+      "id": 0,
+      "url": "/setting",
+      "role": 0,
+      "status": 0
+    },
+    {
+      "id": 1,
+      "url": "/setting/menu",
+      "role": 0,
+      "status": 0
+    },
+    {
+      "id": 5,
+      "url": "/setting/menu/:id",
+      "role": 0,
+      "status": 0
+    },
+    {
+      "id": 2,
+      "url": "/profile",
+      "role": 3,
+      "status": 0
+    },
+    {
+      "id": 3,
+      "url": "/home",
+      "role": 3,
+      "status": 0
+    },
+    {
+      "id": 4,
+      "url": "/auth/login",
+      "role": 3,
+      "status": 0
+    },
+    {
+      "id": 6,
+      "url": "/exceptionSentry",
+      "role": 1,
+      "status": 0
+    }
+  ],
+  "exceptionLog": [
+    {
+      "response": {
+        "success": false,
+        "return_message": "操作失败",
+        "return_code": -1,
+        "data": {}
+      },
+      "status": 404,
+      "method": "GET",
+      "url": "http://localhost:3003/auth/permissionUrl",
+      "message": "Not Found",
+      "title": "undefined",
+      "location": "http://localhost:8083/",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "AjaxError",
+      "create_time": "2021/4/23 下午6:50:32",
+      "id": 1
+    },
+    {
+      "response": {
+        "success": false,
+        "return_message": "操作失败",
+        "return_code": -1,
+        "data": {}
+      },
+      "status": 404,
+      "method": "GET",
+      "url": "http://localhost:3003/auth/permissionUrl",
+      "message": "Not Found",
+      "title": "undefined",
+      "location": "http://localhost:8083/",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "AjaxError",
+      "create_time": "2021/4/25 上午10:35:26",
+      "id": 2
+    },
+    {
+      "response": {
+        "success": false,
+        "return_message": "操作失败",
+        "return_code": -1,
+        "data": {}
+      },
+      "status": 404,
+      "method": "GET",
+      "url": "http://localhost:3003/auth/permissionUrl",
+      "message": "Not Found",
+      "title": "undefined",
+      "location": "http://localhost:8083/",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "AjaxError",
+      "create_time": "2021/4/25 上午10:35:26",
+      "id": 3
+    },
+    {
+      "response": {
+        "success": true,
+        "return_message": "操作成功",
+        "return_code": 0,
+        "data": {
+          "title": "异常监控",
+          "path": "/exceptionSentry",
+          "icon_name": "AlertOutlined",
+          "status": 0,
+          "position": 5,
+          "key": "rootExceptionSentry",
+          "parent": -1,
+          "id": 7
+        }
+      },
+      "status": 201,
+      "method": "GET",
+      "url": "http://localhost:3003/setting/menu",
+      "message": "Created",
+      "title": "菜单设置",
+      "location": "http://localhost:8083/setting/menu",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "AjaxError",
+      "create_time": "2021/4/25 上午10:38:38",
+      "id": 4
+    },
+    {
+      "response": {
+        "success": false,
+        "return_message": "操作失败",
+        "return_code": -1,
+        "data": {}
+      },
+      "status": 404,
+      "method": "GET",
+      "url": "http://localhost:3003/auth/permissionUrl",
+      "message": "Not Found",
+      "title": "undefined",
+      "location": "http://localhost:8083/",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "AjaxError",
+      "create_time": "2021/4/25 上午10:42:12",
+      "id": 5
+    },
+    {
+      "message": "ResizeObserver loop limit exceeded",
+      "filename": "http://localhost:8083/setting/menu",
+      "position": "0:0",
+      "selector": "",
+      "stack": "",
+      "title": "菜单设置",
+      "location": "http://localhost:8083/setting/menu",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:35:29",
+      "id": 6
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)flushSyncCallbackQueue (http://localhost:8083/static/js/vendors~main.chunk.js:117333:7)flushSync (http://localhost:8083/static/js/vendors~main.chunk.js:128272:11)Object.scheduleRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:130202:9)http://localhost:8083/static/js/vendors~main.chunk.js:134652:21Set.forEach (<anonymous>)Object.performReactRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:134641:30)http://localhost:8083/static/js/vendors~main.chunk.js:62731:17",
+      "title": "hello mrrs",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:36:19",
+      "id": 7
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)workLoop (http://localhost:8083/static/js/vendors~main.chunk.js:142629:38)flushWork (http://localhost:8083/static/js/vendors~main.chunk.js:142585:20)MessagePort.performWorkUntilDeadline (http://localhost:8083/static/js/vendors~main.chunk.js:142189:31)",
+      "title": "undefined",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:37:47",
+      "id": 8
+    },
+    {
+      "message": "ResizeObserver loop limit exceeded",
+      "filename": "http://localhost:8083/setting/menu",
+      "position": "0:0",
+      "selector": "",
+      "stack": "",
+      "title": "菜单设置",
+      "location": "http://localhost:8083/setting/menu",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:38:13",
+      "id": 9
+    },
+    {
+      "message": "ResizeObserver loop limit exceeded",
+      "filename": "http://localhost:8083/setting/menu",
+      "position": "0:0",
+      "selector": "",
+      "stack": "",
+      "title": "菜单设置",
+      "location": "http://localhost:8083/setting/menu",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:38:41",
+      "id": 10
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)workLoop (http://localhost:8083/static/js/vendors~main.chunk.js:142629:38)flushWork (http://localhost:8083/static/js/vendors~main.chunk.js:142585:20)MessagePort.performWorkUntilDeadline (http://localhost:8083/static/js/vendors~main.chunk.js:142189:31)",
+      "title": "undefined",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:40:14",
+      "id": 11
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.4080ebf9450ba790d45c.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)flushSyncCallbackQueue (http://localhost:8083/static/js/vendors~main.chunk.js:117333:7)flushSync (http://localhost:8083/static/js/vendors~main.chunk.js:128272:11)Object.scheduleRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:130202:9)http://localhost:8083/static/js/vendors~main.chunk.js:134652:21Set.forEach (<anonymous>)Object.performReactRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:134641:30)http://localhost:8083/static/js/vendors~main.chunk.js:62731:17",
+      "title": "hello mrrs",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:41:33",
+      "id": 12
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.7d9e2fdc0295e99774a0.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.7d9e2fdc0295e99774a0.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)flushSyncCallbackQueue (http://localhost:8083/static/js/vendors~main.chunk.js:117333:7)flushSync (http://localhost:8083/static/js/vendors~main.chunk.js:128272:11)Object.scheduleRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:130202:9)http://localhost:8083/static/js/vendors~main.chunk.js:134652:21Set.forEach (<anonymous>)Object.performReactRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:134641:30)http://localhost:8083/static/js/vendors~main.chunk.js:62731:17",
+      "title": "hello mrrs",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:42:37",
+      "id": 13
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.527fa0b78ee68da3bf88.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.527fa0b78ee68da3bf88.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)flushSyncCallbackQueue (http://localhost:8083/static/js/vendors~main.chunk.js:117333:7)flushSync (http://localhost:8083/static/js/vendors~main.chunk.js:128272:11)Object.scheduleRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:130202:9)http://localhost:8083/static/js/vendors~main.chunk.js:134652:21Set.forEach (<anonymous>)Object.performReactRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:134641:30)http://localhost:8083/static/js/vendors~main.chunk.js:62731:17",
+      "title": "hello mrrs",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:43:08",
+      "id": 14
+    },
+    {
+      "message": "Uncaught TypeError: Object is not a function or its return value is not iterable",
+      "filename": "http://localhost:8083/9.527fa0b78ee68da3bf88.hot-update.js",
+      "position": "96:90",
+      "selector": "",
+      "stack": "Login (http://localhost:8083/9.527fa0b78ee68da3bf88.hot-update.js:96:90)renderWithHooks (http://localhost:8083/static/js/vendors~main.chunk.js:120940:22)mountIndeterminateComponent (http://localhost:8083/static/js/vendors~main.chunk.js:123702:17)beginWork (http://localhost:8083/static/js/vendors~main.chunk.js:124901:20)HTMLUnknownElement.callCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109890:18)Object.invokeGuardedCallbackDev (http://localhost:8083/static/js/vendors~main.chunk.js:109939:20)invokeGuardedCallback (http://localhost:8083/static/js/vendors~main.chunk.js:109999:35)beginWork$1 (http://localhost:8083/static/js/vendors~main.chunk.js:129741:11)performUnitOfWork (http://localhost:8083/static/js/vendors~main.chunk.js:128577:16)workLoopSync (http://localhost:8083/static/js/vendors~main.chunk.js:128514:9)renderRootSync (http://localhost:8083/static/js/vendors~main.chunk.js:128480:11)performSyncWorkOnRoot (http://localhost:8083/static/js/vendors~main.chunk.js:128097:22)http://localhost:8083/static/js/vendors~main.chunk.js:117350:30unstable_runWithPriority (http://localhost:8083/static/js/vendors~main.chunk.js:142685:16)runWithPriority$1 (http://localhost:8083/static/js/vendors~main.chunk.js:117296:14)flushSyncCallbackQueueImpl (http://localhost:8083/static/js/vendors~main.chunk.js:117345:13)flushSyncCallbackQueue (http://localhost:8083/static/js/vendors~main.chunk.js:117333:7)flushSync (http://localhost:8083/static/js/vendors~main.chunk.js:128272:11)Object.scheduleRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:130202:9)http://localhost:8083/static/js/vendors~main.chunk.js:134652:21Set.forEach (<anonymous>)Object.performReactRefresh (http://localhost:8083/static/js/vendors~main.chunk.js:134641:30)http://localhost:8083/static/js/vendors~main.chunk.js:62731:17",
+      "title": "hello mrrs",
+      "location": "http://localhost:8083/auth/login",
+      "kind": "stability",
+      "type": "error",
+      "errorType": "JSRuntimeError",
+      "create_time": "2021/4/25 下午4:49:51",
+      "id": 15
     }
   ]
 }

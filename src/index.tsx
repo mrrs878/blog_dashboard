@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-02-23 15:00:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /components_library/src/index.tsx
+ * @FilePath: /dashboard_template/src/index.tsx
  */
 import React from 'react';
 import ReactDOM from 'react-dom';

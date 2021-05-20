@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-02-25 11:19:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /components_library/craco.config.js
+ * @FilePath: /dashboard_template/craco.config.js
  */
 const CracoLessPlugin = require('craco-less');
 const CracoAntDesignPlugin = require('craco-antd');

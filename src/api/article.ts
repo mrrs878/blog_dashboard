@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\api\article.ts
  */
-import ajax from '../tools/ajax';
+import ajax from '../tool/ajax';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
 

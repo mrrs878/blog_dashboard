@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-03-02 19:01:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /components_library/tsconfig.json
+ * @FilePath: /dashboard_template/tsconfig.json
  */
 {
   "compilerOptions": {

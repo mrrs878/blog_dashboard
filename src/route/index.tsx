@@ -1,149 +1,116 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-26 18:16:29
- * @LastEditTime: 2021-03-09 22:53:26
+ * @LastEditTime: 2021-05-20 17:04:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/route/index.tsx
  */
 
+import {
+  and, compose, cond, equals, filter, gt, lte, not, uniqBy,
+} from 'ramda';
 import React, { Suspense, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import MLoading from '../components/MLoading';
-import useDocumentTitle from '../hooks/useDocumentTitle';
-import { useFullScreen, useModel } from '../store';
-import { getCookie } from '../tools';
+import useDocumentTitle from '../hook/useDocumentTitle';
+import { useModel } from '../store';
 
-const HOME = React.lazy(() => import('../view/home'));
-const PROFILE = React.lazy(() => import('../view/profile'));
-const ABOUT = React.lazy(() => import('../view/about'));
+const Home = React.lazy(() => import('../view/home'));
+const Profile = React.lazy(() => import('../view/profile'));
+const Login = React.lazy(() => import('../view/auth/login'));
+const ForbiddenPage = React.lazy(() => import('../view/auth/403'));
+const Setting = React.lazy(() => import('../view/setting'));
+const MenuSetting = React.lazy(() => import('../view/setting/menu'));
+const Permission = React.lazy(() => import('../view/setting/permission'));
+const ExceptionSentry = React.lazy(() => import('../view/exception'));
 const ARTICLE = React.lazy(() => import('../view/article'));
 const ARTICLE_DETAIL = React.lazy(() => import('../view/article/detail'));
-const LOGIN = React.lazy(() => import('../view/auth/login'));
-const REG = React.lazy(() => import('../view/auth/reg'));
-const USER = React.lazy(() => import('../view/auth/user'));
-const ROLE = React.lazy(() => import('../view/auth/role'));
-const ROLE_DETAIL = React.lazy(() => import('../view/auth/role/detail'));
-const COMMENT = React.lazy(() => import('../view/comment'));
-const COMMENT_DETAIL = React.lazy(() => import('../view/comment/detail'));
-const MOCK_API_INDEX = React.lazy(() => import('../view/mockApi'));
-const MOCK_API_DETAIL = React.lazy(() => import('../view/mockApi/detail'));
-const DICT = React.lazy(() => import('../view/setting/dict'));
-const DICT_DETAIL = React.lazy(() => import('../view/setting/dict/detail'));
-const MENU_SETTING = React.lazy(() => import('../view/setting/menu'));
 
 interface GuardComponentPropsI {
   component: any;
   auth: boolean;
-  fullScreen: boolean;
   path: string;
 }
 
-const ROUTES_MAP = {
-  home: '/home',
-  profile: '/profile',
-  login: '/auth/login',
-  reg: '/auth/reg',
-  user: '/auth/user',
-  role: '/auth/role',
-  article: '/articles',
-  comment: '/comment',
-  setting: '/setting',
-  dict: '/setting/dict',
-  menuSetting: '/setting/menu',
-  about: '/about',
-  mockApi: '/mockApis',
-};
-
-const ROUTES: Array<RouteConfigI> = [
+const ROUTES: Array<IRouteConfig> = [
   {
-    path: ROUTES_MAP.home,
-    component: HOME,
+    path: '/home',
+    component: Home,
   },
   {
     path: '/',
-    component: HOME,
+    component: Home,
   },
   {
-    path: ROUTES_MAP.profile,
-    component: PROFILE,
+    path: '/profile',
+    component: Profile,
   },
   {
-    path: ROUTES_MAP.login,
-    component: LOGIN,
+    path: '/auth/login',
+    component: Login,
     auth: false,
-    fullScreen: true,
   },
   {
-    path: ROUTES_MAP.reg,
-    component: REG,
-    auth: false,
-    fullScreen: true,
+    path: '/setting',
+    component: Setting,
+    auth: true,
   },
   {
-    path: `${ROUTES_MAP.article}/:id`,
+    path: '/setting/menu',
+    component: MenuSetting,
+    auth: true,
+  },
+  {
+    path: '/setting/menu/:id',
+    component: MenuSetting,
+    auth: true,
+  },
+  {
+    path: '/setting/permission',
+    component: Permission,
+    auth: true,
+  },
+  {
+    path: '/exceptionSentry',
+    component: ExceptionSentry,
+  },
+  {
+    path: '/articles/:id',
     component: ARTICLE_DETAIL,
   },
   {
-    path: ROUTES_MAP.article,
+    path: '/articles',
     component: ARTICLE,
-  },
-  {
-    path: ROUTES_MAP.user,
-    component: USER,
-  },
-  {
-    path: ROUTES_MAP.role,
-    component: ROLE,
-  },
-  {
-    path: `${ROUTES_MAP.role}/:id`,
-    component: ROLE_DETAIL,
-  },
-  {
-    path: ROUTES_MAP.comment,
-    component: COMMENT,
-  },
-  {
-    path: `${ROUTES_MAP.comment}/:id`,
-    component: COMMENT_DETAIL,
-  },
-  {
-    path: ROUTES_MAP.mockApi,
-    component: MOCK_API_INDEX,
-  },
-  {
-    path: `${ROUTES_MAP.mockApi}/:id`,
-    component: MOCK_API_DETAIL,
-  },
-  {
-    path: ROUTES_MAP.dict,
-    component: DICT,
-  },
-  {
-    path: `${ROUTES_MAP.dict}/:id`,
-    component: DICT_DETAIL,
-  },
-  {
-    path: ROUTES_MAP.menuSetting,
-    component: MENU_SETTING,
-  },
-  {
-    path: ROUTES_MAP.about,
-    component: ABOUT,
   },
 ];
 
 const GuardComponent = (props: GuardComponentPropsI) => {
   const [titles] = useModel('menuTitles');
-  const [, fullScreen] = useFullScreen();
-  useDocumentTitle(titles[props.path]);
-  const Component = (props.component) as any;
+  const [permissionUrls] = useModel('permissionUrls');
+  const [user] = useModel('user');
+  const [, updateTags] = useModel('tags');
+
+  const path = props.path.replace(/\/:(.+)/g, '');
+  useDocumentTitle(titles[path]);
+
   useEffect(() => {
-    if (props.auth && !getCookie('auth_token')) window.location.href = ROUTES_MAP.login;
-    if (props.fullScreen) fullScreen();
-  }, [fullScreen, props.auth, props.fullScreen]);
-  return <Component />;
+    updateTags((pre) => compose(
+      uniqBy((item) => item.path),
+      filter<ITag, 'array'>(({ title }) => title !== undefined),
+    )([...pre, { path, title: titles[path] }]));
+  }, [path, titles, updateTags]);
+
+  const Component = (props.component) as any;
+  const urlRole = permissionUrls.find((item) => item.url === props.path)?.role || 0;
+
+  return cond([
+    [() => and(true, () => equals(path, '/auth/login')), () => <Component />],
+    [() => and(equals(user.role, -1), props.auth), () => <Redirect to="/auth/login" />],
+    [() => and(equals(user.role, -1), not(props.auth)), () => <Component />],
+    [() => gt(user.role, urlRole), () => <ForbiddenPage />],
+    [() => lte(user.role, urlRole), () => <Component />],
+  ])(user);
 };
 
 const Router = () => (
@@ -160,7 +127,6 @@ const Router = () => (
                 path={route.path}
                 component={route.component}
                 auth={route.auth || false}
-                fullScreen={route.fullScreen || false}
               />
             )}
           />
@@ -170,6 +136,6 @@ const Router = () => (
   </Suspense>
 );
 
-export { ROUTES_MAP };
+export { ROUTES };
 
 export default Router;

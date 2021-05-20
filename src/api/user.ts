@@ -1,14 +1,14 @@
 /*
  * @Author: mrrs878@foxmail.com
- * @Date: 2020-10-13 16:47:58
- * @LastEditTime: 2020-10-14 22:39:32
+ * @Date: 2021-03-30 10:04:47
+ * @LastEditTime: 2021-04-08 13:07:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\api\user.ts
+ * @FilePath: /dashboard_template/src/api/user.ts
  */
-import ajax from '../tools/ajax';
+import ajax from '../tool/ajax';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || '/';
+const BASE_URL = `${process.env.REACT_APP_BASE_URL}/user`;
 
-export const GET_ALL_USERS = (): Promise<GetUsersResI> => ajax.get(`${BASE_URL}/user`);
-export const UPDATE_USER = (data: UpdateUserInfoReqI): Promise<UpdateUserInfoResI> => ajax.put(`${BASE_URL}/user`, data);
+export const GET_USERS = (): Promise<any> => ajax.get(`${BASE_URL}`);
+export const GET_USER = (data: any): Promise<any> => ajax.get(`${BASE_URL}/${data.role}`);

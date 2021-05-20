@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2021-03-25 12:22:37
+ * @LastEditTime: 2021-05-20 17:09:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -21,11 +21,12 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Base64 } from 'js-base64';
 import { clone } from 'ramda';
 import 'bytemd/dist/index.min.css';
-import useRequest from '../../hooks/useRequest';
-import useGetArticles from '../../hooks/useGetArticles';
+import useRequest from '../../hook/useRequest';
+import useGetArticles from '../../hook/useGetArticles';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
 import '../../assets/less/md.theme.orange.less';
 import style from './detail.module.less';
+import { useFullScreen } from '../../store';
 
 interface IProps extends RouteComponentProps<{ id: string }>{
 }
@@ -59,11 +60,17 @@ const ArticleDetail = (props: IProps) => {
   const [updateArticleLoading, , updateArticle] = useRequest(UPDATE_ARTICLE, false);
   const { getArticles } = useGetArticles(false);
   const [createArticleLoading, createArticleRes, createArticle] = useRequest(CREATE_ARTICLE, false);
+  const [, fullScreen, exitFullScreen] = useFullScreen();
+
+  useEffect(() => {
+    fullScreen();
+    return exitFullScreen;
+  }, [exitFullScreen, fullScreen]);
 
   useEffect(() => {
     if (createOrEdit) return;
     if (getArticleRes && !getArticleRes.success) {
-      message.error(getArticleRes?.msg);
+      message.error(getArticleRes.return_message);
       return;
     }
     setMarkdownSrc(Base64.decode(getArticleRes?.data?.content || '') || emptyMarkdownSrc);
@@ -71,7 +78,7 @@ const ArticleDetail = (props: IProps) => {
 
   useEffect(() => {
     if (!createArticleRes) return;
-    message.info(createArticleRes.msg);
+    message.info(createArticleRes.return_message);
     if (createArticleRes.success) {
       getArticles();
     }

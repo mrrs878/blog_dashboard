@@ -1,82 +1,42 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 14:31:07
- * @LastEditTime: 2021-03-05 17:54:12
+ * @LastEditTime: 2021-05-20 14:19:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /components_library/src/interfaces/model.d.ts
+ * @FilePath: /dashboard_template/src/interfaces/model.d.ts
  */
-interface IUser {
-  _id: string;
-  name: string;
-  role: number;
-  token: string;
-  avatar: string;
-  createdBy: number;
-  profession: string;
-  signature: string;
-  department: string;
-  address: string;
-  tags: Array<string>;
-  status: number;
-  teams: Array<string>;
-  updateTime?: string;
-  createTime: string;
-}
-
 interface IMenuItem {
-  _id?: number;
+  id?: number;
   key: string;
   icon?: Object;
   icon_name?: string;
   title: string;
   path: string;
   children?: Array<IMenuItem>;
-  sub_menu: Array<string>;
-  parent: string;
+  parent: number;
   role?: Array<number>;
   status: number;
   position: number;
 }
 
-interface IDict {
-  _id?: string;
-  status: number;
-  label: string;
-  label_view: string;
-  type: string;
-  type_view: string;
-  name: string;
-  name_view: string;
-  value: number;
-  createTime?: string;
-  updateTime?: string;
-  creator?: {
-    name: string;
-  };
-  updater?: {
-    name: string;
-  };
-}
-
-interface AjaxErrorI extends Error{
-  date: number;
-  data: any;
+interface IPermissionUrl {
+  id: number;
   url: string;
-  referer: string;
-  method: string;
-  status: number;
+  role: number;
 }
 
-interface CommonErrorI extends Error{
-  date: number;
+interface IUser {
+  id: number;
+  name: string;
+  age: number;
+  address: string;
+  role: number;
 }
 
-interface DashboardDataI {
-  group: string;
-  label: string;
-  key: string;
-  value: number;
+interface ITag {
+  path: string;
+  title: string;
 }
 
 interface IArticle {
@@ -94,57 +54,39 @@ interface IArticle {
   likes?: Array<{ name: string }>;
 }
 
-interface PathContentItemI {
-  type: string;
-  size: number;
-  name: string;
-  path: string;
-  sha: string;
-  url: string;
-  html_url: string;
-  download_url: string;
-}
+type ErrorType = IJSRunTimeError|IAssetsError;
 
-interface FileBlobI {
-  sha: string;
-  size: number;
-  url: string;
-  content: string;
-  encoding: string;
-}
-
-interface ArticleSubI {
+interface IBaseErrorInfo {
   title: string;
-  description?: string;
-  categories: string;
-  tag: string;
-  createTime: string;
-  modifyTime?: string;
-  watch?: number;
+  location: string;
+  kind: string;
+  type: string;
+  errorType: string;
 }
 
-interface CommentI {
-  name: string;
-  content: string;
-  user_id: string;
-  article_id: string;
-  _id: string;
-  createTime: string;
-  avatar?: string;
+interface IJSRunTimeError extends IBaseErrorInfo {
+  filename: string;
+  position: string;
+  stack: string;
+  selector: string;
+  message: string;
 }
 
-interface AuthorCommentsI {
-  _id: string;
-  content: string;
-  name: string;
-  createTime: string;
-  article: {
-    title: string;
-    categories: string;
-    author: string;
-    createTime: string;
-  },
-  creator: {
-    name: string;
-  }
+interface IAssetsError extends IBaseErrorInfo {
+  url: string;
+  nodeName: string;
+  message: string;
+}
+
+interface IAjaxError extends IBaseErrorInfo {
+  response: string;
+  status: number;
+  method: string;
+  url: string;
+  message: string;
+}
+
+interface IPromiseError extends IBaseErrorInfo {
+  message: string;
+  stack: string;
 }

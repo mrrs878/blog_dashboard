@@ -6,11 +6,9 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ColumnProps } from 'antd/es/table';
 import { EyeOutlined, LinkOutlined } from '@ant-design/icons';
 
-import getColumnSearchProps from '../../components/MTableSearch';
-import { ROUTES_MAP } from '../../route';
-import useGetArticles from '../../hooks/useGetArticles';
+import useGetArticles from '../../hook/useGetArticles';
 import { UPDATE_ARTICLE_STATUS } from '../../api/article';
-import useRequest from '../../hooks/useRequest';
+import useRequest from '../../hook/useRequest';
 import { useModel } from '../../store';
 
 interface PropsI extends RouteComponentProps {
@@ -37,7 +35,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
 
   useEffect(() => {
     if (!updateArticleRes) return;
-    message.info(updateArticleRes.msg);
+    message.info(updateArticleRes.return_message);
     setTimeout(reGetArticles, 2000);
   }, [reGetArticles, updateArticleRes]);
 
@@ -56,7 +54,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   }, [updateArticle]);
 
   const onViewClick = useCallback((_id = '') => {
-    props.history.push(`${ROUTES_MAP.article}/${_id}`);
+    props.history.push(`/articles/${_id}`);
   }, [props.history]);
 
   const articleListColumns: Array<ColumnProps<IArticle>> = useMemo(() => [
@@ -64,13 +62,11 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
       title: '名称',
       dataIndex: 'title',
       ellipsis: true,
-      ...getColumnSearchProps('title'),
     },
     {
       title: '作者',
       dataIndex: 'author',
       ellipsis: true,
-      ...getColumnSearchProps('author'),
     },
     {
       title: '类别',
@@ -84,7 +80,6 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
       dataIndex: 'tags',
       ellipsis: true,
       onFilter: (value, record) => value === String(record.tags),
-      ...getColumnSearchProps('tags'),
     },
     {
       title: '状态',
@@ -124,7 +119,7 @@ const Articles: React.FC<PropsI> = (props: PropsI) => {
   ], [categories, onStatusChange, onViewClick]);
 
   const onCreateArticleClick = useCallback(() => {
-    props.history.push(`${ROUTES_MAP.article}/-1`);
+    props.history.push('/articles/-1');
   }, [props.history]);
 
   const onUpdateArticleClick = useCallback(async () => {

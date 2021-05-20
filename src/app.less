@@ -1,0 +1,31 @@
+.tag-active {
+  &::before {
+    position: absolute;
+    content: '';
+    height: 10px;
+    width: 9999px;
+    background-color: #ccc;
+    left: -9999px;
+    border-bottom-right-radius: 10px;
+    bottom: -10px;
+  }
+  &::after {
+    position: absolute;
+    content: '';
+    height: 10px;
+    width: 9999px;
+    background-color: #ccc;
+    left: 150px;
+    border-bottom-left-radius: 10px;
+    bottom: -10px;
+  }
+}
+
+.bytemd {
+  height: calc(100vh - 160px) !important;
+}
+.bytemd-toolbar-icon[bytemd-tippy-path="1"],
+.bytemd-toolbar-icon[bytemd-tippy-path="4"],
+.bytemd-toolbar-icon[bytemd-tippy-path="5"] {
+  display: none;
+}

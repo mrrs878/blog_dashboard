@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-02-24 10:35:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /components_library/src/components/MLoading.tsx
+ * @FilePath: /dashboard_template/src/components/MLoading.tsx
  */
 import React from 'react';
 import { Spin } from 'antd';

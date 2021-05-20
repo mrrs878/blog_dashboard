@@ -1,15 +1,13 @@
 {
   "cSpell.words": [
+    "RBAC",
     "Sider",
-    "autorefresh",
     "bytemd",
-    "codemirror",
     "commitlint",
-    "hljs",
-    "htmlmixed",
+    "cond",
     "linebreak",
-    "matchbrackets",
+    "middlewares",
     "noninteractive",
-    "vbscript"
+    "stddev"
   ]
 }

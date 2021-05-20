@@ -4,27 +4,24 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-03-29 09:58:37
- * @LastEditTime: 2021-04-02 16:44:13
+ * @LastEditTime: 2021-05-20 16:57:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/components/MTagsView/index.tsx
  */
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { last, uniqBy } from 'ramda';
+import {
+  compose, gt, last, length, prop, when,
+} from 'ramda';
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useModel } from '../../store';
-import { insertBefore, isEqualBy } from '../../tools';
+import { insertBefore, isEqualBy } from '../../tool';
 import style from './index.module.less';
 
 interface IMTagsBarProps extends RouteComponentProps {}
-
-interface ITag {
-  path: string;
-  title: string;
-}
 
 interface IPosition {
   x: number;
@@ -61,11 +58,10 @@ let originTagPos: IPosition = { x: 0, y: 0 };
 let originMousePos: IPosition = { x: 0, y: 0 };
 
 const MTagsBar = (props: IMTagsBarProps) => {
-  const [menuTitles] = useModel('menuTitles');
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [contextMenuTag, setContextMenuTag] = useState('');
   const [contextMenuPos, setContextMenuPos] = useState<IPosition>({ x: 0, y: 0 });
-  const [tags, setTags] = useState<Array<ITag>>([]);
+  const [tags, setTags] = useModel('tags');
   const [currentTag, setCurrentTag] = useState(tags[0]?.path);
   const [movingTagPos, setMovingTagPos] = useState<IPosition>({ x: 0, y: 0 });
   const movingTagPath = useRef<string>('');
@@ -73,12 +69,14 @@ const MTagsBar = (props: IMTagsBarProps) => {
 
   const onTagClick = useCallback((e, path) => {
     setCurrentTag(path);
-  }, []);
+    setTimeout(props.history.replace, 100, path);
+  }, [props.history.replace]);
 
   const onTagCloseClick = useCallback((e, path) => {
     e.preventDefault();
+    e.stopPropagation();
     setTags((preTags) => preTags.filter((item) => item.path !== path));
-  }, []);
+  }, [setTags]);
 
   const onTagContextMenu = useCallback((e, path) => {
     e.preventDefault();
@@ -112,8 +110,8 @@ const MTagsBar = (props: IMTagsBarProps) => {
     const x = (parseInt(e.currentTarget.style.left, 10) || 0);
     originMousePos = { x: e.pageX, y: 0 };
     originTagPos = ({ x, y: 0 });
-    const activeTag = contentDivRef.current?.querySelector(`.${style.active}`);
-    activeTag?.setAttribute('class', style.tagC);
+    const activeTag = contentDivRef.current?.querySelectorAll(`.${style.active}`) || [];
+    Array.from(activeTag)?.forEach((item) => item.classList.remove(style.active));
     e.currentTarget?.classList.add(style.active);
     e.currentTarget?.classList.add(style.moving);
     setMovingTagPos({ x: 0, y: 0 });
@@ -144,7 +142,7 @@ const MTagsBar = (props: IMTagsBarProps) => {
         return newTags;
       });
     },
-    [contextMenuTag],
+    [contextMenuTag, setTags],
   );
 
   const updateTags = useCallback((clientX: number) => {
@@ -168,7 +166,7 @@ const MTagsBar = (props: IMTagsBarProps) => {
       }
       setTags(ordered);
     }
-  }, [tags]);
+  }, [setTags, tags]);
 
   const onTagOver = useCallback((e) => {
     e.preventDefault();
@@ -184,16 +182,18 @@ const MTagsBar = (props: IMTagsBarProps) => {
 
   useEffect(() => {
     const path = props.location.pathname;
-    setTags((pre) => uniqBy(
-      (item) => item.path,
-      [...pre, { path, title: menuTitles[path] }].filter(({ title }) => title !== undefined),
-    ));
-    setCurrentTag(path);
-  }, [menuTitles, props.location.pathname]);
+    if (tags.findIndex((tag) => tag.path === path) !== -1) setCurrentTag(path);
+  }, [props.location.pathname, tags]);
 
   useEffect(() => {
-    setCurrentTag(last(tags)?.path || '');
-  }, [tags]);
+    when<Array<ITag>, void>(
+      compose(gt(0), length),
+      compose<Array<ITag>, any, any, any>(props.history.push, prop('path'), last),
+    )(tags);
+    // const path = last(tags)?.path || '';
+    // props.history.push(path);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.history.push, tags.length]);
 
   return (
     <>
@@ -216,9 +216,12 @@ const MTagsBar = (props: IMTagsBarProps) => {
                 className={`${style.tagC} ${currentTag === tag.path ? style.active : ''}`}
                 style={{ left: movingTagPath.current === tag.path ? movingTagPos.x : 'unset' }}
               >
-                <span className={style.tagText}>{tag.title}</span>
+                <span className={style.tagText}>
+                  {tag.title}
+                </span>
                 <span
                   className={style.tagClose}
+                  onMouseDown={(e) => e.stopPropagation()}
                   onClick={(e) => onTagCloseClick(e, tag.path)}
                 >
                   <CloseCircleOutlined />

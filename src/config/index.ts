@@ -1,18 +1,38 @@
 /*
  * @Author: mrrs878@foxmail.com
- * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-10 18:53:04
+ * @Date: 2021-04-13 10:41:57
+ * @LastEditTime: 2021-04-13 10:43:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\config\index.ts
+ * @FilePath: /dashboard_template/src/config/index.ts
  */
-const MAIN_CONFIG = {
-  TOKEN_NAME: 'token',
-  ICONFONT_URL: 'https://at.alicdn.com/t/font_1814014_dlu1crv75b.js',
-  ICON_PREVIEW_URL: 'https://ant.design/components/icon-cn',
-  APP_NAME: 'MyDashboard',
-  FULL_SCREEN_PAGE: ['/auth/login', '/auth/reg'],
-  API_WHITE_LIST: [`${process.env.REACT_APP_BASE_URL}/auth/login`],
-};
+export enum USER_ROLE {
+  admin,
+  people,
+  guest,
+}
 
-export default MAIN_CONFIG;
+export const ITEM_STATUS_ARRAY = [
+  {
+    value: 0,
+    label: '启用',
+  },
+  {
+    value: 1,
+    label: '停用',
+  },
+  {
+    value: 2,
+    label: '删除',
+  },
+];
+
+export enum ITEM_STATUS {
+  enable = 0,
+  disable = 1,
+  removed = 2,
+}
+
+export const MAIN_CONFIG = {
+  iconPreviewUrl: 'https://ant.design/components/icon-cn',
+};

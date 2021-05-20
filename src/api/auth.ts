@@ -1,16 +1,17 @@
 /*
- * @Author: mrrs878
+ * @Author: mrrs878@foxmail.com
+ * @Date: 2021-04-07 13:07:22
+ * @LastEditTime: 2021-04-25 10:36:38
  * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /dashboard_template/src/api/auth.ts
  */
-import ajax from '../tools/ajax';
+import ajax from '../tool/ajax';
 
-const BASE_URL = `${process.env.REACT_APP_BASE_URL || ''}/auth`;
+const BASE_URL = `${process.env.REACT_APP_BASE_URL}/auth`;
 
-export const LOGIN = (data: LoginReqI): Promise<LoginResI> => ajax.post(`${BASE_URL}/login`, data);
-export const LOGOUT = (): Promise<LoginResI> => ajax.post(`${BASE_URL}/logout`);
-export const GET_MENUS = (): Promise<GetMenusResI> => ajax.get(`${BASE_URL}/menu`);
-export const GET_MENU = (data: GetMenuReqI): Promise<GetMenusResI> => ajax.get(`${BASE_URL}/menu/${data.role}`);
-export const UPDATE_MENU = (data: UpdateMenuReqI): Promise<UpdateMenuResI> => ajax.put(`${BASE_URL}/menu/${data._id}`, data);
-export const CREATE_MENU = (data: CreateMenuReqI): Promise<CreateMenuResI> => ajax.post(`${BASE_URL}/menu`, data);
-export const GET_INFO_BY_TOKEN = (): Promise<GetInfoByTokenResI> => ajax.get(`${BASE_URL}/info`);
-export const UPDATE_USER_STATUS = (data: UpdateUserStatusReqI): Promise<UpdateUserStatusI> => ajax.put(`${BASE_URL}/user`, data);
+export const GET_PUZZLE_IMG = (): Promise<IGetPuzzleImgRes> => ajax.get(`${BASE_URL}/puzzleImg`);
+export const CHECK_PUZZLE_IMG = (data: ICheckPuzzleReq): Promise<ICheckPuzzleRes> => ajax.get(`${BASE_URL}/verifyPuzzle/${data.session}/${data.left}`);
+export const GET_PERMISSION_URLS = (): Promise<IGetPermissionUrlsRes> => ajax.get(`${BASE_URL}/permissionUrl`);
+export const LOGIN = (data: ILoginReq): Promise<ILoginRes> => ajax.post(`${BASE_URL}/login`, data);
+export const AUTO_LOGIN = (): Promise<ILoginRes> => ajax.get(`${BASE_URL}/autoLogin`);

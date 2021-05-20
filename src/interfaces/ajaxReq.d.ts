@@ -1,21 +1,28 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2020-10-30 16:45:20
+ * @LastEditTime: 2021-05-20 14:11:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interface\ajaxReq.d.ts
  */
-interface LoginReqI {
+interface ILoginReq {
   name: string,
   password: string
 }
-interface GetMenuReqI {
+interface IGetMenuReq {
 }
 
-interface CreateMenuReqI extends IMenuItem {}
+interface ICreateMenuReq extends IMenuItem {}
 
-interface UpdateMenuReqI extends IMenuItem {}
+interface IUpdateMenuReq extends IMenuItem {}
+
+interface IUpdateMenusReq extends Array<IMenuItem> {}
+
+interface ICheckPuzzleReq {
+  left: number;
+  session: string;
+}
 
 interface GetDictsReqT {
 }
@@ -24,21 +31,36 @@ interface GetDictReqT {
   id: string
 }
 
-interface UpdateDictReqT extends IDict {
+interface UpdateDictReqT extends DictI {
 }
 
-interface CreateDictReqT extends IDict{
+interface CreateDictReqT extends DictI{
 }
 
 interface DeleteDictReqT {
   id: number
 }
 
-interface GetMenuReqI {
+interface IGetMenuReq {
   role: string
 }
 
-interface GetDashboardDataReqI {
+interface UpdateUserInfoReqI {
+  name: string;
+  role: number;
+  avatar: string;
+  createdBy: number;
+  profession: string;
+  signature: string;
+  department: string;
+  address: string;
+  tags: Array<string>;
+  teams: Array<string>;
+}
+
+interface UpdateUserStatusReqI {
+  status: number;
+  userId: string;
 }
 
 interface GetArticleReqI {
@@ -72,42 +94,4 @@ interface CreateArticleReqI {
   categories: string;
   content: string;
   description: string;
-}
-
-interface GetCommentReqI {
-  id: string
-}
-
-interface AddCommentReqI {
-  name: string;
-  user_id: string;
-  content: string;
-  article_id: string;
-  avatar: string;
-}
-
-interface GetCommentsReqI {
-  id: string;
-}
-
-interface GetCommentReqI {
-  id: string;
-}
-
-interface UpdateUserInfoReqI {
-  name: string;
-  role: number;
-  avatar: string;
-  createdBy: number;
-  profession: string;
-  signature: string;
-  department: string;
-  address: string;
-  tags: Array<string>;
-  teams: Array<string>;
-}
-
-interface UpdateUserStatusReqI {
-  status: number;
-  userId: string;
 }
