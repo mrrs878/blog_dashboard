@@ -40,7 +40,7 @@
     "postinstall": "is-ci || husky install",
     "mock": "nodemon mocks/server.js -e json,js",
     "start": "craco start",
-    "build": "craco build",
+    "build:prod": "craco build",
     "test": "jest --passWithNoTests",
     "lint": "eslint src"
   },
