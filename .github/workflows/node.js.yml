@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -16,8 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -26,6 +25,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install packages
-      run: yarn install
+      run: npm install
     - name: Run tests
-      run: yarn test
+      run: npm test
+    - name: Build for Production
+      run: npm run build:prod
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v1.1.1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: mrrs878/blog_dashboard
+        tags: latest
