@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 10:13:41
- * @LastEditTime: 2021-04-25 16:58:46
+ * @LastEditTime: 2021-05-20 22:15:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/layout/index.tsx
@@ -12,7 +12,7 @@ import zhCN from 'antd/lib/locale/zh_CN';
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import {
-  compose, curry, equals, not, prop, when,
+  compose, equals, not, prop, when,
 } from 'ramda';
 import MHeader from '../components/MHeader';
 import MMenu from '../components/MMenu';
@@ -31,10 +31,8 @@ const MLayout = () => {
 
   useEffect(() => {
     message.config({ duration: 1 });
-    when(
-      compose(not, equals('development')),
-      curry(initExceptionSentry)({ url: 'http://localhost:3003/exceptionLog' }),
-    )(process.env.NODE_ENV);
+    if (process?.env?.NODE_ENV === 'development') return;
+    initExceptionSentry({ url: 'https://api.mrrs.top/exceptionLog' });
   }, []);
   when<any, void>(
     compose(not, equals(false), prop('auth')),
