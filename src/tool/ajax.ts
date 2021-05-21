@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 14:29:29
- * @LastEditTime: 2021-05-20 22:19:31
+ * @LastEditTime: 2021-05-21 18:13:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/tool/ajax.ts
@@ -20,7 +20,7 @@ ajax.interceptors.request.use((config) => {
 });
 ajax.interceptors.response.use(async (response) => {
   if ([401].includes(response.data.code)) {
-    if (window.location.href !== '/auth/login') window.location.href = '/auth/login';
+    if (window.location.pathname !== '/auth/login') window.location.href = '/auth/login';
     return null;
   }
   return (response.data);
