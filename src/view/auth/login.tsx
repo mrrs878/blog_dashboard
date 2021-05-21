@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:37:02
- * @LastEditTime: 2021-05-21 18:31:08
+ * @LastEditTime: 2021-05-21 18:50:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \dashboard_template\src\view\auth\login.tsx
@@ -60,7 +60,7 @@ const Login = (props: RouteComponentProps) => {
     }
     exitFullScreen();
     updateUser(loginRes.data);
-    localStorage.setItem('auth_token', loginRes.data.token);
+    localStorage.setItem('token', loginRes.data.token);
     setTimeout(props.history.goBack, 500);
   }, [exitFullScreen, loginRes, props.history, updateUser]);
   return (

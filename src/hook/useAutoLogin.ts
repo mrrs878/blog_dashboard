@@ -23,7 +23,7 @@ export default function useAutoLogin() {
     when<any, void>(
       compose(equals(true), prop('success')),
       (tmp) => {
-        localStorage.setItem('auth_token', tmp?.data.token);
+        localStorage.setItem('token', tmp?.data.token);
         login(tmp?.data);
       },
     )(loginRes);
@@ -31,7 +31,7 @@ export default function useAutoLogin() {
       compose(equals(false), prop('success')),
       (tmp) => {
         message.info(tmp?.return_message);
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem('token');
         logout();
       },
     )(loginRes);
