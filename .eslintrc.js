@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-23 11:22:06
- * @LastEditTime: 2021-05-20 14:23:35
+ * @LastEditTime: 2021-06-14 23:12:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/.eslintrc.js
@@ -34,6 +34,7 @@ module.exports = {
         },
       },
     ],
+    '@typescript-eslint/space-infix-ops': 0,
   },
   overrides: [
     {
