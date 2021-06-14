@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2021-05-20 17:09:39
+ * @LastEditTime: 2021-06-14 22:56:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\views\article\detail.tsx
@@ -78,11 +78,12 @@ const ArticleDetail = (props: IProps) => {
 
   useEffect(() => {
     if (!createArticleRes) return;
-    message.info(createArticleRes.return_message);
-    if (createArticleRes.success) {
-      getArticles();
-    }
-  }, [createArticleRes, getArticles]);
+    message.info(createArticleRes.return_message).then(() => {
+      if (createArticleRes.success) {
+        props.history.goBack();
+      }
+    });
+  }, [createArticleRes, getArticles, props.history]);
 
   useEffect(() => {
     setCreateOrEdit(props.match.params.id === '-1');
