@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-13 10:19:21
- * @LastEditTime: 2021-04-18 22:55:02
+ * @LastEditTime: 2021-06-14 23:04:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/view/setting/menu.tsx
@@ -61,7 +61,7 @@ const tailFormItemLayout = {
 };
 
 const AddRootMenu: IMenuItem = {
-  icon: <PlusCircleOutlined />, title: '添加', id: -1, key: 'root', parent: -1, path: '', status: 1, children: [], position: -1,
+  icon: <PlusCircleOutlined />, title: '添加', id: -1, key: 'root', parent: 'root', path: '', status: 1, children: [], position: -1,
 };
 
 function formatMenu(src: Array<IMenuItem>) {
@@ -72,8 +72,8 @@ function formatMenu(src: Array<IMenuItem>) {
 
 function findMenuItemParent(menuItem: IMenuItem) {
   return (src: Array<IMenuItem>) => {
-    if (menuItem.parent === -1) return AddRootMenu;
-    return find<IMenuItem>((item) => item.id === menuItem.parent, src);
+    if (menuItem.parent === 'root') return AddRootMenu;
+    return find<IMenuItem>((item) => item.key === menuItem.parent, src);
   };
 }
 
@@ -121,12 +121,12 @@ const MenuSetting = () => {
     if (updateMenusRes.success) getMenus();
   }, [getMenus, updateMenusRes]);
 
-  const calculateMenuPosition = useCallback((parentMenuId: number|undefined) => {
+  const calculateMenuPosition = useCallback((parentMenuKey: string|undefined) => {
     const max = compose(
       prop<'position', IMenuItem['position']>('position'),
       last,
       sortBy(prop('position')),
-      filter<IMenuItem, 'array'>((item) => item.parent === parentMenuId),
+      filter<IMenuItem, 'array'>((item) => item.parent === parentMenuKey),
     )(menuArray);
     return max ?? -1;
   }, [menuArray]);
@@ -141,7 +141,7 @@ const MenuSetting = () => {
       });
       setEditModalF(true);
       setCreateOrUpdate(false);
-      setCouldAddMenu(_selectMenu.parent === -1 || _selectMenu.key === 'root');
+      setCouldAddMenu(_selectMenu.parent === 'root' || _selectMenu.key === 'root');
     },
     add: (_selectMenu: IMenuItem | undefined) => () => {
       if (!_selectMenu) return;
@@ -149,9 +149,9 @@ const MenuSetting = () => {
       setEditModalF(true);
       setCouldAddMenu(false);
       setCreateOrUpdate(true);
-      setPaths(findMenuItemPathsBy((item) => item.parent === _selectMenu.id)(menuArray));
+      setPaths(findMenuItemPathsBy((item) => item.parent === _selectMenu.key)(menuArray));
       setSelectedMenuParent(_selectMenu);
-      const max = calculateMenuPosition(_selectMenu?.id);
+      const max = calculateMenuPosition(_selectMenu?.key);
       setMenuPositionRange({ min: 0, max });
       setTimeout(form.setFieldsValue, 500, { position: max + 1 });
     },
@@ -174,7 +174,7 @@ const MenuSetting = () => {
       const newValues: IMenuItem = clone(values);
       newValues.key = `${selectedMenuParent?.key}${values.path.slice(0, 1).toUpperCase()}${values.path.slice(1)}`;
       newValues.path = `${selectedMenuParent?.path ?? ''}/${values.path}`;
-      newValues.parent = selectedMenuParent?.id ?? -1;
+      newValues.parent = selectedMenuParent?.key ?? 'root';
       setEditModalF(false);
       createMenu(newValues);
     },
@@ -210,7 +210,7 @@ const MenuSetting = () => {
     const isAddMenuItem = compose(equals(AddRootMenu.key), prop<'key', string>('key'));
     const parentMenu = findMenuItemParent(selectMenuTmp)(menuArray);
     console.log(parentMenu?.id);
-    const max = calculateMenuPosition(parentMenu?.id);
+    const max = calculateMenuPosition(parentMenu?.key);
     console.log(max);
 
     setMenuPositionRange({ min: 0, max });

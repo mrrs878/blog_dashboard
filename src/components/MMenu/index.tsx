@@ -52,7 +52,7 @@ const MMenu: React.FC<PropsI> = (props: PropsI) => {
         </SubMenu>
       );
     }
-    return <Menu.Item icon={item.parent === -1 ? icon : ''} key={item.path}>{ item.title }</Menu.Item>;
+    return <Menu.Item icon={item.parent === 'root' ? icon : ''} key={item.path}>{ item.title }</Menu.Item>;
   }, [dynamicIcon]);
 
   const generateMenu = useCallback((menuTree: Array<IMenuItem> | undefined) => (

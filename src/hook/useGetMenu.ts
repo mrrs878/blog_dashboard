@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2021-04-13 10:17:23
+ * @LastEditTime: 2021-06-14 23:02:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
@@ -17,7 +17,7 @@ function menuArray2Tree(src: Array<IMenuItem>) {
   const res: Array<IMenuItem> = [];
   const tmp: Array<IMenuItem> = clone<Array<IMenuItem>>(src);
   tmp.forEach((item) => {
-    const parent = tmp.find((_item) => _item.id === item.parent);
+    const parent = tmp.find((_item) => _item.key === item.parent);
     if (parent) {
       parent.children = parent.children || [];
       parent.children?.push(item);

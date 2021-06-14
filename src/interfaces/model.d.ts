@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 14:31:07
- * @LastEditTime: 2021-05-20 14:19:35
+ * @LastEditTime: 2021-06-14 23:02:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /dashboard_template/src/interfaces/model.d.ts
@@ -14,7 +14,7 @@ interface IMenuItem {
   title: string;
   path: string;
   children?: Array<IMenuItem>;
-  parent: number;
+  parent: string;
   role?: Array<number>;
   status: number;
   position: number;
