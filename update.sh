@@ -2,10 +2,10 @@
 ###
  # @Author: mrrs878@foxmail.com
  # @Date: 2021-03-05 17:33:59
- # @LastEditTime: 2021-03-10 11:26:51
- # @LastEditors: Please set LastEditors
+ # @LastEditTime: 2021-07-20 23:31:44
+ # @LastEditors: mrrs878@foxmail.com
  # @Description: In User Settings Edit
- # @FilePath: /blog_dashboard/update.sh
+ # @FilePath: \blog_dashboard\update.sh
 ### 
 
 # echo "updating code..."
@@ -22,6 +22,9 @@
 
 echo "stoping app..."
 docker-compose down
+
+echo "removing image(s)..."
+docker image rm blog_dashboard:master
 
 echo "restarting app..."
 docker-compose up -d --build

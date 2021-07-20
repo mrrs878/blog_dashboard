@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   monitor:
-    image: mrrs878/blog_dashboard:latest
+    image: mrrs878/blog_dashboard:master
     container_name: blog_dashboard
     ports:
       - 8083:80
