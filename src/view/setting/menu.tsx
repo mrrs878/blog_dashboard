@@ -1,10 +1,10 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-13 10:19:21
- * @LastEditTime: 2021-06-14 23:04:17
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 15:41:45
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: /dashboard_template/src/view/setting/menu.tsx
+ * @FilePath: \blog_dashboard\src\view\setting\menu.tsx
  */
 import { PlusCircleOutlined } from '@ant-design/icons';
 import {
@@ -61,7 +61,7 @@ const tailFormItemLayout = {
 };
 
 const AddRootMenu: IMenuItem = {
-  icon: <PlusCircleOutlined />, title: '添加', id: -1, key: 'root', parent: 'root', path: '', status: 1, children: [], position: -1,
+  icon: <PlusCircleOutlined />, title: '添加', _id: -1, key: 'root', parent: 'root', path: '', status: 1, children: [], position: -1,
 };
 
 function formatMenu(src: Array<IMenuItem>) {
@@ -160,12 +160,12 @@ const MenuSetting = () => {
   const formFinishHandlers = {
     edit(values: any) {
       const {
-        role, key, parent, id,
-      } = menuArray.find((item) => item.id === selectedMenu?.id) || {};
+        role, key, parent, _id, sub_menu,
+      } = menuArray.find((item) => item._id === selectedMenu?._id) || {};
       const { position } = values;
       const newPosition = parseInt(position, 10);
       const newValues = {
-        role, parent, key, id, ...values, position: newPosition, path: `${selectedMenuParent?.path ?? ''}/${values.path}`,
+        role, parent, key, _id, sub_menu, ...values, position: newPosition, path: `${selectedMenuParent?.path ?? ''}/${values.path}`,
       };
       setEditModalF(false);
       updateMenu(newValues);
@@ -209,7 +209,7 @@ const MenuSetting = () => {
     const selectMenuTmp: IMenuItem = info.selectedNodes[0];
     const isAddMenuItem = compose(equals(AddRootMenu.key), prop<'key', string>('key'));
     const parentMenu = findMenuItemParent(selectMenuTmp)(menuArray);
-    console.log(parentMenu?.id);
+    console.log(parentMenu?._id);
     const max = calculateMenuPosition(parentMenu?.key);
     console.log(max);
 
@@ -239,7 +239,7 @@ const MenuSetting = () => {
     const position = selectedMenu?.position ?? -1;
     if (position === 0) return;
     const tmp = clone(menuArray);
-    const selectedMenuPosition = tmp.find((item) => item.id === selectedMenu?.id);
+    const selectedMenuPosition = tmp.find((item) => item._id === selectedMenu?._id);
     const preMenuPosition = tmp.find(
       (item) => item.position === position - 1 && item.parent === selectedMenu?.parent,
     );
@@ -253,7 +253,7 @@ const MenuSetting = () => {
     const position = selectedMenu?.position ?? -1;
     if (position === positionRange.max) return;
     const tmp = clone(menuArray);
-    const selectedMenuPosition = tmp.find((item) => item.id === selectedMenu?.id);
+    const selectedMenuPosition = tmp.find((item) => item._id === selectedMenu?._id);
     const preMenuPosition = tmp.find(
       (item) => item.position === position + 1 && item.parent === selectedMenu?.parent,
     );
@@ -306,7 +306,7 @@ const MenuSetting = () => {
               rules={[{ validator: validateIcon }]}
             >
               <Input
-                disabled={selectedMenuParent?.id !== AddRootMenu.id}
+                disabled={selectedMenuParent?._id !== AddRootMenu._id}
                 addonAfter={<a href={MAIN_CONFIG.iconPreviewUrl} target="_blank" rel="noopener noreferrer">图标参考</a>}
               />
             </Form.Item>

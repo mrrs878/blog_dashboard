@@ -1,10 +1,10 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-23 11:22:06
- * @LastEditTime: 2021-06-14 23:12:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 15:41:13
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: /dashboard_template/.eslintrc.js
+ * @FilePath: \blog_dashboard\.eslintrc.js
  */
 module.exports = {
   extends: [
@@ -29,7 +29,7 @@ module.exports = {
         selector: 'property',
         format: ['strictCamelCase'],
         filter: {
-          regex: '^(icon_name|return_code|return_message|return_code|create_time|author_id|_id)$',
+          regex: '^(icon_name|return_code|return_message|return_code|create_time|author_id|_id|sub_menu)$',
           match: false,
         },
       },

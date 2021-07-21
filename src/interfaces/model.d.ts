@@ -1,19 +1,20 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 14:31:07
- * @LastEditTime: 2021-06-14 23:02:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 15:41:26
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: /dashboard_template/src/interfaces/model.d.ts
+ * @FilePath: \blog_dashboard\src\interfaces\model.d.ts
  */
 interface IMenuItem {
-  id?: number;
+  _id?: number;
   key: string;
   icon?: Object;
   icon_name?: string;
   title: string;
   path: string;
   children?: Array<IMenuItem>;
+  sub_menu?: Array<number>;
   parent: string;
   role?: Array<number>;
   status: number;
