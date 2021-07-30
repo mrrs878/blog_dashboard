@@ -1,10 +1,9 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-26 18:16:29
- * @LastEditTime: 2021-05-20 17:04:23
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-30 11:54:06
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: /dashboard_template/src/route/index.tsx
  */
 
 import {
@@ -105,6 +104,7 @@ const GuardComponent = (props: GuardComponentPropsI) => {
   const urlRole = permissionUrls.find((item) => item.url === props.path)?.role || 0;
 
   return cond([
+    [() => equals(path, '/'), () => <Redirect to="/home" />],
     [() => and(true, () => equals(path, '/auth/login')), () => <Component />],
     [() => and(equals(user.role, -1), props.auth), () => <Redirect to="/auth/login" />],
     [() => and(equals(user.role, -1), not(props.auth)), () => <Component />],
