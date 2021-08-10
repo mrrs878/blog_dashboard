@@ -10,6 +10,7 @@
     "@bytemd/plugin-highlight": "^1.9.1",
     "@bytemd/react": "^1.9.1",
     "@craco/craco": "^6.1.1",
+    "@mrrs878/js-library": "^0.0.14",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-26 18:16:29
- * @LastEditTime: 2021-07-30 11:54:06
+ * @LastEditTime: 2021-08-10 20:04:35
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  */
@@ -11,9 +11,11 @@ import {
 } from 'ramda';
 import React, { Suspense, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { reactHooks } from '@mrrs878/js-library';
 import MLoading from '../components/MLoading';
-import useDocumentTitle from '../hook/useDocumentTitle';
 import { useModel } from '../store';
+
+const { useDocumentTitle } = reactHooks;
 
 const Home = React.lazy(() => import('../view/home'));
 const Profile = React.lazy(() => import('../view/profile'));

@@ -1,16 +1,18 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-30 12:40:32
- * @LastEditTime: 2021-05-20 14:16:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-10 20:04:11
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\hooks\useGetArticles.ts
+ * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\hook\useGetArticles.ts
  */
 import { message } from 'antd';
 import { useEffect } from 'react';
+import { reactHooks } from '@mrrs878/js-library';
 import { GET_USER_ARTICLES } from '../api/article';
-import useRequest from './useRequest';
 import { useModel } from '../store';
+
+const { useRequest } = reactHooks;
 
 export default function useGetArticles(autoMsg = true, autoFetch = false) {
   const [getArticlesLoading, getArticlesRes,

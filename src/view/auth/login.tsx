@@ -1,10 +1,10 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:37:02
- * @LastEditTime: 2021-07-20 23:20:31
+ * @LastEditTime: 2021-08-10 20:05:58
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\view\auth\login.tsx
+ * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\view\auth\login.tsx
  */
 import {
   Button, Form, Input, message, Modal,
@@ -12,11 +12,13 @@ import {
 import { useForm } from 'antd/lib/form/Form';
 import React, { useCallback, useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { reactHooks } from '@mrrs878/js-library';
 import { LOGIN } from '../../api/auth';
 import MVerify from '../../components/MVerify';
-import useRequest from '../../hook/useRequest';
 import { useFullScreen, useUser } from '../../store';
 import style from './login.module.less';
+
+const { useRequest } = reactHooks;
 
 const layout = {
   labelCol: { span: 10 },

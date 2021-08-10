@@ -1,16 +1,18 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2021-04-11 15:50:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-10 20:02:17
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
+ * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\hook\useGetPermissionUrls.ts
  */
 import { message } from 'antd';
 import { useEffect } from 'react';
+import { reactHooks } from '@mrrs878/js-library';
 import { GET_PERMISSION_URLS } from '../api/auth';
-import useRequest from './useRequest';
 import { useModel } from '../store';
+
+const { useRequest } = reactHooks;
 
 export default function useGetPermissionUrls(autoMsg = true, authFetch = false) {
   const [, getPermissionUrlsRes, getPermissionUrls] = useRequest(GET_PERMISSION_URLS, authFetch);

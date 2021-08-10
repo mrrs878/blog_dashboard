@@ -1,17 +1,19 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-10 19:15:33
- * @LastEditTime: 2021-06-14 23:02:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-10 20:02:50
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: \blog_dashboard\src\hooks\useGetMenus.ts
+ * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\hook\useGetMenu.ts
  */
 import { message } from 'antd';
 import { useEffect } from 'react';
 import { clone } from 'ramda';
+import { reactHooks } from '@mrrs878/js-library';
 import { GET_MENUS } from '../api/setting';
-import useRequest from './useRequest';
 import { useModel } from '../store';
+
+const { useRequest } = reactHooks;
 
 function menuArray2Tree(src: Array<IMenuItem>) {
   const res: Array<IMenuItem> = [];

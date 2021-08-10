@@ -3,18 +3,20 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:33:55
- * @LastEditTime: 2021-04-08 10:51:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-09 19:40:19
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: \dashboard_template\src\components\MVerify\index.tsx
+ * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\components\MVerify\index.tsx
  */
 import { Spin } from 'antd';
 import React, {
   useCallback, useEffect, useState,
 } from 'react';
+import { reactHooks } from '@mrrs878/js-library';
 import { CHECK_PUZZLE_IMG, GET_PUZZLE_IMG } from '../../api/auth';
-import useRequest from '../../hook/useRequest';
 import style from './index.module.less';
+
+const { useRequest } = reactHooks;
 
 const w = 350; // canvas宽度
 const h = 200; // canvas高度

@@ -5,10 +5,10 @@ import {
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ColumnProps } from 'antd/es/table';
 import { EyeOutlined, LinkOutlined } from '@ant-design/icons';
+import { reactHooks } from '@mrrs878/js-library';
 
 import useGetArticles from '../../hook/useGetArticles';
 import { UPDATE_ARTICLE_STATUS } from '../../api/article';
-import useRequest from '../../hook/useRequest';
 import { useModel } from '../../store';
 
 interface PropsI extends RouteComponentProps {
@@ -30,7 +30,7 @@ function getCategories(articles: Array<IArticle>) {
 const Articles: React.FC<PropsI> = (props: PropsI) => {
   const [articles] = useModel('articles');
   const categories = useMemo(() => getCategories(articles), [articles]);
-  const [, updateArticleRes, updateArticle] = useRequest(UPDATE_ARTICLE_STATUS, false);
+  const [, updateArticleRes, updateArticle] = reactHooks.useRequest(UPDATE_ARTICLE_STATUS, false);
   const { getArticlesLoading, reGetArticles } = useGetArticles(false, true);
 
   useEffect(() => {
