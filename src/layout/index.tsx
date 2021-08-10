@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 10:13:41
- * @LastEditTime: 2021-08-10 20:03:42
+ * @LastEditTime: 2021-08-10 20:08:16
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\layout\index.tsx
@@ -11,9 +11,6 @@ import { ConfigProvider, Layout, message } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import {
-  compose, equals, not, prop, when,
-} from 'ramda';
 import MHeader from '../components/MHeader';
 import MMenu from '../components/MMenu';
 import MTagsBar from '../components/MTagsBar';
