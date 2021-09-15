@@ -1,10 +1,10 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:37:02
- * @LastEditTime: 2021-08-10 20:05:58
+ * @LastEditTime: 2021-09-14 22:02:56
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\view\auth\login.tsx
+ * @FilePath: \blog_dashboard\src\view\auth\login.tsx
  */
 import {
   Button, Form, Input, message, Modal,
@@ -12,13 +12,13 @@ import {
 import { useForm } from 'antd/lib/form/Form';
 import React, { useCallback, useEffect, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { reactHooks } from '@mrrs878/js-library';
-import { LOGIN } from '../../api/auth';
-import MVerify from '../../components/MVerify';
+import { useRequest } from '@mrrs878/hooks';
+import { MVerify } from '@mrrs878/sliding-puzzle';
+import { CHECK_PUZZLE, GET_PUZZLE_IMG, LOGIN } from '../../api/auth';
 import { useFullScreen, useUser } from '../../store';
 import style from './login.module.less';
 
-const { useRequest } = reactHooks;
+import '@mrrs878/sliding-puzzle/dist/index.css';
 
 const layout = {
   labelCol: { span: 10 },
@@ -28,24 +28,44 @@ const tailLayout = {
   wrapperCol: { offset: 10, span: 4 },
 };
 
+const onLoginFinish = (props: RouteComponentProps) => {
+  if (props.history.length > 0) props.history.goBack();
+  else props.history.replace('/');
+};
+
 const Login = (props: RouteComponentProps) => {
   const [, fullScreen, exitFullScreen] = useFullScreen();
   const [loginFrom] = useForm();
   const [verifyModalFlag, setVerifyModalFlag] = useState(false);
-  const [, loginRes, login] = useRequest(LOGIN, false);
+  const [,, login] = useRequest(LOGIN, false);
+  const [, puzzleImgRes, getPuzzleImg, reGetPuzzleImg] = useRequest(GET_PUZZLE_IMG, false);
+  const [,, checkPuzzle] = useRequest(CHECK_PUZZLE, false);
   const [, updateUser] = useUser();
-
-  const onSuccess = useCallback(() => {
-    setVerifyModalFlag(false);
-    const { username, password } = loginFrom.getFieldsValue();
-    login({ name: username, password });
-  }, [login, loginFrom]);
-  const onClose = useCallback(() => {
-  }, []);
 
   const onLoginFormFinish = useCallback(() => {
     setVerifyModalFlag(true);
-  }, []);
+    getPuzzleImg();
+  }, [getPuzzleImg]);
+
+  const onPuzzleRelease = useCallback(async (left) => {
+    const session = puzzleImgRes?.data.session || '';
+    const res = await checkPuzzle({ session, left });
+    if (res.return_code === 0) {
+      const { username, password } = loginFrom.getFieldsValue();
+      const loginRes = await login({ name: username, password });
+      if (loginRes.return_code === 0) {
+        exitFullScreen();
+        updateUser(loginRes.data);
+        localStorage.setItem('token', loginRes.data.token);
+        setTimeout(onLoginFinish, 500, props);
+        setTimeout(setVerifyModalFlag, 800, false);
+      } else {
+        message.error(loginRes.return_message);
+      }
+    }
+    return Promise.resolve(res.return_code === 0);
+  }, [checkPuzzle, exitFullScreen, login,
+    loginFrom, props, puzzleImgRes?.data.session, updateUser]);
 
   useEffect(() => {
     fullScreen();
@@ -53,18 +73,6 @@ const Login = (props: RouteComponentProps) => {
       exitFullScreen();
     };
   }, [exitFullScreen, fullScreen]);
-  useEffect(() => {
-    console.log(loginRes);
-    if (!loginRes) return;
-    if (!loginRes.success) {
-      message.error(loginRes.return_message);
-      return;
-    }
-    exitFullScreen();
-    updateUser(loginRes.data);
-    localStorage.setItem('token', loginRes.data.token);
-    setTimeout(props.history.goBack, 500);
-  }, [exitFullScreen, loginRes, props.history, updateUser]);
   return (
     <div className={style.container}>
       <Form
@@ -97,7 +105,15 @@ const Login = (props: RouteComponentProps) => {
         </Form.Item>
       </Form>
       <Modal visible={verifyModalFlag} footer={false} onCancel={() => setVerifyModalFlag(false)}>
-        <MVerify onSuccess={onSuccess} onClose={onClose} />
+        <MVerify
+          background={puzzleImgRes?.data.canvas || ''}
+          block={puzzleImgRes?.data.block || ''}
+          onRelease={onPuzzleRelease}
+          onRefresh={() => {
+            reGetPuzzleImg();
+            return Promise.resolve(true);
+          }}
+        />
       </Modal>
     </div>
   );
