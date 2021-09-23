@@ -1,21 +1,19 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-26 18:16:29
- * @LastEditTime: 2021-08-10 20:04:35
+ * @LastEditTime: 2021-09-23 21:08:02
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  */
 
 import {
-  and, compose, cond, equals, filter, gt, lte, not, uniqBy,
+  and, compose, cond, equals, filter, gt, isNil, lte, not, uniqBy,
 } from 'ramda';
 import React, { Suspense, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { reactHooks } from '@mrrs878/js-library';
+import { useDocumentTitle } from '@mrrs878/hooks';
 import MLoading from '../components/MLoading';
 import { useModel } from '../store';
-
-const { useDocumentTitle } = reactHooks;
 
 const Home = React.lazy(() => import('../view/home'));
 const Profile = React.lazy(() => import('../view/profile'));
@@ -103,13 +101,13 @@ const GuardComponent = (props: GuardComponentPropsI) => {
   }, [path, titles, updateTags]);
 
   const Component = (props.component) as any;
+  const isNotLogin = isNil(localStorage.getItem('token'));
   const urlRole = permissionUrls.find((item) => item.url === props.path)?.role || 0;
-
   return cond([
     [() => equals(path, '/'), () => <Redirect to="/home" />],
     [() => and(true, () => equals(path, '/auth/login')), () => <Component />],
-    [() => and(equals(user.role, -1), props.auth), () => <Redirect to="/auth/login" />],
-    [() => and(equals(user.role, -1), not(props.auth)), () => <Component />],
+    [() => and(isNotLogin, props.auth), () => <Redirect to="/auth/login" />],
+    [() => not(props.auth), () => <Component />],
     [() => gt(user.role, urlRole), () => <ForbiddenPage />],
     [() => lte(user.role, urlRole), () => <Component />],
   ])(user);

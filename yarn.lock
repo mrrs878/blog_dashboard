@@ -1647,26 +1647,20 @@
     semver "^7.3.4"
     tar "^6.1.0"
 
-"@mrrs878/hooks@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@mrrs878/hooks/-/hooks-0.2.0.tgz#a84ccc5ad0d8cc783a21daf868a3173cbf7eed2e"
-  integrity sha512-Z+GO1vxuubL/oYnqo6hvbW+jPIbI4nL47CAZlPbGaQFLccW0tBS7s+AUBi2eBZh4cy4cuzL9Js4QUGQUpVENIA==
+"@mrrs878/hooks@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@mrrs878/hooks/-/hooks-0.3.0.tgz#232755959a3b7d92e38813bddf81d8ff5d750774"
+  integrity sha512-IgxSnbvjRXjSqR0isqDde7i2CTcJutELQOIU0VzZ4wZ7RjDlgAVaJe34XR7JioiLRiiJ5tCQSNr6PMUTLGTpbQ==
   dependencies:
     "@types/js-cookie" "^2.2.7"
     js-cookie "^3.0.0"
+    ramda "^0.27.1"
     screenfull "^5.1.0"
 
-"@mrrs878/js-library@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@mrrs878/js-library/-/js-library-0.0.14.tgz#f6e8490fca82a963798c9cb2130e2286d5ca9983"
-  integrity sha512-wFlnQL/s3cLwr3vz69XM+RMjJBKu4JEe8y1Y5dsrFHvMn0XWa/umz+vZ05rg4X3MrGK3oICo3ILxyqU/ODmwzQ==
-  dependencies:
-    react-fast-compare "^3.2.0"
-
-"@mrrs878/sliding-puzzle@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@mrrs878/sliding-puzzle/-/sliding-puzzle-0.0.7.tgz#b7e63b58d70cf5338ebef507af1ae3d441b1496b"
-  integrity sha512-8zA3vxLCT0I3Re37JQMWFdDJF6Phn8WzEOy5UaMKobrCMqVfxbuB2Jg7VnMZFo1vFuAgjRoUfiqzO8M6JA5L3w==
+"@mrrs878/sliding-puzzle@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@mrrs878/sliding-puzzle/-/sliding-puzzle-0.0.9.tgz#ceccfee72e88d21dfb8bd33b9bda4467f3a061f3"
+  integrity sha512-zlZAQs8EwX/MaNU+tRTsNiXnFpzsJIve2g9xD1/RjPEXZXzV7nWFblFjJxe5pp4JEe226G/dEc8buROlkye9DA==
   dependencies:
     canvas "^2.8.0"
 

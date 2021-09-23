@@ -1,8 +1,8 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-15 09:49:52
- * @LastEditTime: 2021-05-20 14:12:18
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-23 20:46:53
+ * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interfaces\ajaxRes.d.ts
  */
@@ -13,9 +13,11 @@ interface BaseResI<T> {
   return_message: string;
 }
 
-interface ILoginRes extends BaseResI<UserI>{
+interface User extends IUser { token: string }
+
+interface ILoginRes extends BaseResI<User> {
 }
-interface GetInfoByTokenResI extends BaseResI<UserI>{
+interface GetInfoByTokenResI extends BaseResI<IUser> {
 }
 interface LogoutResI extends BaseResI<any>{
 }
@@ -39,9 +41,9 @@ interface GetDictResT extends BaseResI<DictI>{
 
 interface GetAuthorCommentsResI extends BaseResI<Array<AuthorCommentsI>> {}
 
-interface GetUsersResI extends BaseResI<Array<UserI>> {}
+interface GetUsersResI extends BaseResI<Array<IUser>> {}
 
-interface UpdateUserInfoResI extends BaseResI<UserI> {}
+interface UpdateIUsernfoResI extends BaseResI<IUser> {}
 
 interface UpdateUserStatusI extends BaseResI<any> {}
 

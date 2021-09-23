@@ -1,10 +1,10 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-09-22 09:42:32
- * @LastEditTime: 2021-08-10 20:05:32
+ * @LastEditTime: 2021-09-23 20:33:37
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\view\article\detail.tsx
+ * @FilePath: \blog_dashboard\src\view\article\detail.tsx
  */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Editor } from '@bytemd/react';
@@ -20,7 +20,7 @@ import {
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Base64 } from 'js-base64';
 import { clone } from 'ramda';
-import { reactHooks } from '@mrrs878/js-library';
+import { useRequest } from '@mrrs878/hooks';
 import 'bytemd/dist/index.min.css';
 import useGetArticles from '../../hook/useGetArticles';
 import { CREATE_ARTICLE, GET_ARTICLE, UPDATE_ARTICLE } from '../../api/article';
@@ -28,7 +28,6 @@ import '../../assets/less/md.theme.orange.less';
 import style from './detail.module.less';
 import { useFullScreen } from '../../store';
 
-const { useRequest } = reactHooks;
 interface IProps extends RouteComponentProps<{ id: string }>{
 }
 
@@ -122,8 +121,8 @@ const ArticleDetail = (props: IProps) => {
         getArticles();
         reGetArticle();
       }
-    } catch (e) {
-      message.error(e.message);
+    } catch {
+      message.error('网络错误，请稍后重试');
     }
   }, [createArticle, createOrEdit, getArticles, markdownSrc,
     props.match.params.id, reGetArticle, updateArticle]);

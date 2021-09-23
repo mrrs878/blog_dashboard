@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:37:02
- * @LastEditTime: 2021-09-14 22:02:56
+ * @LastEditTime: 2021-09-23 20:47:11
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\view\auth\login.tsx
@@ -38,7 +38,10 @@ const Login = (props: RouteComponentProps) => {
   const [loginFrom] = useForm();
   const [verifyModalFlag, setVerifyModalFlag] = useState(false);
   const [,, login] = useRequest(LOGIN, false);
-  const [, puzzleImgRes, getPuzzleImg, reGetPuzzleImg] = useRequest(GET_PUZZLE_IMG, false);
+  const [puzzleImgLoading, puzzleImgRes, getPuzzleImg, reGetPuzzleImg] = useRequest(
+    GET_PUZZLE_IMG,
+    false,
+  );
   const [,, checkPuzzle] = useRequest(CHECK_PUZZLE, false);
   const [, updateUser] = useUser();
 
@@ -108,6 +111,7 @@ const Login = (props: RouteComponentProps) => {
         <MVerify
           background={puzzleImgRes?.data.canvas || ''}
           block={puzzleImgRes?.data.block || ''}
+          loading={puzzleImgLoading}
           onRelease={onPuzzleRelease}
           onRefresh={() => {
             reGetPuzzleImg();
