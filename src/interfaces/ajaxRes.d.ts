@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2020-10-15 09:49:52
- * @LastEditTime: 2021-09-23 20:46:53
+ * @LastEditTime: 2021-09-24 19:44:13
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\interfaces\ajaxRes.d.ts
@@ -27,7 +27,11 @@ interface ICreateMenuRes extends BaseResI<IMenuItem> {}
 
 interface IUpdateMenuRes extends BaseResI<IMenuItem> {}
 
-interface IGetPuzzleImgRes extends BaseResI<{ canvas: string, block: string, session: string }> {}
+interface IGetPuzzleImgRes extends BaseResI<{
+  background: string,
+  block: string,
+  session: string
+}> {}
 
 interface ICheckPuzzleRes extends BaseResI<any> {}
 

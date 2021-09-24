@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:37:02
- * @LastEditTime: 2021-09-24 11:38:16
+ * @LastEditTime: 2021-09-24 19:43:47
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\view\auth\login.tsx
@@ -108,7 +108,7 @@ const Login = (props: RouteComponentProps) => {
       </Form>
       <Modal visible={verifyModalFlag} footer={false} onCancel={() => setVerifyModalFlag(false)}>
         <MVerify
-          background={puzzleImgRes?.data.canvas || ''}
+          background={puzzleImgRes?.data.background || ''}
           block={puzzleImgRes?.data.block || ''}
           loading={puzzleImgLoading}
           onRelease={onPuzzleRelease}
