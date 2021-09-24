@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-13 10:19:21
- * @LastEditTime: 2021-09-23 20:31:45
+ * @LastEditTime: 2021-09-24 19:30:16
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\view\setting\menu.tsx
@@ -193,16 +193,16 @@ const MenuSetting = () => {
     },
   };
 
-  function onFormFinish(values: any) {
+  const onFormFinish = (values: any) => {
     setIsMenuAdding(true);
     ifElse(and(createOrUpdate), formFinishHandlers.add, formFinishHandlers.edit)(values);
     setIsMenuAdding(false);
-  }
+  };
 
-  function onFormReset() {
+  const onFormReset = () => {
     ifElse(equals(selectedMenu), formResetHandlers.add,
       formResetHandlers.common)(selectedMenuParent);
-  }
+  };
 
   const onTreeItemSelect = useCallback((key: Array<ReactText>, info: SelectData) => {
     if (!info.selected) return;
@@ -220,9 +220,9 @@ const MenuSetting = () => {
       menuItemClickHandlers.add(selectMenuTmp), menuItemClickHandlers.common)(selectMenuTmp);
   }, [calculateMenuPosition, menuArray, menuItemClickHandlers]);
 
-  function onModalCancel() {
+  const onModalCancel = () => {
     setEditModalF(false);
-  }
+  };
 
   function validateIcon(rule: RuleObject, value: StoreValue) {
     if (!value) return Promise.resolve();
