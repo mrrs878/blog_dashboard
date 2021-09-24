@@ -1,7 +1,7 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-04-06 22:37:02
- * @LastEditTime: 2021-09-23 20:47:11
+ * @LastEditTime: 2021-09-24 11:38:16
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  * @FilePath: \blog_dashboard\src\view\auth\login.tsx
@@ -28,9 +28,8 @@ const tailLayout = {
   wrapperCol: { offset: 10, span: 4 },
 };
 
-const onLoginFinish = (props: RouteComponentProps) => {
-  if (props.history.length > 0) props.history.goBack();
-  else props.history.replace('/');
+const onLoginFinish = () => {
+  window.location.href = '/home';
 };
 
 const Login = (props: RouteComponentProps) => {

@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-05-21 18:13:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /dashboard_template/src/tool/ajax.ts
+ * @FilePath: \blog_dashboard\src\tool\ajax.ts
  */
 import axios from 'axios';
 import { clone } from 'ramda';

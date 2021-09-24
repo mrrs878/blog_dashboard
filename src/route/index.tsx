@@ -1,12 +1,13 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-26 18:16:29
- * @LastEditTime: 2021-09-23 21:08:02
+ * @LastEditTime: 2021-09-24 11:03:21
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
  */
 
 import {
+  always,
   and, compose, cond, equals, filter, gt, isNil, lte, not, uniqBy,
 } from 'ramda';
 import React, { Suspense, useEffect } from 'react';
@@ -27,7 +28,7 @@ const ARTICLE = React.lazy(() => import('../view/article'));
 const ARTICLE_DETAIL = React.lazy(() => import('../view/article/detail'));
 
 interface GuardComponentPropsI {
-  component: any;
+  component: React.LazyExoticComponent<any>;
   auth: boolean;
   path: string;
 }
@@ -100,16 +101,17 @@ const GuardComponent = (props: GuardComponentPropsI) => {
     )([...pre, { path, title: titles[path] }]));
   }, [path, titles, updateTags]);
 
-  const Component = (props.component) as any;
+  const Component = props.component;
   const isNotLogin = isNil(localStorage.getItem('token'));
   const urlRole = permissionUrls.find((item) => item.url === props.path)?.role || 0;
   return cond([
-    [() => equals(path, '/'), () => <Redirect to="/home" />],
-    [() => and(true, () => equals(path, '/auth/login')), () => <Component />],
-    [() => and(isNotLogin, props.auth), () => <Redirect to="/auth/login" />],
-    [() => not(props.auth), () => <Component />],
-    [() => gt(user.role, urlRole), () => <ForbiddenPage />],
-    [() => lte(user.role, urlRole), () => <Component />],
+    [always(equals(path, '/')), always(<Redirect to="/home" />)],
+    [always(equals(path, '/auth/login')), always(<Component />)],
+    [always(and(isNotLogin, props.auth)), always(<Redirect to="/auth/login" />)],
+    [always(not(props.auth)), always(<Component />)],
+    [always(gt(user.role, urlRole)), always(<ForbiddenPage />)],
+    [always(lte(user.role, urlRole)), always(<Component />)],
+    [always(true), always(<Redirect to="/home" />)],
   ])(user);
 };
 

@@ -1,10 +1,10 @@
 /*
  * @Author: mrrs878@foxmail.com
  * @Date: 2021-02-24 10:13:41
- * @LastEditTime: 2021-08-10 20:08:16
+ * @LastEditTime: 2021-09-24 11:54:18
  * @LastEditors: mrrs878@foxmail.com
  * @Description: In User Settings Edit
- * @FilePath: d:\Data\Personal\MyPro\blog_dashboard\src\layout\index.tsx
+ * @FilePath: \blog_dashboard\src\layout\index.tsx
  */
 
 import { ConfigProvider, Layout, message } from 'antd';
@@ -61,8 +61,6 @@ const MLayout = () => {
             <Footer style={{ textAlign: 'center' }}>
               {`${new Date().getFullYear()}`}
             &nbsp;&copy; Mr.RS
-              <br />
-              v0.0.1
             </Footer>
           </Layout>
         </Layout>
