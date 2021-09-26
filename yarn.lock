@@ -1731,10 +1731,10 @@
     ramda "^0.27.1"
     screenfull "^5.1.0"
 
-"@mrrs878/sliding-puzzle@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@mrrs878/sliding-puzzle/-/sliding-puzzle-0.0.9.tgz#ceccfee72e88d21dfb8bd33b9bda4467f3a061f3"
-  integrity sha512-zlZAQs8EwX/MaNU+tRTsNiXnFpzsJIve2g9xD1/RjPEXZXzV7nWFblFjJxe5pp4JEe226G/dEc8buROlkye9DA==
+"@mrrs878/sliding-puzzle@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.npmjs.org/@mrrs878/sliding-puzzle/-/sliding-puzzle-0.0.10.tgz#2e77ee8219d2e81321cb6812883a16a3edeff92f"
+  integrity sha512-xRPIEbBjmpSU6+687VdmO0mdaWkn1UxRTsANvgov8D5SnF6g3pr7h2le0epf/q32yhzWq2m/zTpYavz814ZPiA==
   dependencies:
     canvas "^2.8.0"
 
